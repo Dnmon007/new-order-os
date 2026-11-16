@@ -104,6 +104,11 @@
     margin-top: 2px;
   }
 
+  .status-pills {
+    display: flex;
+    gap: 6px;
+  }
+
   .status-pill {
     font-family: ui-monospace, monospace;
     font-size: 10px;
@@ -114,6 +119,17 @@
     color: var(--red);
     text-shadow: 0 0 6px rgba(255, 42, 85, 0.4);
     font-weight: 700;
+  }
+
+  .sound-pill {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--border);
+    color: var(--cyan);
+    cursor: pointer;
+  }
+  .sound-pill.active {
+    border-color: var(--cyan);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
   }
 
   .nav-bar {
@@ -127,7 +143,7 @@
     border: 1px solid var(--border);
     color: var(--muted);
     font-family: ui-monospace, monospace;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     padding: 9px 2px;
     border-radius: 6px;
@@ -141,13 +157,6 @@
     border-color: var(--cyan);
     color: var(--cyan);
     box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
-  }
-
-  .nav-btn.audio-tab.active {
-    background: var(--green-dim);
-    border-color: var(--green);
-    color: var(--green);
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
   }
 
   .screen {
@@ -169,169 +178,6 @@
     font-size: 11px;
     line-height: 1.45;
     color: #9cb8cf;
-  }
-
-  .proto-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
-  }
-  .proto-card:active {
-    transform: scale(0.985);
-    border-color: var(--cyan);
-    background: #0e1722;
-    box-shadow: 0 0 16px rgba(0, 243, 255, 0.15);
-  }
-
-  .badge-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 5px;
-    flex-wrap: wrap;
-  }
-
-  .badge {
-    font-family: ui-monospace, monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: var(--cyan-dim);
-    color: var(--cyan);
-    border: 1px solid rgba(0, 243, 255, 0.35);
-  }
-
-  .badge.green {
-    background: var(--green-dim);
-    color: var(--green);
-    border-color: rgba(0, 255, 136, 0.35);
-  }
-
-  .badge-sub {
-    font-family: ui-monospace, monospace;
-    font-size: 9px;
-    color: var(--muted);
-  }
-
-  .card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.4px;
-    margin-bottom: 3px;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .arrow-icon {
-    font-family: ui-monospace, monospace;
-    font-size: 18px;
-    color: var(--cyan);
-    padding-left: 10px;
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
-  }
-
-  .audio-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .audio-card.playing {
-    border-color: var(--green);
-    box-shadow: 0 0 16px rgba(0, 255, 136, 0.18);
-  }
-
-  .audio-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .audio-name {
-    font-family: ui-monospace, monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .audio-tag {
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--green);
-    background: var(--green-dim);
-    padding: 3px 7px;
-    border-radius: 4px;
-  }
-
-  .audio-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .play-btn {
-    background: #0d1a14;
-    border: 1px solid var(--green);
-    color: var(--green);
-    font-family: ui-monospace, monospace;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 10px 14px;
-    border-radius: 7px;
-    min-width: 92px;
-    cursor: pointer;
-  }
-  .audio-card.playing .play-btn {
-    background: var(--green);
-    color: #03120a;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
-  }
-
-  .progress-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .progress-bar-bg {
-    width: 100%;
-    height: 8px;
-    background: #070c11;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    transition: width 0.1s linear;
-  }
-
-  .time-row {
-    display: flex;
-    justify-content: space-between;
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--muted);
   }
 
   .game-box {
@@ -371,12 +217,12 @@
   .action-pad {
     width: 100%;
     height: 78px;
-    background: linear-gradient(180deg, rgba(0, 243, 255, 0.18) 0%, rgba(0, 243, 255, 0.08) 100%);
-    border: 2px solid var(--cyan);
+    background: linear-gradient(180deg, rgba(255, 42, 85, 0.18) 0%, rgba(255, 42, 85, 0.08) 100%);
+    border: 2px solid var(--red);
     border-radius: 10px;
-    color: var(--cyan);
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.45);
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+    color: var(--red);
+    text-shadow: 0 0 8px rgba(255, 42, 85, 0.45);
+    box-shadow: 0 0 15px rgba(255, 42, 85, 0.15);
     font-family: ui-monospace, monospace;
     font-size: 14px;
     font-weight: 700;
@@ -389,9 +235,9 @@
     touch-action: manipulation;
   }
   .action-pad:active {
-    background: rgba(0, 243, 255, 0.34);
+    background: rgba(255, 42, 85, 0.34);
     transform: scale(0.985);
-    box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
+    box-shadow: 0 0 22px rgba(255, 42, 85, 0.35);
   }
   .action-pad small {
     font-size: 10px;
@@ -400,84 +246,116 @@
     font-weight: 400;
   }
 
-  .result-banner {
-    display: none;
-    background: var(--green-dim);
-    border: 1px solid var(--green);
-    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-    font-family: ui-monospace, monospace;
-  }
-  .result-banner.show {
-    display: block;
-  }
-  .result-banner h4 {
-    margin: 0 0 6px;
-    color: var(--green);
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
-    font-size: 14px;
-  }
-  .result-banner p {
-    margin: 0 0 10px;
-    font-size: 12px;
-    color: #fff;
-  }
-
-  .reset-btn {
-    background: var(--green);
-    color: #04100a;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-family: ui-monospace, monospace;
-    font-weight: 700;
-    font-size: 11px;
-    cursor: pointer;
-  }
-
-  .blocks-grid {
+  .phases-tabs {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    gap: 4px;
   }
-  .mem-block {
+  .phase-tab {
     background: #060b10;
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 9px 4px;
-    text-align: center;
-    font-family: ui-monospace, monospace;
-    font-size: 11px;
     color: var(--muted);
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 6px 2px;
+    border-radius: 5px;
+    text-align: center;
   }
-  .mem-block.done {
+  .phase-tab.done {
     background: var(--green-dim);
     border-color: var(--green);
     color: var(--green);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-    font-weight: 700;
   }
-  .mem-block.curr {
+  .phase-tab.active {
     border-color: var(--cyan);
     color: var(--cyan);
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.15);
+    background: var(--cyan-dim);
   }
 
-  .heat-bar-wrap {
-    height: 14px;
-    background: #060b10;
+  .audio-card {
+    background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 7px;
-    overflow: hidden;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
   }
-  .heat-fill {
+  .audio-card.playing {
+    border-color: var(--green);
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.18);
+  }
+  .audio-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .audio-name {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .audio-tag {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .play-btn {
+    background: #0d1a14;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 7px;
+    min-width: 92px;
+    cursor: pointer;
+  }
+  .audio-card.playing .play-btn {
+    background: var(--green);
+    color: #03120a;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+  }
+  .progress-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #070c11;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .progress-fill {
     height: 100%;
-    width: 20%;
-    background: linear-gradient(90deg, var(--cyan), var(--amber), var(--red));
-    box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
-    transition: width 0.08s;
+    width: 0%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    transition: width 0.1s linear;
+  }
+  .time-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--muted);
   }
 
   .footer-bar {
@@ -497,10 +375,13 @@
   <div class="header-box">
     <div class="top-row">
       <div>
-        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.4 // NEON_CORE</div>
-        <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
+        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v5.2 // КАЙ</div>
+        <div class="sub-meta">"ГЛИТЧ" МЕРСЕР // ПРОТОКОЛ ВЗЛОМА</div>
       </div>
-      <div class="status-pill" id="sysStatus">ONLINE</div>
+      <div class="status-pills">
+        <div class="status-pill sound-pill active" id="soundToggle">ЗВУК</div>
+        <div class="status-pill" id="sysStatus">СБОИ 0</div>
+      </div>
     </div>
 
     <div class="nav-bar">
@@ -509,179 +390,130 @@
       <button class="nav-btn" data-target="ep2">СЕР.2</button>
       <button class="nav-btn" data-target="ep3">СЕР.3</button>
       <button class="nav-btn" data-target="ep4">СЕР.4</button>
-      <button class="nav-btn audio-tab" data-target="audio">АУДИО</button>
+      <button class="nav-btn" data-target="audio" style="color: var(--green);">АУДИО</button>
     </div>
   </div>
 
+  <!-- МЕНЮ -->
   <div class="screen active" id="screen-menu">
     <div class="terminal-note">
-      USER: KAI_MERCER // KERNEL_READY<br>
-      Выберите активный модуль взлома или откройте канал перехвата аудио-логов по команде напарника.
+      ОПЕРАЦИЯ: «НОВЫЙ ПОРЯДОК» // Стабильное ядро v5.2 загружено.<br>
+      Выберите протокол взлома для синхронизации с напарником.
     </div>
 
-    <div class="proto-card" data-open="ep1">
-      <div>
-        <div class="badge-row">
-          <span class="badge">6 ЭТАПОВ</span>
-          <span class="badge-sub">СИНХРОНИЗАЦИЯ • ICE-БАРЬЕРЫ</span>
-        </div>
-        <div class="card-title">СЕРИЯ 1 // ПРОТОКОЛ-01</div>
-        <div class="card-desc">Обход многоуровневого крипто-замка</div>
-      </div>
-      <div class="arrow-icon">→</div>
+    <div class="game-box" style="cursor:pointer;" onclick="switchScreen('ep1')">
+      <div style="font-family:monospace; font-size:13px; font-weight:bold; color:var(--cyan);">ПРОТОКОЛ 1 // КРИПТО-ЗАМОК</div>
+      <div style="font-size:11px; color:var(--muted);">Многоуровневый обход ICE-барьеров с нарастающей сложностью.</div>
     </div>
-
-    <div class="proto-card" data-open="ep2">
-      <div>
-        <div class="badge-row">
-          <span class="badge">4 БЛОКА</span>
-          <span class="badge-sub">ДЕШИФРОВКА • ТЕРМОКОНТРОЛЬ</span>
-        </div>
-        <div class="card-title">СЕРИЯ 2 // ПРОТОКОЛ-02</div>
-        <div class="card-desc">Извлечение зашифрованных координат</div>
-      </div>
-      <div class="arrow-icon">→</div>
+    <div class="game-box" style="cursor:pointer;" onclick="switchScreen('ep2')">
+      <div style="font-family:monospace; font-size:13px; font-weight:bold; color:var(--cyan);">ПРОТОКОЛ 2 // АРХИВЫ ЭЛИЗИАН</div>
+      <div style="font-size:11px; color:var(--muted);">Дешифровка секторов с контролем перегрева процессора.</div>
     </div>
-
-    <div class="proto-card" data-open="ep3">
-      <div>
-        <div class="badge-row">
-          <span class="badge">35 СЕК</span>
-          <span class="badge-sub">СТЕЛС-КОНТУР • ЧАСТОТНЫЙ КАНАЛ</span>
-        </div>
-        <div class="card-title">СЕРИЯ 3 // ПРОТОКОЛ-03</div>
-        <div class="card-desc">Удержание маскирующего сигнала</div>
-      </div>
-      <div class="arrow-icon">→</div>
+    <div class="game-box" style="cursor:pointer;" onclick="switchScreen('ep3')">
+      <div style="font-family:monospace; font-size:13px; font-weight:bold; color:var(--cyan);">ПРОТОКОЛ 3 // СТЕЛС-КОНТУР «ЭГИДА»</div>
+      <div style="font-size:11px; color:var(--muted);">Удержание частоты в синусоидальном канале маскировки.</div>
     </div>
-
-    <div class="proto-card" data-open="ep4">
-      <div>
-        <div class="badge-row">
-          <span class="badge">4 ФАЗЫ</span>
-          <span class="badge-sub">НАВЕДЕНИЕ • ЗАХВАТ ВЕКТОРА</span>
-        </div>
-        <div class="card-title">СЕРИЯ 4 // ПРОТОКОЛ-04</div>
-        <div class="card-desc">Баллистическая синхронизация цели</div>
-      </div>
-      <div class="arrow-icon">→</div>
+    <div class="game-box" style="cursor:pointer;" onclick="switchScreen('ep4')">
+      <div style="font-family:monospace; font-size:13px; font-weight:bold; color:var(--cyan);">ПРОТОКОЛ 4 // ЗАХВАТ «ВЕЙЛ-1»</div>
+      <div style="font-size:11px; color:var(--muted);">Четырехфазная баллистическая синхронизация над Чиллиад.</div>
     </div>
-
-    <div class="proto-card" style="border-color: rgba(0,255,136,0.4);" data-open="audio">
-      <div>
-        <div class="badge-row">
-          <span class="badge green">5 ЗАПИСЕЙ</span>
-          <span class="badge-sub">ЗАШИФРОВАННЫЙ КАНАЛ СВЯЗИ</span>
-        </div>
-        <div class="card-title" style="color: var(--green);">АУДИО-ПЕРЕХВАТ // ЛОГИ</div>
-        <div class="card-desc">Воспроизведение перехваченных сообщений</div>
-      </div>
-      <div class="arrow-icon" style="color: var(--green);">▶</div>
+    <div class="game-box" style="cursor:pointer; border-color: rgba(0,255,136,0.4);" onclick="switchScreen('audio')">
+      <div style="font-family:monospace; font-size:13px; font-weight:bold; color:var(--green);">КАНАЛ АУДИО-ПЕРЕХВАТА // 5 ЛОГОВ</div>
+      <div style="font-size:11px; color:var(--muted);">Воспроизведение секретных голосовых записей по операциям.</div>
     </div>
   </div>
 
+  <!-- АУДИО -->
   <div class="screen" id="screen-audio">
     <div class="terminal-note" style="border-left-color: var(--green);">
-      КАНАЛ ПЕРЕХВАТА АКТИВЕН // Нажмите воспроизведение на нужном логе, когда напарник даст сигнал.
+      ЗАКРЫТЫЙ КАНАЛ СВЯЗИ // Прослушайте перехваченные файлы по сериям.
     </div>
     <div id="audioList"></div>
   </div>
 
+  <!-- СЕРИЯ 1 -->
   <div class="screen" id="screen-ep1">
     <div class="game-box">
       <div class="game-hud">
-        <span>ПРОТОКОЛ-01 // ШИФР</span>
-        <span id="ep1Stats">ЭТАП: 1/6 | ЦЕЛОСТНОСТЬ: 3</span>
+        <span>СЕР.1 // ШИФР-БАРЬЕР</span>
+        <span id="ep1Stats">ЭТАП: 1/6 | HP: 3</span>
       </div>
       <canvas id="canvasEp1" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep1Win">
-        <h4>ДОСТУП ПОЛУЧЕН</h4>
-        <p>СИСТЕМА ЗАЩИТЫ ОТКЛЮЧЕНА. ПРОХОД ОТКРЫТ.</p>
-        <button class="reset-btn" id="ep1Reset">ПОВТОРИТЬ ПРОТОКОЛ</button>
-      </div>
       <button class="action-pad" id="ep1Btn">
         <span>[ СИНХРОНИЗИРОВАТЬ ]</span>
-        <small>СЛОЖНОСТЬ РАСТЕТ НА КАЖДОМ ЭТАПЕ • ИЗБЕГАЙТЕ ICE</small>
+        <small>ПОПАДИТЕ В ЗЕЛЕНУЮ ЗОНУ • ИЗБЕГАЙТЕ ICE</small>
       </button>
     </div>
   </div>
 
+  <!-- СЕРИЯ 2 -->
   <div class="screen" id="screen-ep2">
     <div class="game-box">
       <div class="game-hud">
-        <span>ПРОТОКОЛ-02 // АРХИВ</span>
+        <span>СЕР.2 // ТЕРМО-ДЕШИФРОВКА</span>
         <span id="ep2Stats">ТЕМП: 35°C | БЛОК: 1/4</span>
       </div>
-      <canvas id="canvasEp2" width="460" height="120" style="height: 120px;"></canvas>
-      <div class="blocks-grid" id="ep2Blocks">
-        <div class="mem-block curr">СЕКТОР 1<br>0%</div>
-        <div class="mem-block">СЕКТОР 2<br>0%</div>
-        <div class="mem-block">СЕКТОР 3<br>0%</div>
-        <div class="mem-block">СЕКТОР 4<br>0%</div>
-      </div>
-      <div style="font-family: ui-monospace, monospace; font-size: 10px; color: var(--muted);">НАГРЕВ ПРОЦЕССОРА (КРИТИЧЕСКИЙ ПОРОГ 100%):</div>
-      <div class="heat-bar-wrap">
-        <div class="heat-fill" id="ep2HeatFill"></div>
-      </div>
-      <div class="result-banner" id="ep2Win">
-        <h4>АРХИВ РАСШИФРОВАН</h4>
-        <p>КООРДИНАТЫ: ЭЛИЗИАН-АЙЛЕНД // СЕКТОР-4 // ГЛУБИНА: 65М</p>
-        <button class="reset-btn" id="ep2Reset">СБРОСИТЬ СЕКТОРЫ</button>
-      </div>
+      <canvas id="canvasEp2" width="460" height="130" style="height:130px;"></canvas>
       <button class="action-pad" id="ep2Btn">
-        <span>[ УДЕРЖИВАТЬ ДЛЯ ВЗЛОМА ]</span>
-        <small>ОТПУСТИТЕ, ЧТОБЫ ОХЛАДИТЬ ПРОЦЕССОР</small>
+        <span>[ УДЕРЖАТЬ ВЗЛОМ ]</span>
+        <small>ОТПУСТИТЕ ДЛЯ ОХЛАЖДЕНИЯ (ПОРОГ 100°C)</small>
       </button>
     </div>
   </div>
 
+  <!-- СЕРИЯ 3 (ОРИГИНАЛЬНАЯ СИНУСОИДА) -->
   <div class="screen" id="screen-ep3">
     <div class="game-box">
       <div class="game-hud">
-        <span>ПРОТОКОЛ-03 // СТЕЛС-КОНТУР</span>
-        <span id="ep3Stats">ОСТАЛОСЬ: 35.0с | СИГНАЛ: 100%</span>
+        <span>ЗОНА 1/3: ОБХОД ПВО «ЭГИДА»</span>
+        <span id="ep3Stats">33.7s | СИГНАЛ: 100%</span>
       </div>
       <canvas id="canvasEp3" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep3Win">
-        <h4>КОНТУР ПРОЙДЕН</h4>
-        <p>СТАТУС: DROP ZONE REACHED — ПРЫГАЕМ!</p>
-        <button class="reset-btn" id="ep3Reset">ПЕРЕЗАПУСТИТЬ КОНТУР</button>
-      </div>
       <button class="action-pad" id="ep3Btn">
-        <span>[ УДЕРЖИВАТЬ ВЫСОТУ ВОЛНЫ ]</span>
+        <span>[ УДЕРЖИВАТЬ ЧАСТОТУ СТЕЛСА ]</span>
         <small>ЗАЖМИТЕ ДЛЯ ПОДЪЕМА • ОТПУСТИТЕ ДЛЯ СНИЖЕНИЯ</small>
       </button>
     </div>
   </div>
 
+  <!-- СЕРИЯ 4 (4 ФАЗЫ ЗАХВАТА) -->
   <div class="screen" id="screen-ep4">
     <div class="game-box">
       <div class="game-hud">
-        <span>ПРОТОКОЛ-04 // ЗАХВАТ</span>
-        <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ</span>
+        <span>СЕРИЯ 4 // ГОРА ЧИЛИАД</span>
+        <span id="ep4PhaseText">ФАЗА 1/4: ОСЬ X</span>
+      </div>
+      <div class="phases-tabs">
+        <div class="phase-tab active" id="ptab1">1. ОСЬ X</div>
+        <div class="phase-tab" id="ptab2">2. ОСЬ Y</div>
+        <div class="phase-tab" id="ptab3">3. БАЛЛИСТИКА</div>
+        <div class="phase-tab" id="ptab4">4. БЕОГОЛОВКА</div>
       </div>
       <canvas id="canvasEp4" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep4Win">
-        <h4>TARGET LOCKED // ОГОНЬ!</h4>
-        <p>ВЕКТОР ПОДТВЕРЖДЕН — КРИЧИ НАПАРНИКУ «ОГОНЬ!»</p>
-        <button class="reset-btn" id="ep4Reset">НОВЫЙ ЗАХВАТ</button>
-      </div>
       <button class="action-pad" id="ep4Btn">
-        <span>[ ЗАФИКСИРОВАТЬ ВЕКТОР ]</span>
-        <small>НАЖМИТЕ ПРИ СОВПАДЕНИИ ПЕРЕКРЕСТИЯ С ЦЕЛЬЮ</small>
+        <span id="ep4BtnText">[ ЗАФИКСИРОВАТЬ ОСЬ X ]</span>
+        <small>ТАП ПРИ СОВПАДЕНИИ • ОШИБКА НА 3-4 ФАЗАХ ОТКАТЫВАЕТ НАЗАД!</small>
       </button>
     </div>
   </div>
 
   <div class="footer-bar">
-    <span>KERNEL: GLITCH_OS_6.4</span>
+    <span>KERNEL: GLITCH_OS_5.2_iOS</span>
     <span>LOS SANTOS // 2026</span>
   </div>
 </div>
 
 <script>
+  let soundEnabled = true;
+  document.getElementById('soundToggle').addEventListener('click', function() {
+    soundEnabled = !soundEnabled;
+    this.classList.toggle('active', soundEnabled);
+    this.textContent = soundEnabled ? 'ЗВУК' : 'МЬЮТ';
+  });
+
   let audioCtx = null;
-  function beep(freq = 520, dur = 0.06, type = 'sine', vol = 0.08) {
+  function beep(freq = 520, dur = 0.05, type = 'sine', vol = 0.06) {
+    if (!soundEnabled) return;
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -694,12 +526,12 @@
       gain.connect(audioCtx.destination);
       osc.start();
       osc.stop(audioCtx.currentTime + dur);
-    } catch (e) {}
+    } catch(e) {}
   }
 
   let currentScreen = 'menu';
   function switchScreen(target) {
-    beep(640, 0.05);
+    beep(600, 0.04);
     currentScreen = target;
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + target).classList.add('active');
@@ -711,10 +543,8 @@
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchScreen(btn.dataset.target));
   });
-  document.querySelectorAll('.proto-card').forEach(card => {
-    card.addEventListener('click', () => switchScreen(card.dataset.open));
-  });
 
+  // Аудио-логи
   const audioTracks = [
     { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
     { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
@@ -750,10 +580,8 @@
         </div>
       </div>
     `;
-
     const audio = new Audio(track.file);
     audio.preload = 'metadata';
-
     const playBtn = card.querySelector('.play-btn');
     const fill = card.querySelector('.progress-fill');
     const barBg = card.querySelector('.progress-bar-bg');
@@ -786,7 +614,7 @@
           playBtn.textContent = '❚❚ ПАУЗА';
           activeAudio = audio;
           activeCard = card;
-        }).catch(() => { tDur.textContent = 'ОШИБКА ФАЙЛА'; });
+        }).catch(() => { tDur.textContent = 'НЕТ ФАЙЛА'; });
       } else {
         audio.pause();
         card.classList.remove('playing');
@@ -804,473 +632,238 @@
     audioListEl.appendChild(card);
   });
 
-  function drawGrid(ctx, w, h, step = 20) {
+  function drawGrid(ctx, w, h) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(0, 243, 255, 0.07)';
+    ctx.strokeStyle = 'rgba(0, 243, 255, 0.06)';
     ctx.lineWidth = 1;
-    for (let x = 0; x <= w; x += step) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-    }
-    for (let y = 0; y <= h; y += step) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
-    ctx.strokeStyle = 'rgba(0, 243, 255, 0.45)';
-    ctx.lineWidth = 2;
-    const b = 12;
-    ctx.beginPath(); ctx.moveTo(4, 4+b); ctx.lineTo(4, 4); ctx.lineTo(4+b, 4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w-4-b, 4); ctx.lineTo(w-4, 4); ctx.lineTo(w-4, 4+b); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(4, h-4-b); ctx.lineTo(4, h-4); ctx.lineTo(4+b, h-4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w-4-b, h-4); ctx.lineTo(w-4, h-4); ctx.lineTo(w-4, h-4-b); ctx.stroke();
+    for (let x = 0; x <= w; x += 20) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    for (let y = 0; y <= h; y += 20) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
     ctx.restore();
   }
 
-  let particles = [];
-  function spawnParticles(x, y, color, count = 18) {
-    for (let i = 0; i < count; i++) {
-      const ang = Math.random() * Math.PI * 2;
-      const spd = 40 + Math.random() * 140;
-      particles.push({
-        x, y,
-        vx: Math.cos(ang) * spd,
-        vy: Math.sin(ang) * spd,
-        life: 0.45 + Math.random() * 0.3,
-        maxLife: 0.75,
-        color
-      });
-    }
-  }
-  function updateAndDrawParticles(ctx, dt) {
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      p.life -= dt;
-      if (p.life <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = p.color;
-      ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-      ctx.restore();
-    }
-  }
-
+  // СЕРИЯ 1
   const c1 = document.getElementById('canvasEp1');
   const ctx1 = c1.getContext('2d');
-  let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
-
-  function resetEp1() {
-    ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
-    document.getElementById('ep1Win').classList.remove('show');
-    updateEp1Hud();
-  }
-  function updateEp1Hud() {
-    document.getElementById('ep1Stats').textContent = `ЭТАП: ${ep1.stage}/${ep1.max} | ЦЕЛОСТНОСТЬ: ${ep1.hp}`;
-  }
-  document.getElementById('ep1Reset').addEventListener('click', resetEp1);
+  let ep1 = { stage: 1, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, won: false };
 
   document.getElementById('ep1Btn').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     if (ep1.won) return;
-    const px = ep1.pos * c1.width;
     if (ep1.pos >= ep1.greenStart && ep1.pos <= ep1.greenStart + ep1.greenW) {
       beep(880, 0.08);
-      ep1.flash = 0.25;
-      ep1.flashColor = '#00ff88';
-      spawnParticles(px, c1.height / 2, '#00ff88', 22);
-      if (ep1.stage >= ep1.max) {
+      if (ep1.stage >= 6) {
         ep1.won = true;
-        document.getElementById('ep1Win').classList.add('show');
       } else {
         ep1.stage++;
-        ep1.greenW = Math.max(0.11, 0.23 - ep1.stage * 0.02);
-        ep1.greenStart = 0.35 + Math.random() * (0.5 - ep1.greenW);
-        ep1.iceStart = 0.08 + Math.random() * 0.25;
-        updateEp1Hud();
+        ep1.greenW = Math.max(0.1, 0.23 - ep1.stage * 0.02);
+        ep1.greenStart = 0.3 + Math.random() * 0.4;
       }
     } else {
-      beep(180, 0.15, 'sawtooth');
-      ep1.flash = 0.3;
-      ep1.flashColor = '#ff2a55';
-      spawnParticles(px, c1.height / 2, '#ff2a55', 22);
+      beep(150, 0.15, 'sawtooth');
       ep1.hp--;
-      if (ep1.hp <= 0) {
-        ep1.hp = 3;
-        ep1.stage = 1;
-        ep1.greenW = 0.22;
-      }
-      updateEp1Hud();
+      if (ep1.hp <= 0) { ep1.hp = 3; ep1.stage = 1; }
     }
+    document.getElementById('ep1Stats').textContent = `ЭТАП: ${ep1.stage}/6 | HP: ${ep1.hp}`;
   });
 
+  // СЕРИЯ 2
   const c2 = document.getElementById('canvasEp2');
   const ctx2 = c2.getContext('2d');
-  let ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
+  let ep2 = { block: 0, prog: 0, heat: 25, holding: false, won: false };
   const ep2Btn = document.getElementById('ep2Btn');
   ep2Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep2.holding = true; });
   window.addEventListener('pointerup', () => { ep2.holding = false; });
-  window.addEventListener('pointercancel', () => { ep2.holding = false; });
 
-  function resetEp2() {
-    ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
-    document.getElementById('ep2Win').classList.remove('show');
-    renderEp2Blocks();
-  }
-  document.getElementById('ep2Reset').addEventListener('click', resetEp2);
-
-  function renderEp2Blocks() {
-    const els = document.querySelectorAll('#ep2Blocks .mem-block');
-    els.forEach((el, idx) => {
-      el.classList.remove('done', 'curr');
-      if (idx < ep2.block || ep2.won) {
-        el.classList.add('done');
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>100%`;
-      } else if (idx === ep2.block) {
-        el.classList.add('curr');
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>${Math.floor(ep2.prog)}%`;
-      } else {
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>0%`;
-      }
-    });
-  }
-
-  // --- EPISODE 3: FIXED WAVELENGTH & PLAYER ALIGNMENT ---
+  // СЕРИЯ 3 (Оригинальная синусоида как в v5.2)
   const c3 = document.getElementById('canvasEp3');
   const ctx3 = c3.getContext('2d');
-  let ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
+  let ep3 = { y: 97, vy: 0, holding: false, time: 33.7, signal: 100, phase: 0, won: false };
   const ep3Btn = document.getElementById('ep3Btn');
   ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
   window.addEventListener('pointerup', () => { ep3.holding = false; });
-  window.addEventListener('pointercancel', () => { ep3.holding = false; });
 
-  function resetEp3() {
-    ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
-    document.getElementById('ep3Win').classList.remove('show');
-  }
-  document.getElementById('ep3Reset').addEventListener('click', resetEp3);
-
-  // --- EPISODE 4: PROPER RADAR SWEEP & CENTER ---
+  // СЕРИЯ 4 (4 фазы захвата с Вейл-1)
   const c4 = document.getElementById('canvasEp4');
   const ctx4 = c4.getContext('2d');
-  let ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
-
-  function resetEp4() {
-    ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
-    document.getElementById('ep4Win').classList.remove('show');
-    document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ`;
-  }
-  document.getElementById('ep4Reset').addEventListener('click', resetEp4);
+  let ep4 = { phase: 1, x: 50, y: 50, ring: 0, won: false, errors: 0 };
 
   document.getElementById('ep4Btn').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     if (ep4.won) return;
-    const cx = c4.width / 2;
-    const cy = c4.height / 2;
-    // Target is fixed relative to center
-    const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
-    // Let player lock if close or matching sweep sector
-    if (dist < 60) {
-      beep(920, 0.09);
-      ep4.flash = 0.25;
-      spawnParticles(ep4.tx, ep4.ty, '#00ff88', 26);
-      if (ep4.phase >= ep4.max) {
+    beep(900, 0.08);
+    if (ep4.phase === 1) {
+      if (Math.abs(ep4.x - 50) < 12) { ep4.phase = 2; updateEp4UI(); }
+      else { triggerEp4Fail(); }
+    } else if (ep4.phase === 2) {
+      if (Math.abs(ep4.y - 50) < 12) { ep4.phase = 3; updateEp4UI(); }
+      else { triggerEp4Fail(); }
+    } else if (ep4.phase === 3) {
+      if (ep4.ring < 15) { ep4.phase = 4; updateEp4UI(); }
+      else { triggerEp4Fail(); }
+    } else if (ep4.phase === 4) {
+      if (ep4.ring < 12) {
         ep4.won = true;
-        document.getElementById('ep4Win').classList.add('show');
-      } else {
-        ep4.phase++;
-        document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: ${ep4.phase}/${ep4.max} // ВЕКТОР УДЕРЖАН`;
-      }
-    } else {
-      beep(200, 0.14, 'sawtooth');
-      spawnParticles(cx, cy, '#ff2a55', 14);
+        document.getElementById('ep4PhaseText').textContent = '4 / 4 TARGET LOCKED';
+        document.getElementById('ep4BtnText').textContent = 'ПЕРЕЗАПИСАТЬ ЦЕЛЬ';
+      } else { triggerEp4Fail(); }
     }
   });
+
+  function triggerEp4Fail() {
+    beep(160, 0.2, 'sawtooth');
+    ep4.errors++;
+    document.getElementById('sysStatus').textContent = `СБОИ ${ep4.errors}`;
+    if (ep4.phase > 2) ep4.phase--; // Откат назад на фазах 3-4
+    updateEp4UI();
+  }
+
+  function updateEp4UI() {
+    for(let i=1; i<=4; i++) {
+      const tab = document.getElementById('ptab'+i);
+      tab.className = 'phase-tab' + (i < ep4.phase ? ' done' : (i === ep4.phase ? ' active' : ''));
+    }
+    const names = ['ОСЬ X', 'ОСЬ Y', 'БАЛЛИСТИКА', 'БОЕГОЛОВКА'];
+    const btns = ['ЗАФИКСИРОВАТЬ ОСЬ X', 'ЗАФИКСИРОВАТЬ ОСЬ Y', 'СВЕСТИ КОЛЬЦО БАЛЛИСТИКИ', 'ОГОНЬ ПО ЦЕЛИ'];
+    document.getElementById('ep4PhaseText').textContent = `ФАЗА ${ep4.phase}/4: ${names[ep4.phase-1]}`;
+    document.getElementById('ep4BtnText').textContent = `[ ${btns[ep4.phase-1]} ]`;
+  }
 
   let lastTs = performance.now();
   function loop(now) {
     const dt = Math.min(0.05, (now - lastTs) / 1000);
     lastTs = now;
 
+    // СЕРИЯ 1
     if (currentScreen === 'ep1') {
       if (!ep1.won) {
-        const speed = 0.7 + ep1.stage * 0.14;
-        ep1.pos += ep1.dir * speed * dt;
-        if (ep1.pos >= 0.96) { ep1.pos = 0.96; ep1.dir = -1; }
-        if (ep1.pos <= 0.04) { ep1.pos = 0.04; ep1.dir = 1; }
+        ep1.pos += ep1.dir * (0.8 + ep1.stage * 0.15) * dt;
+        if (ep1.pos >= 0.95) { ep1.pos = 0.95; ep1.dir = -1; }
+        if (ep1.pos <= 0.05) { ep1.pos = 0.05; ep1.dir = 1; }
       }
-      ep1.trail.push(ep1.pos * c1.width);
-      if (ep1.trail.length > 14) ep1.trail.shift();
-
       ctx1.clearRect(0, 0, c1.width, c1.height);
-      drawGrid(ctx1, c1.width, c1.height, 23);
-
-      ctx1.strokeStyle = 'rgba(0, 243, 255, 0.25)';
-      ctx1.beginPath(); ctx1.moveTo(15, c1.height / 2); ctx1.lineTo(c1.width - 15, c1.height / 2); ctx1.stroke();
-
-      const ix = ep1.iceStart * c1.width;
-      const iw = ep1.iceW * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = 'rgba(255, 42, 85, 0.18)';
-      ctx1.fillRect(ix, 26, iw, 143);
-      ctx1.strokeStyle = '#ff2a55';
-      ctx1.shadowBlur = 12;
-      ctx1.shadowColor = '#ff2a55';
-      ctx1.lineWidth = 2;
-      ctx1.strokeRect(ix, 26, iw, 143);
-      ctx1.fillStyle = '#ff2a55';
-      ctx1.font = 'bold 10px monospace';
-      ctx1.fillText('ICE', ix + iw / 2 - 9, 42);
-      ctx1.restore();
-
-      const gx = ep1.greenStart * c1.width;
-      const gw = ep1.greenW * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = 'rgba(0, 255, 136, 0.2)';
-      ctx1.fillRect(gx, 26, gw, 143);
+      drawGrid(ctx1, c1.width, c1.height);
+      
+      // Зеленая зона
+      ctx1.fillStyle = 'rgba(0, 255, 136, 0.18)';
+      ctx1.fillRect(ep1.greenStart * c1.width, 25, ep1.greenW * c1.width, 145);
       ctx1.strokeStyle = '#00ff88';
-      ctx1.shadowBlur = 14;
-      ctx1.shadowColor = '#00ff88';
-      ctx1.lineWidth = 2;
-      ctx1.strokeRect(gx, 26, gw, 143);
-      ctx1.fillStyle = '#00ff88';
-      ctx1.font = 'bold 10px monospace';
-      ctx1.fillText(`SYNC [LVL ${ep1.stage}]`, gx + gw / 2 - 28, 42);
-      ctx1.restore();
+      ctx1.strokeRect(ep1.greenStart * c1.width, 25, ep1.greenW * c1.width, 145);
 
-      ep1.trail.forEach((tx, idx) => {
-        ctx1.fillStyle = `rgba(0, 243, 255, ${(idx / ep1.trail.length) * 0.25})`;
-        ctx1.fillRect(tx - 2, 22, 4, 151);
-      });
-
-      const px = ep1.pos * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = '#ffffff';
-      ctx1.shadowBlur = 16;
-      ctx1.shadowColor = '#00f3ff';
-      ctx1.fillRect(px - 2.5, 18, 5, 159);
-      ctx1.restore();
-
-      if (ep1.flash > 0) {
-        ctx1.fillStyle = ep1.flashColor;
-        ctx1.globalAlpha = ep1.flash;
-        ctx1.fillRect(0, 0, c1.width, c1.height);
-        ctx1.globalAlpha = 1;
-        ep1.flash -= dt;
-      }
-      updateAndDrawParticles(ctx1, dt);
+      // Сканер
+      ctx1.fillStyle = '#00f3ff';
+      ctx1.fillRect(ep1.pos * c1.width - 2, 20, 4, 155);
     }
 
+    // СЕРИЯ 2
     if (currentScreen === 'ep2') {
-      ep2.waveT += dt * (ep2.holding ? 14 : 3);
       if (!ep2.won) {
         if (ep2.holding) {
-          ep2.heat += 38 * dt;
-          ep2.prog += 42 * dt;
-          if (ep2.heat >= 100) {
-            beep(150, 0.2, 'sawtooth');
-            ep2.heat = 45;
-            ep2.prog = Math.max(0, ep2.prog - 45);
-          }
-          if (ep2.prog >= 100) {
-            beep(840, 0.08);
-            ep2.prog = 0;
-            ep2.block++;
-            if (ep2.block >= 4) {
-              ep2.won = true;
-              document.getElementById('ep2Win').classList.add('show');
-            }
-          }
+          ep2.heat += 35 * dt;
+          ep2.prog += 40 * dt;
+          if (ep2.heat >= 100) { ep2.heat = 40; ep2.prog = Math.max(0, ep2.prog - 30); }
+          if (ep2.prog >= 100) { ep2.prog = 0; ep2.block++; if (ep2.block >= 4) ep2.won = true; }
         } else {
-          ep2.heat = Math.max(15, ep2.heat - 34 * dt);
+          ep2.heat = Math.max(20, ep2.heat - 30 * dt);
         }
-        document.getElementById('ep2HeatFill').style.width = ep2.heat + '%';
-        document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block + 1)}/4`;
-        renderEp2Blocks();
+        document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block+1)}/4`;
       }
-
       ctx2.clearRect(0, 0, c2.width, c2.height);
-      drawGrid(ctx2, c2.width, c2.height, 20);
-      ctx2.save();
-      const waveColor = ep2.heat > 75 ? '#ff2a55' : (ep2.holding ? '#00ff88' : '#00f3ff');
-      ctx2.strokeStyle = waveColor;
-      ctx2.shadowBlur = 10;
-      ctx2.shadowColor = waveColor;
+      drawGrid(ctx2, c2.width, c2.height);
+      ctx2.strokeStyle = ep2.heat > 75 ? '#ff2a55' : '#00f3ff';
       ctx2.lineWidth = 2;
       ctx2.beginPath();
-      const amp = ep2.holding ? (16 + (ep2.heat / 100) * 24) : 6;
-      for (let x = 10; x < c2.width - 10; x += 4) {
-        const y = 60 + Math.sin(x * 0.05 + ep2.waveT) * amp * Math.sin(x * 0.015);
-        if (x === 10) ctx2.moveTo(x, y);
-        else ctx2.lineTo(x, y);
+      for (let x = 0; x < c2.width; x += 4) {
+        let y = 65 + Math.sin(x * 0.05 + now * 0.01) * (ep2.holding ? 25 : 8);
+        if (x === 0) ctx2.moveTo(x, y); else ctx2.lineTo(x, y);
       }
       ctx2.stroke();
-      ctx2.fillStyle = waveColor;
-      ctx2.font = '10px monospace';
-      ctx2.fillText(ep2.holding ? 'STATUS: DECRYPTING_STREAM...' : 'STATUS: COOLING_CORE...', 14, 20);
-      ctx2.restore();
     }
 
+    // СЕРИЯ 3 (Оригинальный стелс-контур с синусоидой)
     if (currentScreen === 'ep3') {
       if (!ep3.won) {
-        ep3.phase += dt * 2.2;
-        // Perfect wave centering physics
-        const targetY = c3.height / 2 + Math.sin(ep3.phase) * 50;
-        ep3.y += (ep3.holding ? -220 : 220) * dt;
-        ep3.y = Math.max(20, Math.min(c3.height - 20, ep3.y));
+        ep3.phase += dt * 2.0;
+        ep3.vy += (ep3.holding ? -250 : 250) * dt;
+        ep3.vy *= 0.9;
+        ep3.y = Math.max(25, Math.min(170, ep3.y + ep3.vy * dt));
 
-        const diff = Math.abs(ep3.y - targetY);
-        if (diff < 28) {
-          ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
-          ep3.signal = Math.min(100, ep3.signal + 12 * dt);
+        const targetY = 97 + Math.sin(ep3.phase) * 50;
+        if (Math.abs(ep3.y - targetY) < 28) {
+          ep3.time = Math.max(0, ep3.time - dt);
+          ep3.signal = Math.min(100, ep3.signal + 10 * dt);
         } else {
-          ep3.signal = Math.max(0, ep3.signal - 18 * dt);
-          if (ep3.signal <= 0) {
-            beep(160, 0.2, 'sawtooth');
-            ep3.signal = 100;
-            ep3.timeLeft = 35;
-          }
+          ep3.signal = Math.max(0, ep3.signal - 15 * dt);
+          if (ep3.signal <= 0) ep3.time = 33.7;
         }
-        if (ep3.timeLeft <= 0) {
-          beep(900, 0.12);
-          ep3.won = true;
-          document.getElementById('ep3Win').classList.add('show');
-        }
-        document.getElementById('ep3Stats').textContent = `ОСТАЛОСЬ: ${ep3.timeLeft.toFixed(1)}с | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
+        if (ep3.time <= 0) ep3.won = true;
+        document.getElementById('ep3Stats').textContent = `${ep3.time.toFixed(1)}s | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
       }
-
-      ep3.trail.unshift({ x: 95, y: ep3.y });
-      if (ep3.trail.length > 35) ep3.trail.pop();
 
       ctx3.clearRect(0, 0, c3.width, c3.height);
-      drawGrid(ctx3, c3.width, c3.height, 23);
+      drawGrid(ctx3, c3.width, c3.height);
 
-      // Draw Sine Wave correctly
-      ctx3.save();
+      // Зеленый канал синусоиды
       ctx3.strokeStyle = '#00ff88';
-      ctx3.shadowBlur = 12;
-      ctx3.shadowColor = '#00ff88';
-      ctx3.lineWidth = 3;
+      ctx3.lineWidth = 2;
       ctx3.beginPath();
-      for (let x = 0; x <= c3.width; x += 3) {
-        const wy = c3.height / 2 + Math.sin(ep3.phase + (x - 95) * 0.015) * 50;
-        if (x === 0) ctx3.moveTo(x, wy);
-        else ctx3.lineTo(x, wy);
+      for (let x = 0; x < c3.width; x += 3) {
+        const wy = 97 + Math.sin(ep3.phase + x * 0.015) * 50;
+        if (x === 0) ctx3.moveTo(x, wy); else ctx3.lineTo(x, wy);
       }
       ctx3.stroke();
-      ctx3.restore();
 
-      // Draw Player Trail on Wave
-      ctx3.save();
-      ctx3.strokeStyle = '#00f3ff';
-      ctx3.shadowBlur = 12;
-      ctx3.shadowColor = '#00f3ff';
-      ctx3.lineWidth = 3;
-      ctx3.beginPath();
-      ep3.trail.forEach((pt, idx) => {
-        const tx = pt.x - idx * 2.5;
-        if (idx === 0) ctx3.moveTo(tx, pt.y);
-        else ctx3.lineTo(tx, pt.y);
-      });
-      ctx3.stroke();
-
-      // Player Beacon Dot
+      // Игрок (маячок)
       ctx3.fillStyle = '#ffffff';
       ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 6, 0, Math.PI * 2);
+      ctx3.arc(100, ep3.y, 6, 0, Math.PI * 2);
       ctx3.fill();
       ctx3.strokeStyle = '#00f3ff';
       ctx3.lineWidth = 2;
       ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 12, 0, Math.PI * 2);
+      ctx3.arc(100, ep3.y, 12, 0, Math.PI * 2);
       ctx3.stroke();
-      ctx3.restore();
     }
 
+    // СЕРИЯ 4 (Баллистика Чилиад)
     if (currentScreen === 'ep4') {
       if (!ep4.won) {
-        ep4.t += dt * (1.4 + ep4.phase * 0.35);
-        ep4.tx = c4.width / 2 + Math.cos(ep4.t) * 110;
-        ep4.ty = c4.height / 2 + Math.sin(ep4.t * 1.2) * 50;
+        ep4.x = 50 + Math.cos(now * 0.002) * 40;
+        ep4.y = 50 + Math.sin(now * 0.0025) * 35;
+        ep4.ring = Math.abs(Math.sin(now * 0.004)) * 30;
       }
-      ep4.sweep += dt * 2.5;
-
       ctx4.clearRect(0, 0, c4.width, c4.height);
-      drawGrid(ctx4, c4.width, c4.height, 23);
+      drawGrid(ctx4, c4.width, c4.height);
 
       const cx = c4.width / 2;
       const cy = c4.height / 2;
 
-      ctx4.save();
+      // Радарные круги
       ctx4.strokeStyle = 'rgba(0, 243, 255, 0.2)';
       ctx4.lineWidth = 1;
       [35, 65, 95].forEach(r => {
-        ctx4.beginPath(); ctx4.arc(cx, cy, r, 0, Math.PI * 2); ctx4.stroke();
+        ctx4.beginPath(); ctx4.arc(cx, cy, r, 0, Math.PI*2); ctx4.stroke();
       });
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.35)';
-      ctx4.beginPath();
-      ctx4.moveTo(cx, 15); ctx4.lineTo(cx, c4.height - 15);
-      ctx4.moveTo(25, cy); ctx4.lineTo(c4.width - 25, cy);
-      ctx4.stroke();
 
-      // Proper Radian Radar Sweep Sector (Wedge)
-      ctx4.fillStyle = 'rgba(0, 255, 136, 0.12)';
-      ctx4.beginPath();
-      ctx4.moveTo(cx, cy);
-      ctx4.arc(cx, cy, 110, ep4.sweep - 0.5, ep4.sweep, false);
-      ctx4.closePath();
-      ctx4.fill();
-
-      ctx4.strokeStyle = '#00ff88';
-      ctx4.shadowBlur = 10;
-      ctx4.shadowColor = '#00ff88';
+      // Перекрестие в зависимости от фазы
+      ctx4.strokeStyle = '#00f3ff';
       ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.moveTo(cx, cy);
-      ctx4.lineTo(cx + Math.cos(ep4.sweep) * 110, cy + Math.sin(ep4.sweep) * 110);
-      ctx4.stroke();
-      ctx4.restore();
+      if (ep4.phase === 1 || ep4.phase >= 3) {
+        const lx = cx + (ep4.x - 50) * 3;
+        ctx4.beginPath(); ctx4.moveTo(lx, 15); ctx4.lineTo(lx, c4.height - 15); ctx4.stroke();
+      }
+      if (ep4.phase === 2 || ep4.phase >= 3) {
+        const ly = cy + (ep4.y - 50) * 1.5;
+        ctx4.beginPath(); ctx4.moveTo(15, ly); ctx4.lineTo(c4.width - 15, ly); ctx4.stroke();
+      }
 
-      const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
-      const inLock = dist < 55;
-
-      // Target (Red)
-      ctx4.save();
+      // Цель Вейл-1
       ctx4.strokeStyle = '#ff2a55';
-      ctx4.shadowBlur = 16;
-      ctx4.shadowColor = '#ff2a55';
-      ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 18, 0, Math.PI * 2);
-      ctx4.stroke();
-      ctx4.fillStyle = '#ff2a55';
-      ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 4, 0, Math.PI * 2);
-      ctx4.fill();
-      ctx4.restore();
+      ctx4.strokeRect(cx + (ep4.x - 50) * 2 - 14, cy + (ep4.y - 50) * 1.2 - 14, 28, 28);
 
-      // Crosshair (Cyan/Green at Center)
-      const lockColor = inLock ? '#00ff88' : '#00f3ff';
-      ctx4.save();
-      ctx4.strokeStyle = lockColor;
-      ctx4.shadowBlur = 16;
-      ctx4.shadowColor = lockColor;
-      ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.arc(cx, cy, 22, 0, Math.PI * 2);
-      ctx4.moveTo(cx - 32, cy); ctx4.lineTo(cx + 32, cy);
-      ctx4.moveTo(cx, cy - 32); ctx4.lineTo(cx, cy + 32);
-      ctx4.stroke();
-
-      ctx4.fillStyle = lockColor;
-      ctx4.font = 'bold 10px monospace';
-      ctx4.fillText(inLock ? 'LOCK: READY [FIRE]' : `VECTOR DELTA: ${Math.floor(dist)}m`, 14, 22);
-      ctx4.restore();
-
-      updateAndDrawParticles(ctx4, dt);
+      if (ep4.phase >= 3) {
+        ctx4.strokeStyle = '#00ff88';
+        ctx4.beginPath(); ctx4.arc(cx, cy, ep4.ring + 10, 0, Math.PI * 2); ctx4.stroke();
+      }
     }
 
     requestAnimationFrame(loop);
@@ -1279,4 +872,3 @@
 </script>
 </body>
 </html>
-
