@@ -360,7 +360,7 @@
 
   canvas {
     width: 100%;
-    height: 185px;
+    height: 195px;
     background: #030609;
     border: 1px solid #1c3549;
     border-radius: 8px;
@@ -497,7 +497,7 @@
   <div class="header-box">
     <div class="top-row">
       <div>
-        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.1 // NEON_CORE</div>
+        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.3 // NEON_CORE</div>
         <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
       </div>
       <div class="status-pill" id="sysStatus">ONLINE</div>
@@ -593,7 +593,7 @@
         <span>ПРОТОКОЛ-01 // ШИФР</span>
         <span id="ep1Stats">ЭТАП: 1/6 | ЦЕЛОСТНОСТЬ: 3</span>
       </div>
-      <canvas id="canvasEp1" width="460" height="185"></canvas>
+      <canvas id="canvasEp1" width="460" height="195"></canvas>
       <div class="result-banner" id="ep1Win">
         <h4>ДОСТУП ПОЛУЧЕН</h4>
         <p>СИСТЕМА ЗАЩИТЫ ОТКЛЮЧЕНА. ПРОХОД ОТКРЫТ.</p>
@@ -601,7 +601,7 @@
       </div>
       <button class="action-pad" id="ep1Btn">
         <span>[ СИНХРОНИЗИРОВАТЬ ]</span>
-        <small>НАЖМИТЕ В ЗЕЛЕНОЙ ЗОНЕ • ИЗБЕГАЙТЕ КРАСНЫХ ICE</small>
+        <small>СЛОЖНОСТЬ РАСТЕТ НА КАЖДОМ ЭТАПЕ • ИЗБЕГАЙТЕ ICE</small>
       </button>
     </div>
   </div>
@@ -641,7 +641,7 @@
         <span>ПРОТОКОЛ-03 // СТЕЛС-КОНТУР</span>
         <span id="ep3Stats">ОСТАЛОСЬ: 35.0с | СИГНАЛ: 100%</span>
       </div>
-      <canvas id="canvasEp3" width="460" height="185"></canvas>
+      <canvas id="canvasEp3" width="460" height="195"></canvas>
       <div class="result-banner" id="ep3Win">
         <h4>КОНТУР ПРОЙДЕН</h4>
         <p>СТАТУС: DROP ZONE REACHED — ПРЫГАЕМ!</p>
@@ -658,9 +658,9 @@
     <div class="game-box">
       <div class="game-hud">
         <span>ПРОТОКОЛ-04 // ЗАХВАТ</span>
-        <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4</span>
+        <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ</span>
       </div>
-      <canvas id="canvasEp4" width="460" height="185"></canvas>
+      <canvas id="canvasEp4" width="460" height="195"></canvas>
       <div class="result-banner" id="ep4Win">
         <h4>TARGET LOCKED // ОГОНЬ!</h4>
         <p>ВЕКТОР ПОДТВЕРЖДЕН — КРИЧИ НАПАРНИКУ «ОГОНЬ!»</p>
@@ -674,7 +674,7 @@
   </div>
 
   <div class="footer-bar">
-    <span>KERNEL: GLITCH_OS_6.1_NEON</span>
+    <span>KERNEL: GLITCH_OS_6.3</span>
     <span>LOS SANTOS // 2026</span>
   </div>
 </div>
@@ -859,6 +859,7 @@
     }
   }
 
+  // --- EPISODE 1: SCALING DIFFICULTY ---
   const c1 = document.getElementById('canvasEp1');
   const ctx1 = c1.getContext('2d');
   let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
@@ -887,9 +888,9 @@
         document.getElementById('ep1Win').classList.add('show');
       } else {
         ep1.stage++;
-        ep1.greenW = Math.max(0.13, 0.24 - ep1.stage * 0.016);
-        ep1.greenStart = 0.45 + Math.random() * (0.45 - ep1.greenW);
-        ep1.iceStart = 0.1 + Math.random() * 0.22;
+        ep1.greenW = Math.max(0.11, 0.23 - ep1.stage * 0.02);
+        ep1.greenStart = 0.35 + Math.random() * (0.5 - ep1.greenW);
+        ep1.iceStart = 0.08 + Math.random() * 0.25;
         updateEp1Hud();
       }
     } else {
@@ -901,6 +902,7 @@
       if (ep1.hp <= 0) {
         ep1.hp = 3;
         ep1.stage = 1;
+        ep1.greenW = 0.22;
       }
       updateEp1Hud();
     }
@@ -937,27 +939,29 @@
     });
   }
 
+  // --- EPISODE 3: RESTORED ORIGINAL CLASSIC SINUSOID WAVE ---
   const c3 = document.getElementById('canvasEp3');
   const ctx3 = c3.getContext('2d');
-  let ep3 = { y: 92, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
+  let ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
   const ep3Btn = document.getElementById('ep3Btn');
   ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
   window.addEventListener('pointerup', () => { ep3.holding = false; });
 
   function resetEp3() {
-    ep3 = { y: 92, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
+    ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
     document.getElementById('ep3Win').classList.remove('show');
   }
   document.getElementById('ep3Reset').addEventListener('click', resetEp3);
 
+  // --- EPISODE 4: RESTORED FULL RADAR & TARGET LOCK ---
   const c4 = document.getElementById('canvasEp4');
   const ctx4 = c4.getContext('2d');
-  let ep4 = { phase: 1, max: 4, cx: 80, cy: 92, tx: 300, ty: 92, t: 0, won: false, sweep: 0, flash: 0 };
+  let ep4 = { phase: 1, max: 4, cx: 90, cy: 97, tx: 340, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
 
   function resetEp4() {
-    ep4 = { phase: 1, max: 4, cx: 80, cy: 92, tx: 300, ty: 92, t: 0, won: false, sweep: 0, flash: 0 };
+    ep4 = { phase: 1, max: 4, cx: 90, cy: 97, tx: 340, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
     document.getElementById('ep4Win').classList.remove('show');
-    document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4`;
+    document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ`;
   }
   document.getElementById('ep4Reset').addEventListener('click', resetEp4);
 
@@ -965,16 +969,16 @@
     e.preventDefault();
     if (ep4.won) return;
     const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
-    if (dist < 42) {
+    if (dist < 45) {
       beep(920, 0.09);
       ep4.flash = 0.25;
-      spawnParticles(ep4.tx, ep4.ty, '#00ff88', 24);
+      spawnParticles(ep4.tx, ep4.ty, '#00ff88', 26);
       if (ep4.phase >= ep4.max) {
         ep4.won = true;
         document.getElementById('ep4Win').classList.add('show');
       } else {
         ep4.phase++;
-        document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: ${ep4.phase}/${ep4.max}`;
+        document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: ${ep4.phase}/${ep4.max} // ВЕКТОР УДЕРЖАН`;
       }
     } else {
       beep(200, 0.14, 'sawtooth');
@@ -987,9 +991,10 @@
     const dt = Math.min(0.05, (now - lastTs) / 1000);
     lastTs = now;
 
+    // === EPISODE 1 ===
     if (currentScreen === 'ep1') {
       if (!ep1.won) {
-        const speed = 0.65 + ep1.stage * 0.08;
+        const speed = 0.7 + ep1.stage * 0.14;
         ep1.pos += ep1.dir * speed * dt;
         if (ep1.pos >= 0.96) { ep1.pos = 0.96; ep1.dir = -1; }
         if (ep1.pos <= 0.04) { ep1.pos = 0.04; ep1.dir = 1; }
@@ -1007,12 +1012,12 @@
       const iw = ep1.iceW * c1.width;
       ctx1.save();
       ctx1.fillStyle = 'rgba(255, 42, 85, 0.18)';
-      ctx1.fillRect(ix, 26, iw, 133);
+      ctx1.fillRect(ix, 26, iw, 143);
       ctx1.strokeStyle = '#ff2a55';
       ctx1.shadowBlur = 12;
       ctx1.shadowColor = '#ff2a55';
       ctx1.lineWidth = 2;
-      ctx1.strokeRect(ix, 26, iw, 133);
+      ctx1.strokeRect(ix, 26, iw, 143);
       ctx1.fillStyle = '#ff2a55';
       ctx1.font = 'bold 10px monospace';
       ctx1.fillText('ICE', ix + iw / 2 - 9, 42);
@@ -1022,20 +1027,20 @@
       const gw = ep1.greenW * c1.width;
       ctx1.save();
       ctx1.fillStyle = 'rgba(0, 255, 136, 0.2)';
-      ctx1.fillRect(gx, 26, gw, 133);
+      ctx1.fillRect(gx, 26, gw, 143);
       ctx1.strokeStyle = '#00ff88';
       ctx1.shadowBlur = 14;
       ctx1.shadowColor = '#00ff88';
       ctx1.lineWidth = 2;
-      ctx1.strokeRect(gx, 26, gw, 133);
+      ctx1.strokeRect(gx, 26, gw, 143);
       ctx1.fillStyle = '#00ff88';
       ctx1.font = 'bold 10px monospace';
-      ctx1.fillText('SYNC', gx + gw / 2 - 12, 42);
+      ctx1.fillText(`SYNC [LVL ${ep1.stage}]`, gx + gw / 2 - 28, 42);
       ctx1.restore();
 
       ep1.trail.forEach((tx, idx) => {
         ctx1.fillStyle = `rgba(0, 243, 255, ${(idx / ep1.trail.length) * 0.25})`;
-        ctx1.fillRect(tx - 2, 22, 4, 141);
+        ctx1.fillRect(tx - 2, 22, 4, 151);
       });
 
       const px = ep1.pos * c1.width;
@@ -1043,7 +1048,7 @@
       ctx1.fillStyle = '#ffffff';
       ctx1.shadowBlur = 16;
       ctx1.shadowColor = '#00f3ff';
-      ctx1.fillRect(px - 2.5, 18, 5, 149);
+      ctx1.fillRect(px - 2.5, 18, 5, 159);
       ctx1.restore();
 
       if (ep1.flash > 0) {
@@ -1056,6 +1061,7 @@
       updateAndDrawParticles(ctx1, dt);
     }
 
+    // === EPISODE 2 ===
     if (currentScreen === 'ep2') {
       ep2.waveT += dt * (ep2.holding ? 14 : 3);
       if (!ep2.won) {
@@ -1106,16 +1112,17 @@
       ctx2.restore();
     }
 
+    // === EPISODE 3: CLASSIC SINUSOID WAVE (RESTORED) ===
     if (currentScreen === 'ep3') {
       if (!ep3.won) {
         ep3.phase += dt * 2.1;
         ep3.vy += (ep3.holding ? -280 : 250) * dt;
         ep3.vy *= 0.92;
-        ep3.y = Math.max(18, Math.min(167, ep3.y + ep3.vy * dt));
+        ep3.y = Math.max(18, Math.min(177, ep3.y + ep3.vy * dt));
 
-        const targetY = 92 + Math.sin(ep3.phase) * 52;
+        const targetY = 97 + Math.sin(ep3.phase) * 55;
         const diff = Math.abs(ep3.y - targetY);
-        if (diff < 30) {
+        if (diff < 26) {
           ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
           ep3.signal = Math.min(100, ep3.signal + 12 * dt);
         } else {
@@ -1135,43 +1142,41 @@
       }
 
       ep3.trail.unshift(ep3.y);
-      if (ep3.trail.length > 26) ep3.trail.pop();
+      if (ep3.trail.length > 28) ep3.trail.pop();
 
       ctx3.clearRect(0, 0, c3.width, c3.height);
       drawGrid(ctx3, c3.width, c3.height, 23);
 
+      // Classic Neon Wave Line
       ctx3.save();
-      ctx3.strokeStyle = 'rgba(0, 255, 136, 0.16)';
-      ctx3.lineWidth = 44;
+      ctx3.strokeStyle = '#00ff88';
+      ctx3.shadowBlur = 12;
+      ctx3.shadowColor = '#00ff88';
+      ctx3.lineWidth = 3;
       ctx3.beginPath();
-      for (let x = 0; x <= c3.width; x += 12) {
-        const wy = 92 + Math.sin(ep3.phase + (x - 95) * 0.015) * 52;
+      for (let x = 0; x <= c3.width; x += 4) {
+        const wy = 97 + Math.sin(ep3.phase + (x - 95) * 0.015) * 55;
         if (x === 0) ctx3.moveTo(x, wy);
         else ctx3.lineTo(x, wy);
       }
       ctx3.stroke();
-
-      ctx3.strokeStyle = '#00ff88';
-      ctx3.shadowBlur = 10;
-      ctx3.shadowColor = '#00ff88';
-      ctx3.lineWidth = 2;
-      ctx3.setLineDash([6, 6]);
-      ctx3.stroke();
       ctx3.restore();
 
+      // Glowing Trail for Player
       ctx3.save();
       ctx3.strokeStyle = '#00f3ff';
-      ctx3.shadowBlur = 10;
+      ctx3.shadowBlur = 12;
       ctx3.shadowColor = '#00f3ff';
       ctx3.lineWidth = 3;
       ctx3.beginPath();
       ep3.trail.forEach((ty, idx) => {
-        const tx = 95 - idx * 3.2;
+        const tx = 95 - idx * 3;
         if (idx === 0) ctx3.moveTo(tx, ty);
         else ctx3.lineTo(tx, ty);
       });
       ctx3.stroke();
 
+      // Player Beacon Dot
       ctx3.fillStyle = '#ffffff';
       ctx3.beginPath();
       ctx3.arc(95, ep3.y, 7, 0, Math.PI * 2);
@@ -1179,47 +1184,55 @@
       ctx3.strokeStyle = '#00f3ff';
       ctx3.lineWidth = 2;
       ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 12, 0, Math.PI * 2);
+      ctx3.arc(95, ep3.y, 13, 0, Math.PI * 2);
       ctx3.stroke();
       ctx3.restore();
     }
 
+    // === EPISODE 4 ===
     if (currentScreen === 'ep4') {
       if (!ep4.won) {
-        ep4.t += dt * (1.8 + ep4.phase * 0.45);
-        ep4.tx = 230 + Math.cos(ep4.t) * 145;
-        ep4.ty = 92 + Math.sin(ep4.t * 1.4) * 52;
-        ep4.cx = 230 + Math.sin(ep4.t * 1.9) * 155;
-        ep4.cy = 92 + Math.cos(ep4.t * 1.1) * 52;
+        ep4.t += dt * (1.6 + ep4.phase * 0.4);
+        ep4.tx = 230 + Math.cos(ep4.t) * 160;
+        ep4.ty = 97 + Math.sin(ep4.t * 1.3) * 58;
+        ep4.cx = 230 + Math.sin(ep4.t * 1.8) * 170;
+        ep4.cy = 97 + Math.cos(ep4.t * 1.0) * 55;
       }
-      ep4.sweep += dt * 2.5;
+      ep4.sweep += dt * 2.2;
 
       ctx4.clearRect(0, 0, c4.width, c4.height);
       drawGrid(ctx4, c4.width, c4.height, 23);
 
       ctx4.save();
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.16)';
+      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.18)';
       ctx4.lineWidth = 1;
-      [35, 65, 95].forEach(r => {
-        ctx4.beginPath(); ctx4.arc(230, 92, r, 0, Math.PI * 2); ctx4.stroke();
+      [40, 75, 110, 145].forEach(r => {
+        ctx4.beginPath(); ctx4.arc(230, 97, r, 0, Math.PI * 2); ctx4.stroke();
       });
-      ctx4.strokeStyle = 'rgba(0, 255, 136, 0.35)';
+      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.3)';
       ctx4.beginPath();
-      ctx4.moveTo(230, 92);
-      ctx4.lineTo(230 + Math.cos(ep4.sweep) * 180, 92 + Math.sin(ep4.sweep) * 180);
+      ctx4.moveTo(230, 15); ctx4.lineTo(230, 180);
+      ctx4.moveTo(40, 97); ctx4.lineTo(420, 97);
+      ctx4.stroke();
+
+      ctx4.strokeStyle = 'rgba(0, 255, 136, 0.4)';
+      ctx4.lineWidth = 2;
+      ctx4.beginPath();
+      ctx4.moveTo(230, 97);
+      ctx4.lineTo(230 + Math.cos(ep4.sweep) * 190, 97 + Math.sin(ep4.sweep) * 190);
       ctx4.stroke();
       ctx4.restore();
 
       const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
-      const inLock = dist < 42;
+      const inLock = dist < 45;
 
       ctx4.save();
       ctx4.strokeStyle = '#ff2a55';
-      ctx4.shadowBlur = 14;
+      ctx4.shadowBlur = 16;
       ctx4.shadowColor = '#ff2a55';
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 18 + Math.sin(ep4.sweep * 4) * 3, 0, Math.PI * 2);
+      ctx4.arc(ep4.tx, ep4.ty, 20 + Math.sin(ep4.sweep * 4) * 3, 0, Math.PI * 2);
       ctx4.stroke();
       ctx4.fillStyle = '#ff2a55';
       ctx4.beginPath();
@@ -1230,18 +1243,18 @@
       const lockColor = inLock ? '#00ff88' : '#00f3ff';
       ctx4.save();
       ctx4.strokeStyle = lockColor;
-      ctx4.shadowBlur = 14;
+      ctx4.shadowBlur = 16;
       ctx4.shadowColor = lockColor;
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.arc(ep4.cx, ep4.cy, 22, 0, Math.PI * 2);
-      ctx4.moveTo(ep4.cx - 32, ep4.cy); ctx4.lineTo(ep4.cx + 32, ep4.cy);
-      ctx4.moveTo(ep4.cx, ep4.cy - 32); ctx4.lineTo(ep4.cx, ep4.cy + 32);
+      ctx4.arc(ep4.cx, ep4.cy, 24, 0, Math.PI * 2);
+      ctx4.moveTo(ep4.cx - 36, ep4.cy); ctx4.lineTo(ep4.cx + 36, ep4.cy);
+      ctx4.moveTo(ep4.cx, ep4.cy - 36); ctx4.lineTo(ep4.cx, ep4.cy + 36);
       ctx4.stroke();
 
       ctx4.fillStyle = lockColor;
       ctx4.font = 'bold 10px monospace';
-      ctx4.fillText(inLock ? 'LOCK: READY [FIRE]' : `DELTA: ${Math.floor(dist)}m`, 14, 22);
+      ctx4.fillText(inLock ? 'LOCK: READY [FIRE]' : `VECTOR DELTA: ${Math.floor(dist)}m`, 14, 22);
       ctx4.restore();
 
       updateAndDrawParticles(ctx4, dt);
