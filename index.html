@@ -497,7 +497,7 @@
   <div class="header-box">
     <div class="top-row">
       <div>
-        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.3 // NEON_CORE</div>
+        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.4 // NEON_CORE</div>
         <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
       </div>
       <div class="status-pill" id="sysStatus">ONLINE</div>
@@ -674,7 +674,7 @@
   </div>
 
   <div class="footer-bar">
-    <span>KERNEL: GLITCH_OS_6.3</span>
+    <span>KERNEL: GLITCH_OS_6.4</span>
     <span>LOS SANTOS // 2026</span>
   </div>
 </div>
@@ -938,12 +938,14 @@
     });
   }
 
+  // --- EPISODE 3: FIXED WAVELENGTH & PLAYER ALIGNMENT ---
   const c3 = document.getElementById('canvasEp3');
   const ctx3 = c3.getContext('2d');
   let ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
   const ep3Btn = document.getElementById('ep3Btn');
   ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
   window.addEventListener('pointerup', () => { ep3.holding = false; });
+  window.addEventListener('pointercancel', () => { ep3.holding = false; });
 
   function resetEp3() {
     ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
@@ -951,12 +953,13 @@
   }
   document.getElementById('ep3Reset').addEventListener('click', resetEp3);
 
+  // --- EPISODE 4: PROPER RADAR SWEEP & CENTER ---
   const c4 = document.getElementById('canvasEp4');
   const ctx4 = c4.getContext('2d');
-  let ep4 = { phase: 1, max: 4, cx: 90, cy: 97, tx: 340, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
+  let ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
 
   function resetEp4() {
-    ep4 = { phase: 1, max: 4, cx: 90, cy: 97, tx: 340, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
+    ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
     document.getElementById('ep4Win').classList.remove('show');
     document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ`;
   }
@@ -965,8 +968,12 @@
   document.getElementById('ep4Btn').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     if (ep4.won) return;
-    const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
-    if (dist < 45) {
+    const cx = c4.width / 2;
+    const cy = c4.height / 2;
+    // Target is fixed relative to center
+    const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
+    // Let player lock if close or matching sweep sector
+    if (dist < 60) {
       beep(920, 0.09);
       ep4.flash = 0.25;
       spawnParticles(ep4.tx, ep4.ty, '#00ff88', 26);
@@ -979,7 +986,7 @@
       }
     } else {
       beep(200, 0.14, 'sawtooth');
-      spawnParticles(ep4.cx, ep4.cy, '#ff2a55', 14);
+      spawnParticles(cx, cy, '#ff2a55', 14);
     }
   });
 
@@ -1109,14 +1116,14 @@
 
     if (currentScreen === 'ep3') {
       if (!ep3.won) {
-        ep3.phase += dt * 2.1;
-        ep3.vy += (ep3.holding ? -280 : 250) * dt;
-        ep3.vy *= 0.92;
-        ep3.y = Math.max(18, Math.min(177, ep3.y + ep3.vy * dt));
+        ep3.phase += dt * 2.2;
+        // Perfect wave centering physics
+        const targetY = c3.height / 2 + Math.sin(ep3.phase) * 50;
+        ep3.y += (ep3.holding ? -220 : 220) * dt;
+        ep3.y = Math.max(20, Math.min(c3.height - 20, ep3.y));
 
-        const targetY = 97 + Math.sin(ep3.phase) * 55;
         const diff = Math.abs(ep3.y - targetY);
-        if (diff < 26) {
+        if (diff < 28) {
           ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
           ep3.signal = Math.min(100, ep3.signal + 12 * dt);
         } else {
@@ -1135,94 +1142,109 @@
         document.getElementById('ep3Stats').textContent = `ОСТАЛОСЬ: ${ep3.timeLeft.toFixed(1)}с | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
       }
 
-      ep3.trail.unshift(ep3.y);
-      if (ep3.trail.length > 28) ep3.trail.pop();
+      ep3.trail.unshift({ x: 95, y: ep3.y });
+      if (ep3.trail.length > 35) ep3.trail.pop();
 
       ctx3.clearRect(0, 0, c3.width, c3.height);
       drawGrid(ctx3, c3.width, c3.height, 23);
 
+      // Draw Sine Wave correctly
       ctx3.save();
       ctx3.strokeStyle = '#00ff88';
       ctx3.shadowBlur = 12;
       ctx3.shadowColor = '#00ff88';
       ctx3.lineWidth = 3;
       ctx3.beginPath();
-      for (let x = 0; x <= c3.width; x += 4) {
-        const wy = 97 + Math.sin(ep3.phase + (x - 95) * 0.015) * 55;
+      for (let x = 0; x <= c3.width; x += 3) {
+        const wy = c3.height / 2 + Math.sin(ep3.phase + (x - 95) * 0.015) * 50;
         if (x === 0) ctx3.moveTo(x, wy);
         else ctx3.lineTo(x, wy);
       }
       ctx3.stroke();
       ctx3.restore();
 
+      // Draw Player Trail on Wave
       ctx3.save();
       ctx3.strokeStyle = '#00f3ff';
       ctx3.shadowBlur = 12;
       ctx3.shadowColor = '#00f3ff';
       ctx3.lineWidth = 3;
       ctx3.beginPath();
-      ep3.trail.forEach((ty, idx) => {
-        const tx = 95 - idx * 3;
-        if (idx === 0) ctx3.moveTo(tx, ty);
-        else ctx3.lineTo(tx, ty);
+      ep3.trail.forEach((pt, idx) => {
+        const tx = pt.x - idx * 2.5;
+        if (idx === 0) ctx3.moveTo(tx, pt.y);
+        else ctx3.lineTo(tx, pt.y);
       });
       ctx3.stroke();
 
+      // Player Beacon Dot
       ctx3.fillStyle = '#ffffff';
       ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 7, 0, Math.PI * 2);
+      ctx3.arc(95, ep3.y, 6, 0, Math.PI * 2);
       ctx3.fill();
       ctx3.strokeStyle = '#00f3ff';
       ctx3.lineWidth = 2;
       ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 13, 0, Math.PI * 2);
+      ctx3.arc(95, ep3.y, 12, 0, Math.PI * 2);
       ctx3.stroke();
       ctx3.restore();
     }
 
     if (currentScreen === 'ep4') {
       if (!ep4.won) {
-        ep4.t += dt * (1.6 + ep4.phase * 0.4);
-        ep4.tx = 230 + Math.cos(ep4.t) * 160;
-        ep4.ty = 97 + Math.sin(ep4.t * 1.3) * 58;
-        ep4.cx = 230 + Math.sin(ep4.t * 1.8) * 170;
-        ep4.cy = 97 + Math.cos(ep4.t * 1.0) * 55;
+        ep4.t += dt * (1.4 + ep4.phase * 0.35);
+        ep4.tx = c4.width / 2 + Math.cos(ep4.t) * 110;
+        ep4.ty = c4.height / 2 + Math.sin(ep4.t * 1.2) * 50;
       }
-      ep4.sweep += dt * 2.2;
+      ep4.sweep += dt * 2.5;
 
       ctx4.clearRect(0, 0, c4.width, c4.height);
       drawGrid(ctx4, c4.width, c4.height, 23);
 
+      const cx = c4.width / 2;
+      const cy = c4.height / 2;
+
       ctx4.save();
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.18)';
+      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.2)';
       ctx4.lineWidth = 1;
-      [40, 75, 110, 145].forEach(r => {
-        ctx4.beginPath(); ctx4.arc(230, 97, r, 0, Math.PI * 2); ctx4.stroke();
+      [35, 65, 95].forEach(r => {
+        ctx4.beginPath(); ctx4.arc(cx, cy, r, 0, Math.PI * 2); ctx4.stroke();
       });
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.3)';
+      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.35)';
       ctx4.beginPath();
-      ctx4.moveTo(230, 15); ctx4.lineTo(230, 180);
-      ctx4.moveTo(40, 97); ctx4.lineTo(420, 97);
+      ctx4.moveTo(cx, 15); ctx4.lineTo(cx, c4.height - 15);
+      ctx4.moveTo(25, cy); ctx4.lineTo(c4.width - 25, cy);
       ctx4.stroke();
 
-      ctx4.strokeStyle = 'rgba(0, 255, 136, 0.4)';
+      // Proper Radian Radar Sweep Sector (Wedge)
+      ctx4.fillStyle = 'rgba(0, 255, 136, 0.12)';
+      ctx4.beginPath();
+      ctx4.moveTo(cx, cy);
+      ctx4.arc(cx, cy, 110, ep4.sweep - 0.5, ep4.sweep, false);
+      ctx4.closePath();
+      ctx4.fill();
+
+      ctx4.strokeStyle = '#00ff88';
+      ctx4.shadowBlur = 10;
+      ctx4.shadowColor = '#00ff88';
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.moveTo(230, 97);
-      ctx4.lineTo(230 + Math.cos(ep4.sweep) * 190, 97 + Math.sin(ep4.sweep) * 190);
+      ctx4.moveTo(cx, cy);
+      ctx4.lineTo(cx + Math.cos(ep4.sweep) * 110, cy + Math.sin(ep4.sweep) * 110);
       ctx4.stroke();
       ctx4.restore();
 
-      const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
-      const inLock = dist < 45;
+      const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
+      const inLock = dist < 55;
 
+      // Target (Red)
       ctx4.save();
       ctx4.strokeStyle = '#ff2a55';
       ctx4.shadowBlur = 16;
       ctx4.shadowColor = '#ff2a55';
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 20 + Math.sin(ep4.sweep * 4) * 3, 0, Math.PI * 2);
+      ctx4.arc(ep4.tx, ep4.ty, 18, 0, Math.PI * 2);
       ctx4.stroke();
       ctx4.fillStyle = '#ff2a55';
       ctx4.beginPath();
@@ -1230,6 +1252,7 @@
       ctx4.fill();
       ctx4.restore();
 
+      // Crosshair (Cyan/Green at Center)
       const lockColor = inLock ? '#00ff88' : '#00f3ff';
       ctx4.save();
       ctx4.strokeStyle = lockColor;
@@ -1237,9 +1260,9 @@
       ctx4.shadowColor = lockColor;
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.arc(ep4.cx, ep4.cy, 24, 0, Math.PI * 2);
-      ctx4.moveTo(ep4.cx - 36, ep4.cy); ctx4.lineTo(ep4.cx + 36, ep4.cy);
-      ctx4.moveTo(ep4.cx, ep4.cy - 36); ctx4.lineTo(ep4.cx, ep4.cy + 36);
+      ctx4.arc(cx, cy, 22, 0, Math.PI * 2);
+      ctx4.moveTo(cx - 32, cy); ctx4.lineTo(cx + 32, cy);
+      ctx4.moveTo(cx, cy - 32); ctx4.lineTo(cx, cy + 32);
       ctx4.stroke();
 
       ctx4.fillStyle = lockColor;
@@ -1256,3 +1279,4 @@
 </script>
 </body>
 </html>
+
