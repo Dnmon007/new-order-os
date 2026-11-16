@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>GLITCH_OS // TERMINAL</title>
+<style>
+  :root {
+    --bg: #05080c;
+    --panel: #0b1118;
+    --border: #172a3a;
+    --cyan: #00f3ff;
+    --cyan-dim: rgba(0, 243, 255, 0.14);
+    --green: #00ff88;
+    --green-dim: rgba(0, 255, 136, 0.14);
+    --red: #ff2a55;
+    --red-dim: rgba(255, 42, 85, 0.18);
+    --amber: #ffaa00;
+    --text: #d0e2f0;
+    --muted: #5a768e;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-shell {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px 14px 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Header */
+  .header-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .sys-title {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot-live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .sub-meta {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .status-pill {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: rgba(255, 42, 85, 0.12);
+    border: 1px solid rgba(255, 42, 85, 0.4);
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* Navigation Tabs */
+  .nav-bar {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+  }
+
+  .nav-btn {
+    background: #080d13;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 9px 2px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.12s;
+  }
+
+  .nav-btn.active {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+  }
+
+  .nav-btn.audio-tab.active {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+  }
+
+  /* Screens */
+  .screen {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .screen.active {
+    display: flex;
+  }
+
+  /* Info Banner */
+  .terminal-note {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #9cb8cf;
+  }
+
+  /* Protocol Cards (No Spoilers) */
+  .proto-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.1s, border-color 0.15s;
+  }
+  .proto-card:active {
+    transform: scale(0.985);
+    border-color: var(--cyan);
+    background: #0e1722;
+  }
+
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+  }
+
+  .badge.green {
+    background: var(--green-dim);
+    color: var(--green);
+    border-color: rgba(0, 255, 136, 0.3);
+  }
+
+  .badge-sub {
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .arrow-icon {
+    font-family: ui-monospace, monospace;
+    font-size: 18px;
+    color: var(--cyan);
+    padding-left: 10px;
+  }
+
+  /* Audio Interceptor Styles */
+  .audio-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .audio-card.playing {
+    border-color: var(--green);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+  }
+
+  .audio-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .audio-name {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .audio-tag {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .play-btn {
+    background: #0d1a14;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 7px;
+    min-width: 92px;
+    cursor: pointer;
+  }
+  .audio-card.playing .play-btn {
+    background: var(--green);
+    color: #03120a;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #070c11;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    transition: width 0.1s linear;
+  }
+
+  .time-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* Mini-Games Shared UI */
+  .game-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .game-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    background: #070b10;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  canvas {
+    width: 100%;
+    height: 150px;
+    background: #04070a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: block;
+  }
+
+  .action-pad {
+    width: 100%;
+    height: 78px;
+    background: var(--cyan-dim);
+    border: 2px solid var(--cyan);
+    border-radius: 10px;
+    color: var(--cyan);
+    font-family: ui-monospace, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .action-pad:active {
+    background: rgba(0, 243, 255, 0.3);
+    transform: scale(0.99);
+  }
+  .action-pad small {
+    font-size: 10px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .result-banner {
+    display: none;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-family: ui-monospace, monospace;
+  }
+  .result-banner.show {
+    display: block;
+  }
+  .result-banner h4 {
+    margin: 0 0 6px;
+    color: var(--green);
+    font-size: 14px;
+  }
+  .result-banner p {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .reset-btn {
+    background: var(--green);
+    color: #04100a;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  /* Ep 2 Blocks */
+  .blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .mem-block {
+    background: #070c11;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 4px;
+    text-align: center;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .mem-block.done {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 700;
+  }
+  .mem-block.curr {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .heat-bar-wrap {
+    height: 14px;
+    background: #070c11;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .heat-fill {
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(90deg, var(--cyan), var(--amber), var(--red));
+    transition: width 0.08s;
+  }
+
+  .footer-bar {
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- HEADER -->
+  <div class="header-box">
+    <div class="top-row">
+      <div>
+        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.0 // TERMINAL</div>
+        <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
+      </div>
+      <div class="status-pill" id="sysStatus">ONLINE</div>
+    </div>
+
+    <div class="nav-bar">
+      <button class="nav-btn active" data-target="menu">МЕНЮ</button>
+      <button class="nav-btn" data-target="ep1">СЕР.1</button>
+      <button class="nav-btn" data-target="ep2">СЕР.2</button>
+      <button class="nav-btn" data-target="ep3">СЕР.3</button>
+      <button class="nav-btn" data-target="ep4">СЕР.4</button>
+      <button class="nav-btn audio-tab" data-target="audio">АУДИО</button>
+    </div>
+  </div>
+
+  <!-- MENU SCREEN (NO SPOILERS) -->
+  <div class="screen active" id="screen-menu">
+    <div class="terminal-note">
+      USER: KAI_MERCER // KERNEL_READY<br>
+      Выберите активный модуль взлома или откройте канал перехвата аудио-логов по команде напарника.
+    </div>
+
+    <div class="proto-card" data-open="ep1">
+      <div>
+        <div class="badge-row">
+          <span class="badge">6 ЭТАПОВ</span>
+          <span class="badge-sub">СИНХРОНИЗАЦИЯ • ICE-БАРЬЕРЫ</span>
+        </div>
+        <div class="card-title">СЕРИЯ 1 // ПРОТОКОЛ-01</div>
+        <div class="card-desc">Обход многоуровневого крипто-замка</div>
+      </div>
+      <div class="arrow-icon">→</div>
+    </div>
+
+    <div class="proto-card" data-open="ep2">
+      <div>
+        <div class="badge-row">
+          <span class="badge">4 БЛОКА</span>
+          <span class="badge-sub">ДЕШИФРОВКА • ТЕРМОКОНТРОЛЬ</span>
+        </div>
+        <div class="card-title">СЕРИЯ 2 // ПРОТОКОЛ-02</div>
+        <div class="card-desc">Извлечение зашифрованных координат</div>
+      </div>
+      <div class="arrow-icon">→</div>
+    </div>
+
+    <div class="proto-card" data-open="ep3">
+      <div>
+        <div class="badge-row">
+          <span class="badge">35 СЕК</span>
+          <span class="badge-sub">СТЕЛС-КОНТУР • ЧАСТОТНЫЙ КАНАЛ</span>
+        </div>
+        <div class="card-title">СЕРИЯ 3 // ПРОТОКОЛ-03</div>
+        <div class="card-desc">Удержание маскирующего сигнала</div>
+      </div>
+      <div class="arrow-icon">→</div>
+    </div>
+
+    <div class="proto-card" data-open="ep4">
+      <div>
+        <div class="badge-row">
+          <span class="badge">4 ФАЗЫ</span>
+          <span class="badge-sub">НАВЕДЕНИЕ • ЗАХВАТ ВЕКТОРА</span>
+        </div>
+        <div class="card-title">СЕРИЯ 4 // ПРОТОКОЛ-04</div>
+        <div class="card-desc">Баллистическая синхронизация цели</div>
+      </div>
+      <div class="arrow-icon">→</div>
+    </div>
+
+    <div class="proto-card" style="border-color: rgba(0,255,136,0.4);" data-open="audio">
+      <div>
+        <div class="badge-row">
+          <span class="badge green">5 ЗАПИСЕЙ</span>
+          <span class="badge-sub">ЗАШИФРОВАННЫЙ КАНАЛ СВЯЗИ</span>
+        </div>
+        <div class="card-title" style="color: var(--green);">АУДИО-ПЕРЕХВАТ // ЛОГИ</div>
+        <div class="card-desc">Воспроизведение перехваченных сообщений</div>
+      </div>
+      <div class="arrow-icon" style="color: var(--green);">▶</div>
+    </div>
+  </div>
+
+  <!-- AUDIO INTERCEPT SCREEN -->
+  <div class="screen" id="screen-audio">
+    <div class="terminal-note" style="border-left-color: var(--green);">
+      КАНАЛ ПЕРЕХВАТА АКТИВЕН // Нажмите воспроизведение на нужном логе, когда напарник даст сигнал.
+    </div>
+
+    <div id="audioList"></div>
+  </div>
+
+  <!-- EPISODE 1: SYNC TIMING -->
+  <div class="screen" id="screen-ep1">
+    <div class="game-box">
+      <div class="game-hud">
+        <span>ПРОТОКОЛ-01 // ШИФР</span>
+        <span id="ep1Stats">ЭТАП: 1/6 | ЦЕЛОСТНОСТЬ: 3</span>
+      </div>
+      <canvas id="canvasEp1" width="460" height="150"></canvas>
+      <div class="result-banner" id="ep1Win">
+        <h4>ДОСТУП ПОЛУЧЕН</h4>
+        <p>СИСТЕМА ЗАЩИТЫ ОТКЛЮЧЕНА. ПРОХОД ОТКРЫТ.</p>
+        <button class="reset-btn" id="ep1Reset">ПОВТОРИТЬ ПРОТОКОЛ</button>
+      </div>
+      <button class="action-pad" id="ep1Btn">
+        <span>[ СИНХРОНИЗИРОВАТЬ ]</span>
+        <small>НАЖМИТЕ В ЗЕЛЕНОЙ ЗОНЕ • ИЗБЕГАЙТЕ КРАСНЫХ ICE</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- EPISODE 2: DECRYPT & HEAT -->
+  <div class="screen" id="screen-ep2">
+    <div class="game-box">
+      <div class="game-hud">
+        <span>ПРОТОКОЛ-02 // АРХИВ</span>
+        <span id="ep2Stats">ТЕМП: 35°C | БЛОК: 1/4</span>
+      </div>
+      <div class="blocks-grid" id="ep2Blocks">
+        <div class="mem-block curr">СЕКТОР 1<br>0%</div>
+        <div class="mem-block">СЕКТОР 2<br>0%</div>
+        <div class="mem-block">СЕКТОР 3<br>0%</div>
+        <div class="mem-block">СЕКТОР 4<br>0%</div>
+      </div>
+      <div style="font-family: ui-monospace, monospace; font-size: 10px; color: var(--muted);">НАГРЕВ ПРОЦЕССОРА (НЕ ДОПУСКАЙТЕ 100%):</div>
+      <div class="heat-bar-wrap">
+        <div class="heat-fill" id="ep2HeatFill"></div>
+      </div>
+      <div class="result-banner" id="ep2Win">
+        <h4>АРХИВ РАСШИФРОВАН</h4>
+        <p>КООРДИНАТЫ: ЭЛИЗИАН-АЙЛЕНД // СЕКТОР-4 // ГЛУБИНА: 65М</p>
+        <button class="reset-btn" id="ep2Reset">СБРОСИТЬ СЕКТОРЫ</button>
+      </div>
+      <button class="action-pad" id="ep2Btn">
+        <span>[ УДЕРЖИВАТЬ ДЛЯ ВЗЛОМА ]</span>
+        <small>ОТПУСТИТЕ, ЧТОБЫ ОХЛАДИТЬ ПРОЦЕССОР</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- EPISODE 3: STEALTH WAVE -->
+  <div class="screen" id="screen-ep3">
+    <div class="game-box">
+      <div class="game-hud">
+        <span>ПРОТОКОЛ-03 // СТЕЛС-КОНТУР</span>
+        <span id="ep3Stats">ОСТАЛОСЬ: 35.0с | СИГНАЛ: 100%</span>
+      </div>
+      <canvas id="canvasEp3" width="460" height="150"></canvas>
+      <div class="result-banner" id="ep3Win">
+        <h4>КОНТУР ПРОЙДЕН</h4>
+        <p>СТАТУС: DROP ZONE REACHED — ПРЫГАЕМ!</p>
+        <button class="reset-btn" id="ep3Reset">ПЕРЕЗАПУСТИТЬ КОНТУР</button>
+      </div>
+      <button class="action-pad" id="ep3Btn">
+        <span>[ УДЕРЖИВАТЬ ВЫСОТУ ВОЛНЫ ]</span>
+        <small>ЗАЖМИТЕ ДЛЯ ПОДЪЕМА • ОТПУСТИТЕ ДЛЯ СНИЖЕНИЯ</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- EPISODE 4: TARGET LOCK -->
+  <div class="screen" id="screen-ep4">
+    <div class="game-box">
+      <div class="game-hud">
+        <span>ПРОТОКОЛ-04 // ЗАХВАТ</span>
+        <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4</span>
+      </div>
+      <canvas id="canvasEp4" width="460" height="150"></canvas>
+      <div class="result-banner" id="ep4Win">
+        <h4>TARGET LOCKED // ОГОНЬ!</h4>
+        <p>ВЕКТОР ПОДТВЕРЖДЕН — КРИЧИ НАПАРНИКУ «ОГОНЬ!»</p>
+        <button class="reset-btn" id="ep4Reset">НОВЫЙ ЗАХВАТ</button>
+      </div>
+      <button class="action-pad" id="ep4Btn">
+        <span>[ ЗАФИКСИРОВАТЬ ВЕКТОР ]</span>
+        <small>НАЖМИТЕ ПРИ СОВПАДЕНИИ ПЕРЕКРЕСТИЯ С ЦЕЛЬЮ</small>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>KERNEL: GLITCH_OS_6.0</span>
+    <span>LOS SANTOS // 2026</span>
+  </div>
+</div>
+
+<script>
+  // --- SOUND SYNTHESIZER ---
+  let audioCtx = null;
+  function beep(freq = 520, dur = 0.06, type = 'sine', vol = 0.08) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.value = vol;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur);
+    } catch (e) {}
+  }
+
+  // --- NAVIGATION ---
+  let currentScreen = 'menu';
+  function switchScreen(target) {
+    beep(640, 0.05);
+    currentScreen = target;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + target).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.target === target);
+    });
+  }
+
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchScreen(btn.dataset.target));
+  });
+  document.querySelectorAll('.proto-card').forEach(card => {
+    card.addEventListener('click', () => switchScreen(card.dataset.open));
+  });
+
+  // --- AUDIO PLAYER (5 LOGS - NO SPOILERS) ---
+  const audioTracks = [
+    { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
+    { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
+    { id: 3, title: 'АУДИО-ЛОГ #03', tag: 'СЕРИЯ 2 • ЗАПИСЬ 2', file: encodeURI('Серия 2, монолог 2.m4a') },
+    { id: 4, title: 'АУДИО-ЛОГ #04', tag: 'СЕРИЯ 3 • ЗАПИСЬ 1', file: encodeURI('Серия 3 .m4a') },
+    { id: 5, title: 'АУДИО-ЛОГ #05', tag: 'СЕРИЯ 4 • ЗАПИСЬ 1', file: encodeURI('Серия 4.mp3') }
+  ];
+
+  const audioListEl = document.getElementById('audioList');
+  let activeAudio = null;
+  let activeCard = null;
+
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec < 0) return '00:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  audioTracks.forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'audio-card';
+    card.innerHTML = `
+      <div class="audio-top">
+        <div class="audio-name">${track.title}</div>
+        <div class="audio-tag">${track.tag}</div>
+      </div>
+      <div class="audio-controls">
+        <button class="play-btn">▶ ПУСК</button>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-fill"></div></div>
+          <div class="time-row"><span class="t-cur">00:00</span><span class="t-dur">--:--</span></div>
+        </div>
+      </div>
+    `;
+
+    const audio = new Audio(track.file);
+    audio.preload = 'metadata';
+
+    const playBtn = card.querySelector('.play-btn');
+    const fill = card.querySelector('.progress-fill');
+    const barBg = card.querySelector('.progress-bar-bg');
+    const tCur = card.querySelector('.t-cur');
+    const tDur = card.querySelector('.t-dur');
+
+    audio.addEventListener('loadedmetadata', () => {
+      tDur.textContent = fmtTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      tCur.textContent = fmtTime(audio.currentTime);
+      if (audio.duration) {
+        fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      card.classList.remove('playing');
+      playBtn.textContent = '▶ ПУСК';
+      fill.style.width = '0%';
+      audio.currentTime = 0;
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (activeAudio && activeAudio !== audio) {
+        activeAudio.pause();
+        if (activeCard) {
+          activeCard.classList.remove('playing');
+          activeCard.querySelector('.play-btn').textContent = '▶ ПУСК';
+        }
+      }
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          card.classList.add('playing');
+          playBtn.textContent = '❚❚ ПАУЗА';
+          activeAudio = audio;
+          activeCard = card;
+        }).catch(() => {
+          tDur.textContent = 'ОШИБКА ФАЙЛА';
+        });
+      } else {
+        audio.pause();
+        card.classList.remove('playing');
+        playBtn.textContent = '▶ ПУСК';
+      }
+    });
+
+    barBg.addEventListener('click', (e) => {
+      if (!audio.duration) return;
+      const rect = barBg.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = ratio * audio.duration;
+    });
+
+    audioListEl.appendChild(card);
+  });
+
+  // --- MINI-GAME 1: SYNC TIMING ---
+  const c1 = document.getElementById('canvasEp1');
+  const ctx1 = c1.getContext('2d');
+  let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false };
+
+  function resetEp1() {
+    ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false };
+    document.getElementById('ep1Win').classList.remove('show');
+    updateEp1Hud();
+  }
+  function updateEp1Hud() {
+    document.getElementById('ep1Stats').textContent = `ЭТАП: ${ep1.stage}/${ep1.max} | ЦЕЛОСТНОСТЬ: ${ep1.hp}`;
+  }
+  document.getElementById('ep1Reset').addEventListener('click', resetEp1);
+
+  document.getElementById('ep1Btn').addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    if (ep1.won) return;
+    if (ep1.pos >= ep1.greenStart && ep1.pos <= ep1.greenStart + ep1.greenW) {
+      beep(880, 0.08);
+      if (ep1.stage >= ep1.max) {
+        ep1.won = true;
+        document.getElementById('ep1Win').classList.add('show');
+      } else {
+        ep1.stage++;
+        ep1.greenW = Math.max(0.13, 0.24 - ep1.stage * 0.016);
+        ep1.greenStart = 0.45 + Math.random() * (0.45 - ep1.greenW);
+        ep1.iceStart = 0.1 + Math.random() * 0.22;
+        updateEp1Hud();
+      }
+    } else {
+      beep(180, 0.15, 'sawtooth');
+      ep1.hp--;
+      if (ep1.hp <= 0) {
+        ep1.hp = 3;
+        ep1.stage = 1;
+      }
+      updateEp1Hud();
+    }
+  });
+
+  // --- MINI-GAME 2: DECRYPT & THERMAL CONTROL ---
+  let ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false };
+  const ep2Btn = document.getElementById('ep2Btn');
+  ep2Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep2.holding = true; });
+  window.addEventListener('pointerup', () => { ep2.holding = false; });
+  window.addEventListener('pointercancel', () => { ep2.holding = false; });
+
+  function resetEp2() {
+    ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false };
+    document.getElementById('ep2Win').classList.remove('show');
+    renderEp2Blocks();
+  }
+  document.getElementById('ep2Reset').addEventListener('click', resetEp2);
+
+  function renderEp2Blocks() {
+    const els = document.querySelectorAll('#ep2Blocks .mem-block');
+    els.forEach((el, idx) => {
+      el.classList.remove('done', 'curr');
+      if (idx < ep2.block || ep2.won) {
+        el.classList.add('done');
+        el.innerHTML = `СЕКТОР ${idx + 1}<br>100%`;
+      } else if (idx === ep2.block) {
+        el.classList.add('curr');
+        el.innerHTML = `СЕКТОР ${idx + 1}<br>${Math.floor(ep2.prog)}%`;
+      } else {
+        el.innerHTML = `СЕКТОР ${idx + 1}<br>0%`;
+      }
+    });
+  }
+
+  // --- MINI-GAME 3: STEALTH WAVE ---
+  const c3 = document.getElementById('canvasEp3');
+  const ctx3 = c3.getContext('2d');
+  let ep3 = { y: 75, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false };
+  const ep3Btn = document.getElementById('ep3Btn');
+  ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
+  window.addEventListener('pointerup', () => { ep3.holding = false; });
+
+  function resetEp3() {
+    ep3 = { y: 75, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false };
+    document.getElementById('ep3Win').classList.remove('show');
+  }
+  document.getElementById('ep3Reset').addEventListener('click', resetEp3);
+
+  // --- MINI-GAME 4: TARGET LOCK ---
+  const c4 = document.getElementById('canvasEp4');
+  const ctx4 = c4.getContext('2d');
+  let ep4 = { phase: 1, max: 4, cx: 80, cy: 75, tx: 300, ty: 75, t: 0, won: false };
+
+  function resetEp4() {
+    ep4 = { phase: 1, max: 4, cx: 80, cy: 75, tx: 300, ty: 75, t: 0, won: false };
+    document.getElementById('ep4Win').classList.remove('show');
+    document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4`;
+  }
+  document.getElementById('ep4Reset').addEventListener('click', resetEp4);
+
+  document.getElementById('ep4Btn').addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    if (ep4.won) return;
+    const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
+    if (dist < 42) {
+      beep(920, 0.09);
+      if (ep4.phase >= ep4.max) {
+        ep4.won = true;
+        document.getElementById('ep4Win').classList.add('show');
+      } else {
+        ep4.phase++;
+        document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: ${ep4.phase}/${ep4.max}`;
+      }
+    } else {
+      beep(200, 0.14, 'sawtooth');
+    }
+  });
+
+  // --- MAIN ANIMATION LOOP ---
+  let lastTs = performance.now();
+  function loop(now) {
+    const dt = Math.min(0.05, (now - lastTs) / 1000);
+    lastTs = now;
+
+    // Ep 1 Draw
+    if (currentScreen === 'ep1') {
+      if (!ep1.won) {
+        const speed = 0.65 + ep1.stage * 0.08;
+        ep1.pos += ep1.dir * speed * dt;
+        if (ep1.pos >= 0.96) { ep1.pos = 0.96; ep1.dir = -1; }
+        if (ep1.pos <= 0.04) { ep1.pos = 0.04; ep1.dir = 1; }
+      }
+      ctx1.clearRect(0, 0, c1.width, c1.height);
+      // ICE zone
+      ctx1.fillStyle = 'rgba(255, 42, 85, 0.25)';
+      ctx1.fillRect(ep1.iceStart * c1.width, 20, ep1.iceW * c1.width, 110);
+      ctx1.strokeStyle = '#ff2a55';
+      ctx1.strokeRect(ep1.iceStart * c1.width, 20, ep1.iceW * c1.width, 110);
+      // Green SYNC zone
+      ctx1.fillStyle = 'rgba(0, 255, 136, 0.25)';
+      ctx1.fillRect(ep1.greenStart * c1.width, 20, ep1.greenW * c1.width, 110);
+      ctx1.strokeStyle = '#00ff88';
+      ctx1.strokeRect(ep1.greenStart * c1.width, 20, ep1.greenW * c1.width, 110);
+      // Cursor
+      const px = ep1.pos * c1.width;
+      ctx1.fillStyle = '#ffffff';
+      ctx1.fillRect(px - 3, 14, 6, 122);
+    }
+
+    // Ep 2 Update
+    if (currentScreen === 'ep2' && !ep2.won) {
+      if (ep2.holding) {
+        ep2.heat += 38 * dt;
+        ep2.prog += 42 * dt;
+        if (ep2.heat >= 100) {
+          beep(150, 0.2, 'sawtooth');
+          ep2.heat = 45;
+          ep2.prog = Math.max(0, ep2.prog - 45);
+        }
+        if (ep2.prog >= 100) {
+          beep(840, 0.08);
+          ep2.prog = 0;
+          ep2.block++;
+          if (ep2.block >= 4) {
+            ep2.won = true;
+            document.getElementById('ep2Win').classList.add('show');
+          }
+        }
+      } else {
+        ep2.heat = Math.max(15, ep2.heat - 34 * dt);
+      }
+      document.getElementById('ep2HeatFill').style.width = ep2.heat + '%';
+      document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block + 1)}/4`;
+      renderEp2Blocks();
+    }
+
+    // Ep 3 Draw
+    if (currentScreen === 'ep3') {
+      if (!ep3.won) {
+        ep3.phase += dt * 2.1;
+        ep3.vy += (ep3.holding ? -280 : 250) * dt;
+        ep3.vy *= 0.92;
+        ep3.y = Math.max(15, Math.min(135, ep3.y + ep3.vy * dt));
+
+        const targetY = 75 + Math.sin(ep3.phase) * 42;
+        const diff = Math.abs(ep3.y - targetY);
+        if (diff < 28) {
+          ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
+          ep3.signal = Math.min(100, ep3.signal + 12 * dt);
+        } else {
+          ep3.signal = Math.max(0, ep3.signal - 18 * dt);
+          if (ep3.signal <= 0) {
+            beep(160, 0.2, 'sawtooth');
+            ep3.signal = 100;
+            ep3.timeLeft = 35;
+          }
+        }
+        if (ep3.timeLeft <= 0) {
+          beep(900, 0.12);
+          ep3.won = true;
+          document.getElementById('ep3Win').classList.add('show');
+        }
+        document.getElementById('ep3Stats').textContent = `ОСТАЛОСЬ: ${ep3.timeLeft.toFixed(1)}с | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
+      }
+
+      ctx3.clearRect(0, 0, c3.width, c3.height);
+      // Safe corridor wave
+      ctx3.strokeStyle = 'rgba(0, 255, 136, 0.45)';
+      ctx3.lineWidth = 36;
+      ctx3.beginPath();
+      for (let x = 0; x <= c3.width; x += 15) {
+        const wy = 75 + Math.sin(ep3.phase + (x - 90) * 0.015) * 42;
+        if (x === 0) ctx3.moveTo(x, wy);
+        else ctx3.lineTo(x, wy);
+      }
+      ctx3.stroke();
+
+      // Player dot
+      ctx3.fillStyle = '#00f3ff';
+      ctx3.beginPath();
+      ctx3.arc(90, ep3.y, 8, 0, Math.PI * 2);
+      ctx3.fill();
+    }
+
+    // Ep 4 Draw
+    if (currentScreen === 'ep4') {
+      if (!ep4.won) {
+        ep4.t += dt * (1.8 + ep4.phase * 0.45);
+        ep4.tx = 230 + Math.cos(ep4.t) * 145;
+        ep4.ty = 75 + Math.sin(ep4.t * 1.4) * 42;
+        ep4.cx = 230 + Math.sin(ep4.t * 1.9) * 155;
+        ep4.cy = 75 + Math.cos(ep4.t * 1.1) * 42;
+      }
+      ctx4.clearRect(0, 0, c4.width, c4.height);
+      // Target
+      ctx4.strokeStyle = '#ff2a55';
+      ctx4.lineWidth = 2;
+      ctx4.beginPath();
+      ctx4.arc(ep4.tx, ep4.ty, 18, 0, Math.PI * 2);
+      ctx4.stroke();
+      ctx4.fillStyle = '#ff2a55';
+      ctx4.beginPath();
+      ctx4.arc(ep4.tx, ep4.ty, 4, 0, Math.PI * 2);
+      ctx4.fill();
+
+      // Crosshair
+      ctx4.strokeStyle = '#00f3ff';
+      ctx4.beginPath();
+      ctx4.arc(ep4.cx, ep4.cy, 22, 0, Math.PI * 2);
+      ctx4.moveTo(ep4.cx - 30, ep4.cy); ctx4.lineTo(ep4.cx + 30, ep4.cy);
+      ctx4.moveTo(ep4.cx, ep4.cy - 30); ctx4.lineTo(ep4.cx, ep4.cy + 30);
+      ctx4.stroke();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>
