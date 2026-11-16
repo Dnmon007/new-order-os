@@ -8,8 +8,8 @@
 <title>GLITCH_OS // TERMINAL</title>
 <style>
   :root {
-    --bg: #05080c;
-    --panel: #0b1118;
+    --bg: #04070b;
+    --panel: #0a1017;
     --border: #172a3a;
     --cyan: #00f3ff;
     --cyan-dim: rgba(0, 243, 255, 0.14);
@@ -34,9 +34,10 @@
     padding: 0;
     background-color: var(--bg);
     background-image:
-      linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-    background-size: 22px 22px;
+      radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 60%),
+      linear-gradient(rgba(0, 243, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 243, 255, 0.035) 1px, transparent 1px);
+    background-size: 100% 100%, 22px 22px, 22px 22px;
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, monospace;
     min-height: 100vh;
@@ -55,13 +56,12 @@
     gap: 12px;
   }
 
-  /* Header */
   .header-box {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.7), inset 0 0 15px rgba(0, 243, 255, 0.04);
   }
 
   .top-row {
@@ -76,6 +76,7 @@
     font-size: 13px;
     font-weight: 700;
     color: var(--cyan);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
@@ -87,7 +88,7 @@
     height: 8px;
     border-radius: 50%;
     background: var(--red);
-    box-shadow: 0 0 8px var(--red);
+    box-shadow: 0 0 10px var(--red);
     animation: pulse 1.5s infinite;
   }
 
@@ -109,12 +110,12 @@
     padding: 4px 8px;
     border-radius: 5px;
     background: rgba(255, 42, 85, 0.12);
-    border: 1px solid rgba(255, 42, 85, 0.4);
+    border: 1px solid rgba(255, 42, 85, 0.45);
     color: var(--red);
+    text-shadow: 0 0 6px rgba(255, 42, 85, 0.4);
     font-weight: 700;
   }
 
-  /* Navigation Tabs */
   .nav-bar {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -122,7 +123,7 @@
   }
 
   .nav-btn {
-    background: #080d13;
+    background: #070c12;
     border: 1px solid var(--border);
     color: var(--muted);
     font-family: ui-monospace, monospace;
@@ -139,17 +140,16 @@
     background: var(--cyan-dim);
     border-color: var(--cyan);
     color: var(--cyan);
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
   }
 
   .nav-btn.audio-tab.active {
     background: var(--green-dim);
     border-color: var(--green);
     color: var(--green);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
   }
 
-  /* Screens */
   .screen {
     display: none;
     flex-direction: column;
@@ -159,7 +159,6 @@
     display: flex;
   }
 
-  /* Info Banner */
   .terminal-note {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -172,7 +171,6 @@
     color: #9cb8cf;
   }
 
-  /* Protocol Cards (No Spoilers) */
   .proto-card {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -182,12 +180,13 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.1s, border-color 0.15s;
+    transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
   }
   .proto-card:active {
     transform: scale(0.985);
     border-color: var(--cyan);
     background: #0e1722;
+    box-shadow: 0 0 16px rgba(0, 243, 255, 0.15);
   }
 
   .badge-row {
@@ -206,13 +205,13 @@
     border-radius: 4px;
     background: var(--cyan-dim);
     color: var(--cyan);
-    border: 1px solid rgba(0, 243, 255, 0.3);
+    border: 1px solid rgba(0, 243, 255, 0.35);
   }
 
   .badge.green {
     background: var(--green-dim);
     color: var(--green);
-    border-color: rgba(0, 255, 136, 0.3);
+    border-color: rgba(0, 255, 136, 0.35);
   }
 
   .badge-sub {
@@ -239,9 +238,9 @@
     font-size: 18px;
     color: var(--cyan);
     padding-left: 10px;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
   }
 
-  /* Audio Interceptor Styles */
   .audio-card {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -253,7 +252,7 @@
   }
   .audio-card.playing {
     border-color: var(--green);
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.18);
   }
 
   .audio-top {
@@ -299,6 +298,7 @@
   .audio-card.playing .play-btn {
     background: var(--green);
     color: #03120a;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
   }
 
   .progress-wrap {
@@ -322,6 +322,7 @@
     height: 100%;
     width: 0%;
     background: var(--green);
+    box-shadow: 0 0 8px var(--green);
     transition: width 0.1s linear;
   }
 
@@ -333,7 +334,6 @@
     color: var(--muted);
   }
 
-  /* Mini-Games Shared UI */
   .game-box {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -342,6 +342,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
   }
 
   .game-hud {
@@ -350,28 +351,32 @@
     align-items: center;
     font-family: ui-monospace, monospace;
     font-size: 11px;
-    background: #070b10;
-    padding: 8px 10px;
+    color: var(--cyan);
+    background: #060b10;
+    padding: 9px 10px;
     border-radius: 6px;
     border: 1px solid var(--border);
   }
 
   canvas {
     width: 100%;
-    height: 150px;
-    background: #04070a;
-    border: 1px solid var(--border);
+    height: 185px;
+    background: #030609;
+    border: 1px solid #1c3549;
     border-radius: 8px;
     display: block;
+    box-shadow: inset 0 0 24px rgba(0, 243, 255, 0.06);
   }
 
   .action-pad {
     width: 100%;
     height: 78px;
-    background: var(--cyan-dim);
+    background: linear-gradient(180deg, rgba(0, 243, 255, 0.18) 0%, rgba(0, 243, 255, 0.08) 100%);
     border: 2px solid var(--cyan);
     border-radius: 10px;
     color: var(--cyan);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.45);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
     font-family: ui-monospace, monospace;
     font-size: 14px;
     font-weight: 700;
@@ -384,12 +389,14 @@
     touch-action: manipulation;
   }
   .action-pad:active {
-    background: rgba(0, 243, 255, 0.3);
-    transform: scale(0.99);
+    background: rgba(0, 243, 255, 0.34);
+    transform: scale(0.985);
+    box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
   }
   .action-pad small {
     font-size: 10px;
     color: var(--text);
+    text-shadow: none;
     font-weight: 400;
   }
 
@@ -397,6 +404,7 @@
     display: none;
     background: var(--green-dim);
     border: 1px solid var(--green);
+    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
     border-radius: 8px;
     padding: 12px;
     text-align: center;
@@ -408,6 +416,7 @@
   .result-banner h4 {
     margin: 0 0 6px;
     color: var(--green);
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
     font-size: 14px;
   }
   .result-banner p {
@@ -428,17 +437,16 @@
     cursor: pointer;
   }
 
-  /* Ep 2 Blocks */
   .blocks-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
   }
   .mem-block {
-    background: #070c11;
+    background: #060b10;
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px 4px;
+    padding: 9px 4px;
     text-align: center;
     font-family: ui-monospace, monospace;
     font-size: 11px;
@@ -448,16 +456,18 @@
     background: var(--green-dim);
     border-color: var(--green);
     color: var(--green);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
     font-weight: 700;
   }
   .mem-block.curr {
     border-color: var(--cyan);
     color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.15);
   }
 
   .heat-bar-wrap {
     height: 14px;
-    background: #070c11;
+    background: #060b10;
     border: 1px solid var(--border);
     border-radius: 7px;
     overflow: hidden;
@@ -466,6 +476,7 @@
     height: 100%;
     width: 20%;
     background: linear-gradient(90deg, var(--cyan), var(--amber), var(--red));
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
     transition: width 0.08s;
   }
 
@@ -483,11 +494,10 @@
 <body>
 
 <div class="app-shell">
-  <!-- HEADER -->
   <div class="header-box">
     <div class="top-row">
       <div>
-        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.0 // TERMINAL</div>
+        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.1 // NEON_CORE</div>
         <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
       </div>
       <div class="status-pill" id="sysStatus">ONLINE</div>
@@ -503,7 +513,6 @@
     </div>
   </div>
 
-  <!-- MENU SCREEN (NO SPOILERS) -->
   <div class="screen active" id="screen-menu">
     <div class="terminal-note">
       USER: KAI_MERCER // KERNEL_READY<br>
@@ -571,23 +580,20 @@
     </div>
   </div>
 
-  <!-- AUDIO INTERCEPT SCREEN -->
   <div class="screen" id="screen-audio">
     <div class="terminal-note" style="border-left-color: var(--green);">
       КАНАЛ ПЕРЕХВАТА АКТИВЕН // Нажмите воспроизведение на нужном логе, когда напарник даст сигнал.
     </div>
-
     <div id="audioList"></div>
   </div>
 
-  <!-- EPISODE 1: SYNC TIMING -->
   <div class="screen" id="screen-ep1">
     <div class="game-box">
       <div class="game-hud">
         <span>ПРОТОКОЛ-01 // ШИФР</span>
         <span id="ep1Stats">ЭТАП: 1/6 | ЦЕЛОСТНОСТЬ: 3</span>
       </div>
-      <canvas id="canvasEp1" width="460" height="150"></canvas>
+      <canvas id="canvasEp1" width="460" height="185"></canvas>
       <div class="result-banner" id="ep1Win">
         <h4>ДОСТУП ПОЛУЧЕН</h4>
         <p>СИСТЕМА ЗАЩИТЫ ОТКЛЮЧЕНА. ПРОХОД ОТКРЫТ.</p>
@@ -600,20 +606,20 @@
     </div>
   </div>
 
-  <!-- EPISODE 2: DECRYPT & HEAT -->
   <div class="screen" id="screen-ep2">
     <div class="game-box">
       <div class="game-hud">
         <span>ПРОТОКОЛ-02 // АРХИВ</span>
         <span id="ep2Stats">ТЕМП: 35°C | БЛОК: 1/4</span>
       </div>
+      <canvas id="canvasEp2" width="460" height="120" style="height: 120px;"></canvas>
       <div class="blocks-grid" id="ep2Blocks">
         <div class="mem-block curr">СЕКТОР 1<br>0%</div>
         <div class="mem-block">СЕКТОР 2<br>0%</div>
         <div class="mem-block">СЕКТОР 3<br>0%</div>
         <div class="mem-block">СЕКТОР 4<br>0%</div>
       </div>
-      <div style="font-family: ui-monospace, monospace; font-size: 10px; color: var(--muted);">НАГРЕВ ПРОЦЕССОРА (НЕ ДОПУСКАЙТЕ 100%):</div>
+      <div style="font-family: ui-monospace, monospace; font-size: 10px; color: var(--muted);">НАГРЕВ ПРОЦЕССОРА (КРИТИЧЕСКИЙ ПОРОГ 100%):</div>
       <div class="heat-bar-wrap">
         <div class="heat-fill" id="ep2HeatFill"></div>
       </div>
@@ -629,14 +635,13 @@
     </div>
   </div>
 
-  <!-- EPISODE 3: STEALTH WAVE -->
   <div class="screen" id="screen-ep3">
     <div class="game-box">
       <div class="game-hud">
         <span>ПРОТОКОЛ-03 // СТЕЛС-КОНТУР</span>
         <span id="ep3Stats">ОСТАЛОСЬ: 35.0с | СИГНАЛ: 100%</span>
       </div>
-      <canvas id="canvasEp3" width="460" height="150"></canvas>
+      <canvas id="canvasEp3" width="460" height="185"></canvas>
       <div class="result-banner" id="ep3Win">
         <h4>КОНТУР ПРОЙДЕН</h4>
         <p>СТАТУС: DROP ZONE REACHED — ПРЫГАЕМ!</p>
@@ -649,14 +654,13 @@
     </div>
   </div>
 
-  <!-- EPISODE 4: TARGET LOCK -->
   <div class="screen" id="screen-ep4">
     <div class="game-box">
       <div class="game-hud">
         <span>ПРОТОКОЛ-04 // ЗАХВАТ</span>
         <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4</span>
       </div>
-      <canvas id="canvasEp4" width="460" height="150"></canvas>
+      <canvas id="canvasEp4" width="460" height="185"></canvas>
       <div class="result-banner" id="ep4Win">
         <h4>TARGET LOCKED // ОГОНЬ!</h4>
         <p>ВЕКТОР ПОДТВЕРЖДЕН — КРИЧИ НАПАРНИКУ «ОГОНЬ!»</p>
@@ -670,13 +674,12 @@
   </div>
 
   <div class="footer-bar">
-    <span>KERNEL: GLITCH_OS_6.0</span>
+    <span>KERNEL: GLITCH_OS_6.1_NEON</span>
     <span>LOS SANTOS // 2026</span>
   </div>
 </div>
 
 <script>
-  // --- SOUND SYNTHESIZER ---
   let audioCtx = null;
   function beep(freq = 520, dur = 0.06, type = 'sine', vol = 0.08) {
     try {
@@ -694,7 +697,6 @@
     } catch (e) {}
   }
 
-  // --- NAVIGATION ---
   let currentScreen = 'menu';
   function switchScreen(target) {
     beep(640, 0.05);
@@ -713,7 +715,6 @@
     card.addEventListener('click', () => switchScreen(card.dataset.open));
   });
 
-  // --- AUDIO PLAYER (5 LOGS - NO SPOILERS) ---
   const audioTracks = [
     { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
     { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
@@ -759,17 +760,11 @@
     const tCur = card.querySelector('.t-cur');
     const tDur = card.querySelector('.t-dur');
 
-    audio.addEventListener('loadedmetadata', () => {
-      tDur.textContent = fmtTime(audio.duration);
-    });
-
+    audio.addEventListener('loadedmetadata', () => { tDur.textContent = fmtTime(audio.duration); });
     audio.addEventListener('timeupdate', () => {
       tCur.textContent = fmtTime(audio.currentTime);
-      if (audio.duration) {
-        fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
-      }
+      if (audio.duration) fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
     });
-
     audio.addEventListener('ended', () => {
       card.classList.remove('playing');
       playBtn.textContent = '▶ ПУСК';
@@ -785,16 +780,13 @@
           activeCard.querySelector('.play-btn').textContent = '▶ ПУСК';
         }
       }
-
       if (audio.paused) {
         audio.play().then(() => {
           card.classList.add('playing');
           playBtn.textContent = '❚❚ ПАУЗА';
           activeAudio = audio;
           activeCard = card;
-        }).catch(() => {
-          tDur.textContent = 'ОШИБКА ФАЙЛА';
-        });
+        }).catch(() => { tDur.textContent = 'ОШИБКА ФАЙЛА'; });
       } else {
         audio.pause();
         card.classList.remove('playing');
@@ -812,13 +804,67 @@
     audioListEl.appendChild(card);
   });
 
-  // --- MINI-GAME 1: SYNC TIMING ---
+  function drawGrid(ctx, w, h, step = 20) {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0, 243, 255, 0.07)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x <= w; x += step) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    }
+    for (let y = 0; y <= h; y += step) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    ctx.strokeStyle = 'rgba(0, 243, 255, 0.45)';
+    ctx.lineWidth = 2;
+    const b = 12;
+    ctx.beginPath(); ctx.moveTo(4, 4+b); ctx.lineTo(4, 4); ctx.lineTo(4+b, 4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w-4-b, 4); ctx.lineTo(w-4, 4); ctx.lineTo(w-4, 4+b); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4, h-4-b); ctx.lineTo(4, h-4); ctx.lineTo(4+b, h-4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w-4-b, h-4); ctx.lineTo(w-4, h-4); ctx.lineTo(w-4, h-4-b); ctx.stroke();
+    ctx.restore();
+  }
+
+  let particles = [];
+  function spawnParticles(x, y, color, count = 18) {
+    for (let i = 0; i < count; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 40 + Math.random() * 140;
+      particles.push({
+        x, y,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd,
+        life: 0.45 + Math.random() * 0.3,
+        maxLife: 0.75,
+        color
+      });
+    }
+  }
+  function updateAndDrawParticles(ctx, dt) {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.life -= dt;
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = p.color;
+      ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
+      ctx.restore();
+    }
+  }
+
   const c1 = document.getElementById('canvasEp1');
   const ctx1 = c1.getContext('2d');
-  let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false };
+  let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
 
   function resetEp1() {
-    ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false };
+    ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
     document.getElementById('ep1Win').classList.remove('show');
     updateEp1Hud();
   }
@@ -830,8 +876,12 @@
   document.getElementById('ep1Btn').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     if (ep1.won) return;
+    const px = ep1.pos * c1.width;
     if (ep1.pos >= ep1.greenStart && ep1.pos <= ep1.greenStart + ep1.greenW) {
       beep(880, 0.08);
+      ep1.flash = 0.25;
+      ep1.flashColor = '#00ff88';
+      spawnParticles(px, c1.height / 2, '#00ff88', 22);
       if (ep1.stage >= ep1.max) {
         ep1.won = true;
         document.getElementById('ep1Win').classList.add('show');
@@ -844,6 +894,9 @@
       }
     } else {
       beep(180, 0.15, 'sawtooth');
+      ep1.flash = 0.3;
+      ep1.flashColor = '#ff2a55';
+      spawnParticles(px, c1.height / 2, '#ff2a55', 22);
       ep1.hp--;
       if (ep1.hp <= 0) {
         ep1.hp = 3;
@@ -853,15 +906,16 @@
     }
   });
 
-  // --- MINI-GAME 2: DECRYPT & THERMAL CONTROL ---
-  let ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false };
+  const c2 = document.getElementById('canvasEp2');
+  const ctx2 = c2.getContext('2d');
+  let ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
   const ep2Btn = document.getElementById('ep2Btn');
   ep2Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep2.holding = true; });
   window.addEventListener('pointerup', () => { ep2.holding = false; });
   window.addEventListener('pointercancel', () => { ep2.holding = false; });
 
   function resetEp2() {
-    ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false };
+    ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
     document.getElementById('ep2Win').classList.remove('show');
     renderEp2Blocks();
   }
@@ -883,27 +937,25 @@
     });
   }
 
-  // --- MINI-GAME 3: STEALTH WAVE ---
   const c3 = document.getElementById('canvasEp3');
   const ctx3 = c3.getContext('2d');
-  let ep3 = { y: 75, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false };
+  let ep3 = { y: 92, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
   const ep3Btn = document.getElementById('ep3Btn');
   ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
   window.addEventListener('pointerup', () => { ep3.holding = false; });
 
   function resetEp3() {
-    ep3 = { y: 75, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false };
+    ep3 = { y: 92, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
     document.getElementById('ep3Win').classList.remove('show');
   }
   document.getElementById('ep3Reset').addEventListener('click', resetEp3);
 
-  // --- MINI-GAME 4: TARGET LOCK ---
   const c4 = document.getElementById('canvasEp4');
   const ctx4 = c4.getContext('2d');
-  let ep4 = { phase: 1, max: 4, cx: 80, cy: 75, tx: 300, ty: 75, t: 0, won: false };
+  let ep4 = { phase: 1, max: 4, cx: 80, cy: 92, tx: 300, ty: 92, t: 0, won: false, sweep: 0, flash: 0 };
 
   function resetEp4() {
-    ep4 = { phase: 1, max: 4, cx: 80, cy: 75, tx: 300, ty: 75, t: 0, won: false };
+    ep4 = { phase: 1, max: 4, cx: 80, cy: 92, tx: 300, ty: 92, t: 0, won: false, sweep: 0, flash: 0 };
     document.getElementById('ep4Win').classList.remove('show');
     document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4`;
   }
@@ -915,6 +967,8 @@
     const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
     if (dist < 42) {
       beep(920, 0.09);
+      ep4.flash = 0.25;
+      spawnParticles(ep4.tx, ep4.ty, '#00ff88', 24);
       if (ep4.phase >= ep4.max) {
         ep4.won = true;
         document.getElementById('ep4Win').classList.add('show');
@@ -924,16 +978,15 @@
       }
     } else {
       beep(200, 0.14, 'sawtooth');
+      spawnParticles(ep4.cx, ep4.cy, '#ff2a55', 14);
     }
   });
 
-  // --- MAIN ANIMATION LOOP ---
   let lastTs = performance.now();
   function loop(now) {
     const dt = Math.min(0.05, (now - lastTs) / 1000);
     lastTs = now;
 
-    // Ep 1 Draw
     if (currentScreen === 'ep1') {
       if (!ep1.won) {
         const speed = 0.65 + ep1.stage * 0.08;
@@ -941,61 +994,128 @@
         if (ep1.pos >= 0.96) { ep1.pos = 0.96; ep1.dir = -1; }
         if (ep1.pos <= 0.04) { ep1.pos = 0.04; ep1.dir = 1; }
       }
+      ep1.trail.push(ep1.pos * c1.width);
+      if (ep1.trail.length > 14) ep1.trail.shift();
+
       ctx1.clearRect(0, 0, c1.width, c1.height);
-      // ICE zone
-      ctx1.fillStyle = 'rgba(255, 42, 85, 0.25)';
-      ctx1.fillRect(ep1.iceStart * c1.width, 20, ep1.iceW * c1.width, 110);
+      drawGrid(ctx1, c1.width, c1.height, 23);
+
+      ctx1.strokeStyle = 'rgba(0, 243, 255, 0.25)';
+      ctx1.beginPath(); ctx1.moveTo(15, c1.height / 2); ctx1.lineTo(c1.width - 15, c1.height / 2); ctx1.stroke();
+
+      const ix = ep1.iceStart * c1.width;
+      const iw = ep1.iceW * c1.width;
+      ctx1.save();
+      ctx1.fillStyle = 'rgba(255, 42, 85, 0.18)';
+      ctx1.fillRect(ix, 26, iw, 133);
       ctx1.strokeStyle = '#ff2a55';
-      ctx1.strokeRect(ep1.iceStart * c1.width, 20, ep1.iceW * c1.width, 110);
-      // Green SYNC zone
-      ctx1.fillStyle = 'rgba(0, 255, 136, 0.25)';
-      ctx1.fillRect(ep1.greenStart * c1.width, 20, ep1.greenW * c1.width, 110);
+      ctx1.shadowBlur = 12;
+      ctx1.shadowColor = '#ff2a55';
+      ctx1.lineWidth = 2;
+      ctx1.strokeRect(ix, 26, iw, 133);
+      ctx1.fillStyle = '#ff2a55';
+      ctx1.font = 'bold 10px monospace';
+      ctx1.fillText('ICE', ix + iw / 2 - 9, 42);
+      ctx1.restore();
+
+      const gx = ep1.greenStart * c1.width;
+      const gw = ep1.greenW * c1.width;
+      ctx1.save();
+      ctx1.fillStyle = 'rgba(0, 255, 136, 0.2)';
+      ctx1.fillRect(gx, 26, gw, 133);
       ctx1.strokeStyle = '#00ff88';
-      ctx1.strokeRect(ep1.greenStart * c1.width, 20, ep1.greenW * c1.width, 110);
-      // Cursor
+      ctx1.shadowBlur = 14;
+      ctx1.shadowColor = '#00ff88';
+      ctx1.lineWidth = 2;
+      ctx1.strokeRect(gx, 26, gw, 133);
+      ctx1.fillStyle = '#00ff88';
+      ctx1.font = 'bold 10px monospace';
+      ctx1.fillText('SYNC', gx + gw / 2 - 12, 42);
+      ctx1.restore();
+
+      ep1.trail.forEach((tx, idx) => {
+        ctx1.fillStyle = `rgba(0, 243, 255, ${(idx / ep1.trail.length) * 0.25})`;
+        ctx1.fillRect(tx - 2, 22, 4, 141);
+      });
+
       const px = ep1.pos * c1.width;
+      ctx1.save();
       ctx1.fillStyle = '#ffffff';
-      ctx1.fillRect(px - 3, 14, 6, 122);
-    }
+      ctx1.shadowBlur = 16;
+      ctx1.shadowColor = '#00f3ff';
+      ctx1.fillRect(px - 2.5, 18, 5, 149);
+      ctx1.restore();
 
-    // Ep 2 Update
-    if (currentScreen === 'ep2' && !ep2.won) {
-      if (ep2.holding) {
-        ep2.heat += 38 * dt;
-        ep2.prog += 42 * dt;
-        if (ep2.heat >= 100) {
-          beep(150, 0.2, 'sawtooth');
-          ep2.heat = 45;
-          ep2.prog = Math.max(0, ep2.prog - 45);
-        }
-        if (ep2.prog >= 100) {
-          beep(840, 0.08);
-          ep2.prog = 0;
-          ep2.block++;
-          if (ep2.block >= 4) {
-            ep2.won = true;
-            document.getElementById('ep2Win').classList.add('show');
-          }
-        }
-      } else {
-        ep2.heat = Math.max(15, ep2.heat - 34 * dt);
+      if (ep1.flash > 0) {
+        ctx1.fillStyle = ep1.flashColor;
+        ctx1.globalAlpha = ep1.flash;
+        ctx1.fillRect(0, 0, c1.width, c1.height);
+        ctx1.globalAlpha = 1;
+        ep1.flash -= dt;
       }
-      document.getElementById('ep2HeatFill').style.width = ep2.heat + '%';
-      document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block + 1)}/4`;
-      renderEp2Blocks();
+      updateAndDrawParticles(ctx1, dt);
     }
 
-    // Ep 3 Draw
+    if (currentScreen === 'ep2') {
+      ep2.waveT += dt * (ep2.holding ? 14 : 3);
+      if (!ep2.won) {
+        if (ep2.holding) {
+          ep2.heat += 38 * dt;
+          ep2.prog += 42 * dt;
+          if (ep2.heat >= 100) {
+            beep(150, 0.2, 'sawtooth');
+            ep2.heat = 45;
+            ep2.prog = Math.max(0, ep2.prog - 45);
+          }
+          if (ep2.prog >= 100) {
+            beep(840, 0.08);
+            ep2.prog = 0;
+            ep2.block++;
+            if (ep2.block >= 4) {
+              ep2.won = true;
+              document.getElementById('ep2Win').classList.add('show');
+            }
+          }
+        } else {
+          ep2.heat = Math.max(15, ep2.heat - 34 * dt);
+        }
+        document.getElementById('ep2HeatFill').style.width = ep2.heat + '%';
+        document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block + 1)}/4`;
+        renderEp2Blocks();
+      }
+
+      ctx2.clearRect(0, 0, c2.width, c2.height);
+      drawGrid(ctx2, c2.width, c2.height, 20);
+      ctx2.save();
+      const waveColor = ep2.heat > 75 ? '#ff2a55' : (ep2.holding ? '#00ff88' : '#00f3ff');
+      ctx2.strokeStyle = waveColor;
+      ctx2.shadowBlur = 10;
+      ctx2.shadowColor = waveColor;
+      ctx2.lineWidth = 2;
+      ctx2.beginPath();
+      const amp = ep2.holding ? (16 + (ep2.heat / 100) * 24) : 6;
+      for (let x = 10; x < c2.width - 10; x += 4) {
+        const y = 60 + Math.sin(x * 0.05 + ep2.waveT) * amp * Math.sin(x * 0.015);
+        if (x === 10) ctx2.moveTo(x, y);
+        else ctx2.lineTo(x, y);
+      }
+      ctx2.stroke();
+      ctx2.fillStyle = waveColor;
+      ctx2.font = '10px monospace';
+      ctx2.fillText(ep2.holding ? 'STATUS: DECRYPTING_STREAM...' : 'STATUS: COOLING_CORE...', 14, 20);
+      ctx2.restore();
+    }
+
     if (currentScreen === 'ep3') {
       if (!ep3.won) {
         ep3.phase += dt * 2.1;
         ep3.vy += (ep3.holding ? -280 : 250) * dt;
         ep3.vy *= 0.92;
-        ep3.y = Math.max(15, Math.min(135, ep3.y + ep3.vy * dt));
+        ep3.y = Math.max(18, Math.min(167, ep3.y + ep3.vy * dt));
 
-        const targetY = 75 + Math.sin(ep3.phase) * 42;
+        const targetY = 92 + Math.sin(ep3.phase) * 52;
         const diff = Math.abs(ep3.y - targetY);
-        if (diff < 28) {
+        if (diff < 30) {
           ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
           ep3.signal = Math.min(100, ep3.signal + 12 * dt);
         } else {
@@ -1014,53 +1134,117 @@
         document.getElementById('ep3Stats').textContent = `ОСТАЛОСЬ: ${ep3.timeLeft.toFixed(1)}с | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
       }
 
+      ep3.trail.unshift(ep3.y);
+      if (ep3.trail.length > 26) ep3.trail.pop();
+
       ctx3.clearRect(0, 0, c3.width, c3.height);
-      // Safe corridor wave
-      ctx3.strokeStyle = 'rgba(0, 255, 136, 0.45)';
-      ctx3.lineWidth = 36;
+      drawGrid(ctx3, c3.width, c3.height, 23);
+
+      ctx3.save();
+      ctx3.strokeStyle = 'rgba(0, 255, 136, 0.16)';
+      ctx3.lineWidth = 44;
       ctx3.beginPath();
-      for (let x = 0; x <= c3.width; x += 15) {
-        const wy = 75 + Math.sin(ep3.phase + (x - 90) * 0.015) * 42;
+      for (let x = 0; x <= c3.width; x += 12) {
+        const wy = 92 + Math.sin(ep3.phase + (x - 95) * 0.015) * 52;
         if (x === 0) ctx3.moveTo(x, wy);
         else ctx3.lineTo(x, wy);
       }
       ctx3.stroke();
 
-      // Player dot
-      ctx3.fillStyle = '#00f3ff';
+      ctx3.strokeStyle = '#00ff88';
+      ctx3.shadowBlur = 10;
+      ctx3.shadowColor = '#00ff88';
+      ctx3.lineWidth = 2;
+      ctx3.setLineDash([6, 6]);
+      ctx3.stroke();
+      ctx3.restore();
+
+      ctx3.save();
+      ctx3.strokeStyle = '#00f3ff';
+      ctx3.shadowBlur = 10;
+      ctx3.shadowColor = '#00f3ff';
+      ctx3.lineWidth = 3;
       ctx3.beginPath();
-      ctx3.arc(90, ep3.y, 8, 0, Math.PI * 2);
+      ep3.trail.forEach((ty, idx) => {
+        const tx = 95 - idx * 3.2;
+        if (idx === 0) ctx3.moveTo(tx, ty);
+        else ctx3.lineTo(tx, ty);
+      });
+      ctx3.stroke();
+
+      ctx3.fillStyle = '#ffffff';
+      ctx3.beginPath();
+      ctx3.arc(95, ep3.y, 7, 0, Math.PI * 2);
       ctx3.fill();
+      ctx3.strokeStyle = '#00f3ff';
+      ctx3.lineWidth = 2;
+      ctx3.beginPath();
+      ctx3.arc(95, ep3.y, 12, 0, Math.PI * 2);
+      ctx3.stroke();
+      ctx3.restore();
     }
 
-    // Ep 4 Draw
     if (currentScreen === 'ep4') {
       if (!ep4.won) {
         ep4.t += dt * (1.8 + ep4.phase * 0.45);
         ep4.tx = 230 + Math.cos(ep4.t) * 145;
-        ep4.ty = 75 + Math.sin(ep4.t * 1.4) * 42;
+        ep4.ty = 92 + Math.sin(ep4.t * 1.4) * 52;
         ep4.cx = 230 + Math.sin(ep4.t * 1.9) * 155;
-        ep4.cy = 75 + Math.cos(ep4.t * 1.1) * 42;
+        ep4.cy = 92 + Math.cos(ep4.t * 1.1) * 52;
       }
+      ep4.sweep += dt * 2.5;
+
       ctx4.clearRect(0, 0, c4.width, c4.height);
-      // Target
+      drawGrid(ctx4, c4.width, c4.height, 23);
+
+      ctx4.save();
+      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.16)';
+      ctx4.lineWidth = 1;
+      [35, 65, 95].forEach(r => {
+        ctx4.beginPath(); ctx4.arc(230, 92, r, 0, Math.PI * 2); ctx4.stroke();
+      });
+      ctx4.strokeStyle = 'rgba(0, 255, 136, 0.35)';
+      ctx4.beginPath();
+      ctx4.moveTo(230, 92);
+      ctx4.lineTo(230 + Math.cos(ep4.sweep) * 180, 92 + Math.sin(ep4.sweep) * 180);
+      ctx4.stroke();
+      ctx4.restore();
+
+      const dist = Math.hypot(ep4.cx - ep4.tx, ep4.cy - ep4.ty);
+      const inLock = dist < 42;
+
+      ctx4.save();
       ctx4.strokeStyle = '#ff2a55';
+      ctx4.shadowBlur = 14;
+      ctx4.shadowColor = '#ff2a55';
       ctx4.lineWidth = 2;
       ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 18, 0, Math.PI * 2);
+      ctx4.arc(ep4.tx, ep4.ty, 18 + Math.sin(ep4.sweep * 4) * 3, 0, Math.PI * 2);
       ctx4.stroke();
       ctx4.fillStyle = '#ff2a55';
       ctx4.beginPath();
       ctx4.arc(ep4.tx, ep4.ty, 4, 0, Math.PI * 2);
       ctx4.fill();
+      ctx4.restore();
 
-      // Crosshair
-      ctx4.strokeStyle = '#00f3ff';
+      const lockColor = inLock ? '#00ff88' : '#00f3ff';
+      ctx4.save();
+      ctx4.strokeStyle = lockColor;
+      ctx4.shadowBlur = 14;
+      ctx4.shadowColor = lockColor;
+      ctx4.lineWidth = 2;
       ctx4.beginPath();
       ctx4.arc(ep4.cx, ep4.cy, 22, 0, Math.PI * 2);
-      ctx4.moveTo(ep4.cx - 30, ep4.cy); ctx4.lineTo(ep4.cx + 30, ep4.cy);
-      ctx4.moveTo(ep4.cx, ep4.cy - 30); ctx4.lineTo(ep4.cx, ep4.cy + 30);
+      ctx4.moveTo(ep4.cx - 32, ep4.cy); ctx4.lineTo(ep4.cx + 32, ep4.cy);
+      ctx4.moveTo(ep4.cx, ep4.cy - 32); ctx4.lineTo(ep4.cx, ep4.cy + 32);
       ctx4.stroke();
+
+      ctx4.fillStyle = lockColor;
+      ctx4.font = 'bold 10px monospace';
+      ctx4.fillText(inLock ? 'LOCK: READY [FIRE]' : `DELTA: ${Math.floor(dist)}m`, 14, 22);
+      ctx4.restore();
+
+      updateAndDrawParticles(ctx4, dt);
     }
 
     requestAnimationFrame(loop);
