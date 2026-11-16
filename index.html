@@ -17,6 +17,7 @@
             --neon-green: #00ff66;
             --neon-red: #ff2a55;
             --neon-amber: #ffae00;
+            --neon-purple: #a855f7;
             --text-main: #e2f1f8;
             --text-muted: #94a3b8;
         }
@@ -111,7 +112,7 @@
 
         .nav-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             gap: 4px;
             flex: 1;
         }
@@ -271,10 +272,50 @@
             color: var(--text-muted);
         }
 
+        /* Поле ввода PIN-кода для финального секретного узла [ ? ] */
+        .pin-input-box {
+            width: 100%;
+            max-width: 240px;
+            margin: 0 auto;
+            display: block;
+            background: #03060a;
+            border: 2px solid rgba(168, 85, 247, 0.65);
+            border-radius: 12px;
+            padding: 14px 12px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.35em;
+            text-align: center;
+            color: #ffffff;
+            outline: none;
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.2), inset 0 0 12px rgba(168, 85, 247, 0.12);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .pin-input-box:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
+        }
+
+        .pin-input-box::placeholder {
+            color: rgba(148, 163, 184, 0.35);
+            letter-spacing: 0.3em;
+        }
+
+        .tg-link-box {
+            background: rgba(3, 6, 10, 0.92);
+            border: 1px solid rgba(0, 243, 255, 0.55);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 14px rgba(0, 243, 255, 0.08);
+            word-break: break-all;
+        }
+
         /* Утилиты типографики и свечения */
         .glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.75); }
         .glow-green { text-shadow: 0 0 12px rgba(0, 255, 102, 0.85); }
         .glow-red { text-shadow: 0 0 12px rgba(255, 42, 85, 0.85); }
+        .glow-purple { text-shadow: 0 0 12px rgba(168, 85, 247, 0.85); }
 
         .row-between {
             display: flex;
@@ -348,13 +389,14 @@
         </div>
 
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid #1e293b;">
-            <nav class="nav-grid" style="min-width: 250px;">
+            <nav class="nav-grid" style="min-width: 260px;">
                 <button id="nav-menu" type="button" onclick="goHome()" class="interactive-btn nav-tab active">МЕНЮ</button>
                 <button id="nav-ep1" type="button" onclick="startEpisode(1)" class="interactive-btn nav-tab">СЕР.1</button>
                 <button id="nav-ep2" type="button" onclick="startEpisode(2)" class="interactive-btn nav-tab">СЕР.2</button>
                 <button id="nav-ep3" type="button" onclick="startEpisode(3)" class="interactive-btn nav-tab">СЕР.3</button>
                 <button id="nav-ep4" type="button" onclick="startEpisode(4)" class="interactive-btn nav-tab">СЕР.4</button>
                 <button id="nav-audio" type="button" onclick="startAudio()" class="interactive-btn nav-tab" style="color: var(--neon-green);">АУДИО</button>
+                <button id="nav-secret" type="button" onclick="startSecret()" class="interactive-btn nav-tab" style="color: var(--neon-purple); border-color: rgba(168, 85, 247, 0.45);">?</button>
             </nav>
 
             <div style="background: rgba(0, 243, 255, 0.12); border: 1px solid rgba(0, 243, 255, 0.4); border-radius: 6px; padding: 5px 9px; font-size: 11px; font-weight: 800; color: var(--neon-cyan);">
@@ -463,6 +505,129 @@
                     </div>
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-green);">▶</div>
                 </button>
+
+                <!-- Карточка Финального Секретного Узла [ ? ] -->
+                <button type="button" onclick="startSecret()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(168, 85, 247, 0.55); background: rgba(168, 85, 247, 0.09);">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span id="menu-secret-badge" class="badge" style="background: rgba(168, 85, 247, 0.24); color: var(--neon-purple);">ШИФР // [ ? ]</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ВНЕШНИЙ КЛЮЧ АВТОРИЗАЦИИ</span>
+                        </div>
+                        <div id="menu-secret-title" style="font-size: 14px; font-weight: 800; color: #e9d5ff;">
+                            ПРОТОКОЛ «???» // ЗАКРЫТЫЙ УЗЕЛ
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            Требуется 4-значный ключ авторизации из внешнего канала связи
+                        </div>
+                    </div>
+                    <div id="menu-secret-icon" class="pulse-anim glow-purple" style="font-size: 24px; font-weight: 800; color: var(--neon-purple); flex-shrink: 0;">?</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= ЭКРАН: СЕКРЕТНЫЙ УЗЕЛ [ ? ] ================= -->
+        <section id="screen-secret" class="hidden cyber-panel stack-md" style="padding: 16px; border-color: rgba(168, 85, 247, 0.5);">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-purple);">ЗАКРЫТЫЙ УЗЕЛ // УРОВЕНЬ ДОСТУПА: ???</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ДЕШИФРОВКА КАНАЛА СВЯЗИ</div>
+                </div>
+                <span id="secret-status-badge" class="badge" style="background: rgba(255,42,85,0.18); color: var(--neon-red); border: 1px solid rgba(255,42,85,0.45);">
+                    LOCKED
+                </span>
+            </div>
+
+            <!-- Состояние 1: Заблокировано (ввод 4-значного кода 0451) -->
+            <div id="secret-locked-view" class="stack-md" style="padding: 8px 0; text-align: center;">
+                <div class="pulse-anim glow-purple" style="font-size: 42px; font-weight: 800; color: var(--neon-purple); line-height: 1;">
+                    [ ? ]
+                </div>
+
+                <div style="font-size: 12px; font-weight: 800; color: #e2e8f0; line-height: 1.45; max-width: 420px; margin: 0 auto;">
+                    ВВЕДИТЕ 4-ЗНАЧНЫЙ КЛЮЧ ДОСТУПА, ПОЛУЧЕННЫЙ ПО ВНЕШНЕМУ КАНАЛУ СВЯЗИ:
+                </div>
+
+                <div class="stack-sm">
+                    <input
+                        id="secret-pin-input"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        maxlength="4"
+                        autocomplete="off"
+                        placeholder="••••"
+                        class="pin-input-box"
+                        oninput="handleSecretPinInput(this)"
+                        onkeydown="if (event.key === 'Enter') { event.preventDefault(); verifySecretPin(); }"
+                    />
+                    <div id="secret-error" class="hidden" style="font-size: 11px; font-weight: 800; color: var(--neon-red); padding-top: 4px;">
+                        ✖ ОШИБКА ДОСТУПА // НЕВЕРНЫЙ КЛЮЧ АВТОРИЗАЦИИ
+                    </div>
+                </div>
+
+                <button type="button" onclick="verifySecretPin()" class="action-pad" style="border-color: var(--neon-purple); background: linear-gradient(180deg, rgba(168, 85, 247, 0.22) 0%, rgba(168, 85, 247, 0.07) 100%); box-shadow: 0 0 24px rgba(168, 85, 247, 0.25);">
+                    <div class="glow-purple" style="font-size: 16px; font-weight: 800; color: #e9d5ff;">
+                        [ ПОДТВЕРДИТЬ КОД ]
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                        ВВЕДИТЕ 4 ЦИФРЫ И НАЖМИТЕ ДЛЯ РАСШИФРОВКИ
+                    </div>
+                </button>
+            </div>
+
+            <!-- Состояние 2: Расшифровано (Telegram-канал) -->
+            <div id="secret-unlocked-view" class="hidden stack-md">
+                <div style="background: rgba(0, 255, 102, 0.1); border: 1px solid rgba(0, 255, 102, 0.45); border-radius: 10px; padding: 12px;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
+                        <span class="badge" style="background: rgba(0, 243, 255, 0.22); color: var(--neon-cyan);">TG // TELEGRAM</span>
+                        <span style="font-size: 10px; font-weight: 800; color: var(--neon-green);">КЛЮЧ 0451 ПОДТВЕРЖДЕН ✓</span>
+                    </div>
+                    <div class="glow-green" style="font-size: 14px; font-weight: 800; color: var(--neon-green);">
+                        TG // ЗАКРЫТЫЙ TELEGRAM-КАНАЛ СВЯЗИ
+                    </div>
+                </div>
+
+                <div class="tg-link-box stack-sm">
+                    <div style="font-size: 10px; font-weight: 800; color: var(--text-muted);">
+                        ИДЕНТИФИКАТОР КАНАЛА В TELEGRAM (@ID / INVITE):
+                    </div>
+                    <div class="glow-cyan" style="font-size: 15px; font-weight: 800; color: var(--neon-cyan);">
+                        @+84Sq5_qWDlVlZTMy
+                    </div>
+                    <div style="font-size: 12px; font-weight: 700; color: #ffffff;">
+                        t.me/+84Sq5_qWDlVlZTMy
+                    </div>
+                    <div style="font-size: 11px; color: var(--neon-amber); padding-top: 4px; border-top: 1px solid #1e293b;">
+                        https://t.me/+84Sq5_qWDlVlZTMy
+                    </div>
+                </div>
+
+                <button id="secret-copy-btn" type="button" onclick="copyTelegramInvite()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px 12px; font-size: 12px; font-weight: 800; color: var(--neon-cyan); border-color: var(--neon-cyan);">
+                    [ 📋 СКОПИРОВАТЬ ССЫЛКУ / ID ДЛЯ TELEGRAM ]
+                </button>
+
+                <a href="https://t.me/+84Sq5_qWDlVlZTMy" target="_blank" rel="noopener noreferrer" class="interactive-btn action-pad green-pad" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none;">
+                    <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
+                        [ ✈️ ОТКРЫТЬ КАНАЛ В TELEGRAM ]
+                    </div>
+                    <div style="font-size: 11px; color: #e2e8f0; margin-top: 4px;">
+                        ПРЯМОЙ ПЕРЕХОД В ПРИЛОЖЕНИЕ TELEGRAM
+                    </div>
+                </a>
+
+                <div style="font-size: 11px; color: var(--text-muted); text-align: center; background: rgba(0,0,0,0.5); padding: 8px 10px; border-radius: 8px; border: 1px solid #1e293b;">
+                    Внутри канала находится файл с финальным протоколом.
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="button" onclick="lockSecretNode()" class="interactive-btn cyber-btn" style="padding: 7px 12px; font-size: 10px; font-weight: 800; color: var(--text-muted); border-color: #334155;">
+                        🔒 ЗАБЛОКИРОВАТЬ УЗЕЛ
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
             </div>
         </section>
 
@@ -906,7 +1071,7 @@
         function showScreen(screenId) {
             stopAllLoops();
             if (screenId !== 'audio') stopAllLogs();
-            ['menu', 'audio', 'ep1', 'ep2', 'ep3', 'ep4'].forEach(id => {
+            ['menu', 'audio', 'secret', 'ep1', 'ep2', 'ep3', 'ep4'].forEach(id => {
                 const el = document.getElementById(`screen-${id}`);
                 if (el) el.classList.add('hidden');
                 const navBtn = document.getElementById(`nav-${id}`);
@@ -942,6 +1107,162 @@
             playBeep(680, 0.08, 'triangle', 0.15);
             showScreen('audio');
             setStageIndicator('КАНАЛ АУДИО-ЛОГОВ');
+        }
+
+        /* =========================================================================
+           2.5 СЕКРЕТНЫЙ ФИНАЛЬНЫЙ УЗЕЛ [ ? ] -> КОД 0451 -> TELEGRAM КАНАЛ
+           ========================================================================= */
+        const SECRET_CODE = '0451';
+        const TG_INVITE_LINK = 'https://t.me/+84Sq5_qWDlVlZTMy';
+        let secretUnlocked = false;
+
+        function startSecret() {
+            initAudio();
+            playBeep(560, 0.09, 'triangle', 0.16);
+            showScreen('secret');
+            if (secretUnlocked) {
+                setStageIndicator('КАНАЛ TG РАСШИФРОВАН');
+            } else {
+                setStageIndicator('УЗЕЛ [ ? ] // АВТОРИЗАЦИЯ');
+                const pinInput = document.getElementById('secret-pin-input');
+                if (pinInput) {
+                    pinInput.value = '';
+                    document.getElementById('secret-error').classList.add('hidden');
+                    setTimeout(() => pinInput.focus(), 120);
+                }
+            }
+        }
+
+        function handleSecretPinInput(inputEl) {
+            inputEl.value = inputEl.value.replace(/\D/g, '').slice(0, 4);
+            document.getElementById('secret-error').classList.add('hidden');
+            if (inputEl.value.length > 0) {
+                playBeep(520 + inputEl.value.length * 65, 0.04, 'sine', 0.1);
+            }
+            if (inputEl.value.length === 4) {
+                verifySecretPin();
+            }
+        }
+
+        function verifySecretPin() {
+            initAudio();
+            const pinInput = document.getElementById('secret-pin-input');
+            const errEl = document.getElementById('secret-error');
+            const entered = pinInput ? pinInput.value.trim() : '';
+
+            if (entered === SECRET_CODE) {
+                secretUnlocked = true;
+                playSuccessSound();
+                setStageIndicator('КАНАЛ TG РАСШИФРОВАН');
+
+                document.getElementById('secret-locked-view').classList.add('hidden');
+                document.getElementById('secret-unlocked-view').classList.remove('hidden');
+
+                const badge = document.getElementById('secret-status-badge');
+                badge.textContent = 'UNLOCKED';
+                badge.style.background = 'rgba(0,255,102,0.18)';
+                badge.style.color = 'var(--neon-green)';
+                badge.style.borderColor = 'rgba(0,255,102,0.5)';
+
+                const menuBadge = document.getElementById('menu-secret-badge');
+                const menuTitle = document.getElementById('menu-secret-title');
+                const menuIcon = document.getElementById('menu-secret-icon');
+                if (menuBadge) {
+                    menuBadge.textContent = 'TG // РАСШИФРОВАНО';
+                    menuBadge.style.background = 'rgba(0,255,102,0.2)';
+                    menuBadge.style.color = 'var(--neon-green)';
+                }
+                if (menuTitle) {
+                    menuTitle.textContent = 'ПРОТОКОЛ «ФИНАЛ» // КАНАЛ TELEGRAM';
+                    menuTitle.style.color = 'var(--neon-green)';
+                }
+                if (menuIcon) {
+                    menuIcon.textContent = '✓';
+                    menuIcon.style.color = 'var(--neon-green)';
+                }
+            } else {
+                playAlarmSound();
+                addFailure();
+                errEl.classList.remove('hidden');
+                const screenEl = document.getElementById('screen-secret');
+                screenEl.classList.add('alarm-flash');
+                setTimeout(() => screenEl.classList.remove('alarm-flash'), 450);
+                if (pinInput) {
+                    pinInput.value = '';
+                    pinInput.focus();
+                }
+            }
+        }
+
+        function copyTelegramInvite() {
+            initAudio();
+            playLockSound(2);
+            const btn = document.getElementById('secret-copy-btn');
+
+            const tempArea = document.createElement('textarea');
+            tempArea.value = TG_INVITE_LINK;
+            tempArea.setAttribute('readonly', '');
+            tempArea.style.position = 'fixed';
+            tempArea.style.opacity = '0';
+            document.body.appendChild(tempArea);
+            tempArea.focus();
+            tempArea.select();
+            tempArea.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+            } catch (e) {}
+            document.body.removeChild(tempArea);
+
+            if (btn) {
+                btn.textContent = '✓ СКОПИРОВАНО! ВСТАВЬТЕ В ПОИСК TELEGRAM';
+                btn.style.color = 'var(--neon-green)';
+                btn.style.borderColor = 'var(--neon-green)';
+                setTimeout(() => {
+                    btn.textContent = '[ 📋 СКОПИРОВАТЬ ССЫЛКУ / ID ДЛЯ TELEGRAM ]';
+                    btn.style.color = 'var(--neon-cyan)';
+                    btn.style.borderColor = 'var(--neon-cyan)';
+                }, 2600);
+            }
+        }
+
+        function lockSecretNode() {
+            initAudio();
+            playBeep(320, 0.08, 'sawtooth', 0.14);
+            secretUnlocked = false;
+            setStageIndicator('УЗЕЛ [ ? ] // АВТОРИЗАЦИЯ');
+
+            document.getElementById('secret-unlocked-view').classList.add('hidden');
+            document.getElementById('secret-locked-view').classList.remove('hidden');
+            document.getElementById('secret-error').classList.add('hidden');
+
+            const pinInput = document.getElementById('secret-pin-input');
+            if (pinInput) {
+                pinInput.value = '';
+                pinInput.focus();
+            }
+
+            const badge = document.getElementById('secret-status-badge');
+            badge.textContent = 'LOCKED';
+            badge.style.background = 'rgba(255,42,85,0.18)';
+            badge.style.color = 'var(--neon-red)';
+            badge.style.borderColor = 'rgba(255,42,85,0.45)';
+
+            const menuBadge = document.getElementById('menu-secret-badge');
+            const menuTitle = document.getElementById('menu-secret-title');
+            const menuIcon = document.getElementById('menu-secret-icon');
+            if (menuBadge) {
+                menuBadge.textContent = 'ШИФР // [ ? ]';
+                menuBadge.style.background = 'rgba(168, 85, 247, 0.24)';
+                menuBadge.style.color = 'var(--neon-purple)';
+            }
+            if (menuTitle) {
+                menuTitle.textContent = 'ПРОТОКОЛ «???» // ЗАКРЫТЫЙ УЗЕЛ';
+                menuTitle.style.color = '#e9d5ff';
+            }
+            if (menuIcon) {
+                menuIcon.textContent = '?';
+                menuIcon.style.color = 'var(--neon-purple)';
+            }
         }
 
         /* =========================================================================
@@ -1869,13 +2190,13 @@
         }
 
         window.addEventListener('keydown', (e) => {
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
             if (e.code === 'Space') {
                 if (currentScreen !== 'menu') e.preventDefault();
                 if (e.repeat) return;
 
                 if (currentScreen === 'ep1') handleEp1Press();
-                if (currentScreen === 'ep2') handleEp2Tap();
-                if (currentScreen === 'ep3') setEp3Hold(true);
+                if (currentScreen === 'ep2') handleEp2Ta                if (currentScreen === 'ep3') setEp3Hold(true);
                 if (currentScreen === 'ep4') handleEp4Press();
             }
         });
