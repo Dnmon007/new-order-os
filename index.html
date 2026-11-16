@@ -132,8 +132,8 @@
 
         .action-pad {
             width: 100%;
-            min-height: 78px;
-            padding: 16px 12px;
+            min-height: 76px;
+            padding: 15px 12px;
             border-radius: 14px;
             background: linear-gradient(180deg, rgba(0, 243, 255, 0.16) 0%, rgba(0, 243, 255, 0.05) 100%);
             border: 2px solid var(--neon-cyan);
@@ -159,17 +159,14 @@
             background: linear-gradient(180deg, rgba(0, 255, 102, 0.16) 0%, rgba(0, 255, 102, 0.05) 100%);
         }
 
-        .action-pad.green-pad:active, .action-pad.green-pad.pressed {
-            background: rgba(0, 255, 102, 0.32);
-        }
-
         .action-pad.red-pad {
             border-color: var(--neon-red);
             background: linear-gradient(180deg, rgba(255, 42, 85, 0.18) 0%, rgba(255, 42, 85, 0.06) 100%);
         }
 
-        .action-pad.red-pad:active, .action-pad.red-pad.pressed {
-            background: rgba(255, 42, 85, 0.34);
+        .action-pad.amber-pad {
+            border-color: var(--neon-amber);
+            background: linear-gradient(180deg, rgba(255, 174, 0, 0.2) 0%, rgba(255, 174, 0, 0.06) 100%);
         }
 
         .action-pad.disabled-pad {
@@ -188,7 +185,6 @@
             flex-direction: column;
             gap: 8px;
             margin-bottom: 8px;
-            transition: all 0.2s;
         }
         .audio-card.playing {
             border-color: var(--neon-green);
@@ -199,23 +195,9 @@
             justify-content: space-between;
             align-items: center;
         }
-        .audio-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
-        .audio-tag {
-            font-size: 10px;
-            color: var(--neon-green);
-            background: rgba(0, 255, 102, 0.15);
-            padding: 3px 7px;
-            border-radius: 4px;
-        }
-        .audio-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .audio-name { font-size: 13px; font-weight: 700; color: #fff; }
+        .audio-tag { font-size: 10px; color: var(--neon-green); background: rgba(0, 255, 102, 0.15); padding: 3px 7px; border-radius: 4px; }
+        .audio-controls { display: flex; align-items: center; gap: 10px; }
         .play-btn {
             background: rgba(0, 255, 102, 0.1);
             border: 1px solid var(--neon-green);
@@ -227,39 +209,11 @@
             min-width: 90px;
             cursor: pointer;
         }
-        .audio-card.playing .play-btn {
-            background: var(--neon-green);
-            color: #03120a;
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
-        }
-        .progress-wrap {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .progress-bar-bg {
-            width: 100%;
-            height: 7px;
-            background: #03060a;
-            border: 1px solid #334155;
-            border-radius: 4px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--neon-green);
-            box-shadow: 0 0 8px var(--neon-green);
-            transition: width 0.1s linear;
-        }
-        .time-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: var(--text-muted);
-        }
+        .audio-card.playing .play-btn { background: var(--neon-green); color: #03120a; }
+        .progress-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .progress-bar-bg { width: 100%; height: 7px; background: #03060a; border: 1px solid #334155; border-radius: 4px; overflow: hidden; cursor: pointer; }
+        .progress-fill { height: 100%; width: 0%; background: var(--neon-green); }
+        .time-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
 
         .code-input {
             width: 100%;
@@ -277,10 +231,104 @@
             -webkit-user-select: text;
             user-select: text;
         }
-
         .code-input:focus {
             border-color: var(--neon-cyan);
             box-shadow: 0 0 22px rgba(0, 243, 255, 0.3);
+        }
+
+        /* Стили для 3 новых финальных мини-игр */
+        .cyber-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            background: #03060a;
+            border: 1px solid rgba(0, 243, 255, 0.45);
+            border-radius: 6px;
+            outline: none;
+        }
+        .cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 12px var(--neon-cyan);
+            cursor: pointer;
+        }
+
+        .mem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 290px;
+            margin: 0 auto;
+        }
+        .mem-cell {
+            aspect-ratio: 1 / 1;
+            background: #050b14;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.12s ease;
+        }
+        .mem-cell.lit {
+            background: rgba(0, 243, 255, 0.38);
+            border-color: var(--neon-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 22px rgba(0, 243, 255, 0.75);
+            transform: scale(0.96);
+        }
+        .mem-cell.ok {
+            background: rgba(0, 255, 102, 0.35);
+            border-color: var(--neon-green);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.65);
+        }
+        .mem-cell.err {
+            background: rgba(255, 42, 85, 0.4);
+            border-color: var(--neon-red);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 42, 85, 0.7);
+        }
+
+        .cipher-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .cipher-digit {
+            padding: 10px 4px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            text-align: center;
+            border: 1px solid #334155;
+            background: #050b14;
+        }
+        .cipher-digit.exact {
+            background: rgba(0, 255, 102, 0.24);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+        }
+        .cipher-digit.near {
+            background: rgba(255, 174, 0, 0.24);
+            border-color: var(--neon-amber);
+            color: var(--neon-amber);
+        }
+        .cipher-digit.miss {
+            background: rgba(30, 41, 59, 0.45);
+            border-color: #334155;
+            color: #64748b;
         }
 
         .glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.75); }
@@ -288,24 +336,10 @@
         .glow-red { text-shadow: 0 0 12px rgba(255, 42, 85, 0.85); }
         .glow-amber { text-shadow: 0 0 12px rgba(255, 174, 0, 0.85); }
 
-        .row-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
+        .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .stack-sm > * + * { margin-top: 8px; }
         .stack-md > * + * { margin-top: 12px; }
-
-        .badge {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 7px;
-            border-radius: 5px;
-            letter-spacing: 0.04em;
-        }
+        .badge { display: inline-block; font-size: 10px; font-weight: 800; padding: 3px 7px; border-radius: 5px; letter-spacing: 0.04em; }
 
         @keyframes pulseAlarm {
             0%, 100% { background-color: rgba(255, 42, 85, 0.15); border-color: #ff2a55; }
@@ -471,14 +505,14 @@
                 <button id="card-secret" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(255, 174, 0, 0.55); background: rgba(255, 174, 0, 0.08);">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
-                            <span class="badge" style="background: rgba(255,174,0,0.24); color: var(--neon-amber);">[ ? ] ЗАШИФРОВАНО</span>
-                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ТРЕБУЕТСЯ КОД ДОСТУПА</span>
+                            <span class="badge" style="background: rgba(255,174,0,0.24); color: var(--neon-amber);">[ ? ] ФИНАЛ • 3 ЗАЩИТЫ</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">КОД ДОСТУПА + 3 КРИПТО-ПРОТОКОЛА</span>
                         </div>
                         <div class="glow-amber" style="font-size: 14px; font-weight: 800; color: var(--neon-amber);">
-                            ПРОТОКОЛ «???» // ЗАКРЫТЫЙ УЗЕЛ
+                            ПРОТОКОЛ «???» // ЧЁРНЫЙ ЯЩИК
                         </div>
                         <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
-                            Экстренный канал связи — активация только по ключу в финале операции
+                            Требует ключ из VK и прохождения 3 системных контуров для доступа к TG
                         </div>
                     </div>
                     <div class="pulse-anim" style="font-size: 22px; font-weight: 800; color: var(--neon-amber);">?</div>
@@ -486,21 +520,22 @@
             </div>
         </section>
 
-        <!-- ЭКРАН: СЕКРЕТНЫЙ УЗЕЛ [ ? ] -->
-        <section id="screen-secret" class="hidden cyber-panel stack-md" style="padding: 18px; border-color: rgba(255, 174, 0, 0.55);">
+        <!-- ЭКРАН: СЕКРЕТНЫЙ УЗЕЛ [ ? ] (КОД + 3 ОРИГИНАЛЬНЫЕ МИНИ-ИГРЫ + ТГ) -->
+        <section id="screen-secret" class="hidden cyber-panel stack-md" style="padding: 16px; border-color: rgba(255, 174, 0, 0.55);">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
-                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-amber);">NODE_FINAL // ENCRYPTED_GATE</div>
-                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ЗАКРЫТЫЙ УЗЕЛ СВЯЗИ [ ? ]</div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-amber);">NODE_FINAL // BLACKBOX_PROTOCOL</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ПРОТОКОЛ «???» // ЧЁРНЫЙ ЯЩИК</div>
                 </div>
                 <span id="secret-status-badge" class="badge" style="background: rgba(255,42,85,0.2); color: var(--neon-red); border: 1px solid rgba(255,42,85,0.45);">
                     LOCKED
                 </span>
             </div>
 
+            <!-- ШАГ 0: ВВОД КОДА 0451 -->
             <div id="secret-lock-box" class="stack-md">
                 <div style="font-size: 12px; line-height: 1.5; color: #cbd5e1; background: rgba(0,0,0,0.55); padding: 12px; border-radius: 10px; border-left: 3px solid var(--neon-amber);">
-                    Доступ к финальному каналу заблокирован. Введите <strong style="color: var(--neon-amber);">4-значный код авторизации</strong>, полученный по внешнему каналу связи.
+                    Доступ к ядру заблокирован. Введите <strong style="color: var(--neon-amber);">4-значный код авторизации</strong>, полученный в личном сообщении, чтобы запустить 3-уровневый протокол дешифровки.
                 </div>
 
                 <div class="stack-sm">
@@ -513,20 +548,119 @@
                     </div>
                 </div>
 
-                <button id="secret-unlock-btn" type="button" class="action-pad" style="border-color: var(--neon-amber); background: linear-gradient(180deg, rgba(255, 174, 0, 0.2) 0%, rgba(255, 174, 0, 0.06) 100%);">
+                <button id="secret-unlock-btn" type="button" class="action-pad amber-pad">
                     <div class="glow-amber" style="font-size: 15px; font-weight: 800; color: var(--neon-amber);">
-                        [ ПОДТВЕРДИТЬ КОД ДОСТУПА ]
+                        [ ПОДТВЕРДИТЬ КОД И ЗАПУСТИТЬ ВЗЛОМ ]
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                        ДЕШИФРОВКА СКРЫТОГО КАНАЛА TELEGRAM
+                        АКТИВАЦИЯ 3 КОНТУРОВ ЗАЩИТЫ ЧЁРНОГО ЯЩИКА
                     </div>
                 </button>
             </div>
 
+            <!-- ШАГ 1–3: КОНТЕЙНЕР 3 НОВЫХ МИНИ-ИГР -->
+            <div id="secret-games-wrapper" class="hidden stack-md">
+                <!-- Индикатор 3 контуров -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 10px; font-weight: 800;">
+                    <div id="sec-pill-1" style="padding: 6px 4px; border-radius: 6px; background: rgba(0,243,255,0.2); border: 1px solid #00f3ff; color: #ffffff;">1. ОСЦИЛЛОГРАФ</div>
+                    <div id="sec-pill-2" style="padding: 6px 4px; border-radius: 6px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">2. НЕЙРО-ПАМЯТЬ</div>
+                    <div id="sec-pill-3" style="padding: 6px 4px; border-radius: 6px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">3. КРИПТО-ЗАМОК</div>
+                </div>
+
+                <!-- НОВАЯ МИНИ-ИГРА 1: КВАНТОВАЯ ОСЦИЛЛОГРАММА -->
+                <div id="sec-game-1" class="stack-md">
+                    <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                        <span style="color: var(--neon-cyan);">КОНТУР 1/3: СОВМЕСТИТЕ СИГНАЛЫ</span>
+                        <span id="wave-sync-val" style="color: var(--neon-amber);">РЕЗОНАНС: 0%</span>
+                    </div>
+
+                    <div style="position: relative; width: 100%; height: 150px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
+                        <svg viewBox="0 0 300 120" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
+                            <line x1="0" y1="60" x2="300" y2="60" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+                            <path id="wave-target-path" d="" fill="none" stroke="#ff2a55" stroke-width="3" opacity="0.85"/>
+                            <path id="wave-user-path" d="" fill="none" stroke="#00f3ff" stroke-width="3"/>
+                        </svg>
+                        <div style="position: absolute; top: 6px; left: 8px; font-size: 9px; font-weight: 800; color: #ff2a55;">— ЭТАЛОН (КРАСНЫЙ)</div>
+                        <div style="position: absolute; top: 6px; right: 8px; font-size: 9px; font-weight: 800; color: #00f3ff;">— ВАШ КАНАЛ (СИНИЙ)</div>
+                    </div>
+
+                    <div class="stack-sm" style="background: rgba(0,0,0,0.55); padding: 12px; border-radius: 10px; border: 1px solid #1e293b;">
+                        <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                            <span style="color: var(--text-muted);">ЧАСТОТА НЕСУЩЕЙ (FREQ)</span>
+                            <span id="wave-freq-label" style="color: var(--neon-cyan);">2.0 Hz</span>
+                        </div>
+                        <input id="wave-freq-slider" type="range" min="10" max="50" value="20" class="cyber-slider">
+
+                        <div class="row-between" style="font-size: 11px; font-weight: 800; margin-top: 8px;">
+                            <span style="color: var(--text-muted);">СДВИГ ФАЗЫ (PHASE)</span>
+                            <span id="wave-phase-label" style="color: var(--neon-cyan);">0°</span>
+                        </div>
+                        <input id="wave-phase-slider" type="range" min="0" max="62" value="0" class="cyber-slider">
+                    </div>
+
+                    <button id="wave-lock-btn" type="button" class="action-pad">
+                        <div class="glow-cyan" style="font-size: 15px; font-weight: 800; color: var(--neon-cyan);">
+                            [ ЗАФИКСИРОВАТЬ РЕЗОНАНС ВОЛНЫ ]
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                            ДОВЕДИТЕ РЕЗОНАНС ДО 90%+ И НАЖМИТЕ
+                        </div>
+                    </button>
+                </div>
+
+                <!-- НОВАЯ МИНИ-ИГРА 2: НЕЙРО-МАТРИЦА ПАМЯТИ -->
+                <div id="sec-game-2" class="hidden stack-md">
+                    <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                        <span id="mem-round-label" style="color: var(--neon-green);">КОНТУР 2/3: РАУНД 1/3 (4 ИМПУЛЬСА)</span>
+                        <span id="mem-status-label" style="color: var(--neon-amber);">СМОТРИТЕ...</span>
+                    </div>
+
+                    <div id="mem-grid" class="mem-grid">
+                        <button type="button" class="interactive-btn mem-cell" data-idx="0">01</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="1">02</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="2">03</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="3">04</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="4">05</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="5">06</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="6">07</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="7">08</button>
+                        <button type="button" class="interactive-btn mem-cell" data-idx="8">09</button>
+                    </div>
+
+                    <div style="font-size: 11px; text-align: center; color: var(--text-muted);">
+                        Запомните порядок вспышек ячеек и повторите его без ошибок.
+                    </div>
+                </div>
+
+                <!-- НОВАЯ МИНИ-ИГРА 3: КРИПТО-ДЕШИФРАТОР (ВЗЛОМ 4-ЗНАЧНОГО КЛЮЧА) -->
+                <div id="sec-game-3" class="hidden stack-md">
+                    <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                        <span style="color: var(--neon-amber);">КОНТУР 3/3: ПОДБОР КЛЮЧА ЯДРА</span>
+                        <span id="cipher-tries-label" style="color: var(--neon-cyan);">ПОПЫТОК: 6</span>
+                    </div>
+
+                    <div style="font-size: 11px; line-height: 1.45; color: #cbd5e1; background: rgba(0,0,0,0.55); padding: 10px; border-radius: 8px; border: 1px solid #1e293b;">
+                        Подберите 4-значный код (цифры не повторяются):<br>
+                        <span style="color: var(--neon-green); font-weight: 800;">ЗЕЛЁНЫЙ</span> — цифра на своём месте •
+                        <span style="color: var(--neon-amber); font-weight: 800;">ЖЁЛТЫЙ</span> — есть в коде, но не там.
+                    </div>
+
+                    <div id="cipher-history" class="stack-sm" style="max-height: 165px; overflow-y: auto;"></div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <input id="cipher-guess-input" type="tel" inputmode="numeric" maxlength="4" placeholder="1234" class="code-input" style="font-size: 20px; padding: 10px; letter-spacing: 0.28em;">
+                        <button id="cipher-submit-btn" type="button" class="interactive-btn cyber-btn" style="padding: 0 18px; font-size: 13px; font-weight: 800; color: var(--neon-green); border-color: var(--neon-green); background: rgba(0,255,102,0.14); flex-shrink: 0;">
+                            ВВОД
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ФИНАЛ: ОТКРЫТЫЙ TELEGRAM-КАНАЛ -->
             <div id="secret-unlocked-box" class="hidden stack-md" style="border-radius: 12px; padding: 16px; border: 2px solid var(--neon-cyan); background: rgba(0, 243, 255, 0.08);">
                 <div style="text-align: center;">
                     <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.45);">
-                        ✓ КОД ПРИНЯТ // УЗЕЛ РАСШИФРОВАН
+                        ✓ ВСЕ 3 КОНТУРА ВЗЛОМАНЫ // ДОСТУП ОТКРЫТ
                     </span>
                     <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); margin-top: 8px;">
                         TG // ЗАКРЫТЫЙ TELEGRAM-КАНАЛ
@@ -540,7 +674,7 @@
                     <div style="font-size: 10px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.08em; margin-bottom: 6px;">
                         TELEGRAM // @ID / ИНВАЙТ-ССЫЛКА
                     </div>
-                    <div id="tg-handle-display" style="font-size: 15px; font-weight: 800; color: #ffffff; word-break: break-all;">
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff; word-break: break-all;">
                         @+84Sq5_qWDlVlZTMy
                     </div>
                     <div style="font-size: 11px; color: var(--neon-cyan); margin-top: 4px; word-break: break-all;">
@@ -614,32 +748,22 @@
 
             <div id="ep1-bar-container" style="position: relative; width: 100%; height: 92px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
                 <div style="position: absolute; inset: 0; opacity: 0.2; background-image: repeating-linear-gradient(90deg, #00f3ff 0px, #00f3ff 1px, transparent 1px, transparent 18px);"></div>
-
                 <div id="ep1-trap1" style="position: absolute; top: 0; bottom: 0; left: 15%; width: 14%; background: rgba(255,42,85,0.35); border-left: 2px solid #ff2a55; border-right: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center;">
                     <span style="font-size: 9px; font-weight: 800; color: #ff2a55;">ICE</span>
                 </div>
-
                 <div id="ep1-trap2" class="hidden" style="position: absolute; top: 0; bottom: 0; left: 70%; width: 14%; background: rgba(255,42,85,0.35); border-left: 2px solid #ff2a55; border-right: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center;">
                     <span style="font-size: 9px; font-weight: 800; color: #ff2a55;">ICE</span>
                 </div>
-
                 <div id="ep1-target" style="position: absolute; top: 0; bottom: 0; left: 42%; width: 18%; background: rgba(0,255,102,0.26); border-left: 2px solid #00ff66; border-right: 2px solid #00ff66; box-shadow: 0 0 16px rgba(0,255,102,0.55); display: flex; align-items: center; justify-content: center;">
                     <span style="font-size: 10px; font-weight: 800; color: #00ff66;">SYNC</span>
                 </div>
-
                 <div id="ep1-cursor" style="position: absolute; top: 0; bottom: 0; left: 0%; width: 5px; background: #ffffff; box-shadow: 0 0 14px #00f3ff;"></div>
             </div>
 
             <div id="ep1-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
-                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
-                    VAULT UNLOCKED // ACCESS GRANTED
-                </div>
-                <div style="font-size: 12px; font-weight: 800; color: var(--neon-amber);">
-                    ВНИМАНИЕ: SILENT ALARM TRIGGERED! КОПЫ В ПУТИ!
-                </div>
-                <p style="font-size: 12px; color: #e2e8f0; margin: 6px 0;">
-                    Все 6 уровней шифра пройдены. Хватайте содержимое ячейки и прорывайтесь с боем к машинам!
-                </p>
+                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">VAULT UNLOCKED // ACCESS GRANTED</div>
+                <div style="font-size: 12px; font-weight: 800; color: var(--neon-amber);">ВНИМАНИЕ: SILENT ALARM TRIGGERED! КОПЫ В ПУТИ!</div>
+                <p style="font-size: 12px; color: #e2e8f0; margin: 6px 0;">Все 6 уровней шифра пройдены. Хватайте содержимое ячейки и прорывайтесь с боем к машинам!</p>
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                     <button id="retry-ep1" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ПРОТОКОЛ</button>
                     <button id="home-ep1" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
@@ -647,12 +771,8 @@
             </div>
 
             <button id="ep1-action-btn" type="button" class="action-pad">
-                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); letter-spacing: 0.04em;">
-                    [ АКТИВИРОВАТЬ / СИНХРОНИЗИРОВАТЬ ]
-                </div>
-                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                    ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ИЗБЕГАЙТЕ КРАСНЫХ ЗОН ICE
-                </div>
+                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); letter-spacing: 0.04em;">[ АКТИВИРОВАТЬ / СИНХРОНИЗИРОВАТЬ ]</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ИЗБЕГАЙТЕ КРАСНЫХ ЗОН ICE</div>
             </button>
         </section>
 
@@ -663,9 +783,7 @@
                     <div style="font-size: 10px; font-weight: 800; color: var(--neon-green);">СЕРИЯ 2 // БАЗА В СЭНДИ-ШОРС</div>
                     <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ВЗЛОМ КРИПТО-АРХИВА (4 БЛОКА)</div>
                 </div>
-                <span id="ep2-state-badge" class="badge" style="background: rgba(0,255,102,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.4);">
-                    БЛОК 1 / 4
-                </span>
+                <span id="ep2-state-badge" class="badge" style="background: rgba(0,255,102,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.4);">БЛОК 1 / 4</span>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
@@ -712,9 +830,7 @@
             </div>
 
             <div id="ep2-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
-                <div style="font-size: 11px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.06em;">
-                    ВСЕ 4 БЛОКА РАСШИФРОВАНЫ // ДОСТУП ПОЛУЧЕН
-                </div>
+                <div style="font-size: 11px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.06em;">ВСЕ 4 БЛОКА РАСШИФРОВАНЫ // ДОСТУП ПОЛУЧЕН</div>
                 <div class="glow-green" style="padding: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; border: 1px solid rgba(0,255,102,0.5); font-size: 13px; font-weight: 800; color: var(--neon-green);">
                     ЭЛИЗИАН-АЙЛЕНД // СЕКТОР 4 // ГЛУБИНА 65М
                 </div>
@@ -725,12 +841,8 @@
             </div>
 
             <button id="ep2-action-btn" type="button" class="action-pad green-pad">
-                <div id="ep2-btn-title" class="glow-green" style="font-size: 16px; font-weight: 800; color: var(--neon-green);">
-                    [ АКТИВИРОВАТЬ / ИМПУЛЬС ВЗЛОМА ]
-                </div>
-                <div id="ep2-btn-sub" style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                    ЧАСТО ТАПАЙТЕ И СЛЕДИТЕ ЗА ТЕПЛОВЫМИ СКАЧКАМИ ICE
-                </div>
+                <div id="ep2-btn-title" class="glow-green" style="font-size: 16px; font-weight: 800; color: var(--neon-green);">[ АКТИВИРОВАТЬ / ИМПУЛЬС ВЗЛОМА ]</div>
+                <div id="ep2-btn-sub" style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">ЧАСТО ТАПАЙТЕ И СЛЕДИТЕ ЗА ТЕПЛОВЫМИ СКАЧКАМИ ICE</div>
             </button>
         </section>
 
@@ -759,17 +871,12 @@
 
             <div style="position: relative; width: 100%; height: 220px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
                 <div style="position: absolute; inset: 0; opacity: 0.2; background-image: linear-gradient(#00f3ff 1px, transparent 1px), linear-gradient(90deg, #00f3ff 1px, transparent 1px); background-size: 28px 28px;"></div>
-
                 <div id="ep3-gust-alert" class="hidden pulse-anim" style="position: absolute; top: 8px; right: 8px; background: rgba(245,158,11,0.22); border: 1px solid #fbbf24; color: #fcd34d; font-size: 10px; font-weight: 800; padding: 3px 7px; border-radius: 5px; z-index: 5;">
                     ⚠ ПОРЫВ ПОМЕХ
                 </div>
-
                 <div id="ep3-corridor" style="position: absolute; left: 0; right: 0; top: 32%; height: 36%; background: rgba(0,255,102,0.18); border-top: 2px solid #00ff66; border-bottom: 2px solid #00ff66;">
-                    <div style="font-size: 9px; color: rgba(0,255,102,0.8); padding: 3px 8px; font-weight: 800; letter-spacing: 0.08em;">
-                        STEALTH FREQUENCY CHANNEL
-                    </div>
+                    <div style="font-size: 9px; color: rgba(0,255,102,0.8); padding: 3px 8px; font-weight: 800; letter-spacing: 0.08em;">STEALTH FREQUENCY CHANNEL</div>
                 </div>
-
                 <div id="ep3-dot" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: var(--neon-cyan); border: 2px solid #ffffff; box-shadow: 0 0 18px var(--neon-cyan);"></div>
             </div>
 
@@ -783,12 +890,8 @@
             </div>
 
             <button id="ep3-action-btn" type="button" class="action-pad">
-                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan);">
-                    [ УДЕРЖИВАТЬ ЧАСТОТУ СТЕЛСА ]
-                </div>
-                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                    ЗАЖМИТЕ ПАЛЕЦ / ПРОБЕЛ — ВВЕРХ • ОТПУСТИТЕ — ВНИЗ
-                </div>
+                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan);">[ УДЕРЖИВАТЬ ЧАСТОТУ СТЕЛСА ]</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">ЗАЖМИТЕ ПАЛЕЦ / ПРОБЕЛ — ВВЕРХ • ОТПУСТИТЕ — ВНИЗ</div>
             </button>
         </section>
 
@@ -799,9 +902,7 @@
                     <div style="font-size: 10px; font-weight: 800; color: var(--neon-red);">СЕРИЯ 4 // ГОРА ЧИЛИАД</div>
                     <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ЗАХВАТ ЦЕЛИ «ВЕЙЛ-1» (4 ФАЗЫ)</div>
                 </div>
-                <div id="ep4-step-badge" style="font-size: 12px; font-weight: 800; color: var(--neon-cyan);">
-                    ФАЗА 1/4: ОСЬ X
-                </div>
+                <div id="ep4-step-badge" style="font-size: 12px; font-weight: 800; color: var(--neon-cyan);">ФАЗА 1/4: ОСЬ X</div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; text-align: center; font-size: 9px; font-weight: 800;">
@@ -824,7 +925,6 @@
                 <div id="ep4-target-jet" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 10;">
                     <div id="ep4-ballistic-ring" class="hidden" style="position: absolute; top: 24px; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; border-radius: 50%; border: 2px solid #00ff66; box-shadow: 0 0 12px rgba(0,255,102,0.6);"></div>
                     <div id="ep4-target-zone-ring" class="hidden" style="position: absolute; top: 24px; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; border: 1px dashed #fbbf24;"></div>
-
                     <div style="width: 46px; height: 46px; border-radius: 8px; border: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center; background: rgba(255,42,85,0.18); box-shadow: 0 0 15px rgba(255,42,85,0.45);">
                         <svg style="width: 26px; height: 26px; color: #ff2a55;" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
@@ -843,12 +943,8 @@
             </div>
 
             <div id="ep4-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
-                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
-                    TARGET LOCKED // FIRE MISSILES
-                </div>
-                <p style="font-size: 12px; color: #e2e8f0; margin: 4px 0;">
-                    Все 4 контура наведения замкнуты! Жмите гашетку в прыжке над пропастью Чилиад!
-                </p>
+                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">TARGET LOCKED // FIRE MISSILES</div>
+                <p style="font-size: 12px; color: #e2e8f0; margin: 4px 0;">Все 4 контура наведения замкнуты! Жмите гашетку в прыжке над пропастью Чилиад!</p>
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                     <button id="retry-ep4" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПЕРЕЗАРЯДИТЬ РАКЕТЫ</button>
                     <button id="home-ep4" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
@@ -856,12 +952,8 @@
             </div>
 
             <button id="ep4-action-btn" type="button" class="action-pad red-pad">
-                <div id="ep4-btn-title" class="glow-red" style="font-size: 16px; font-weight: 800; color: var(--neon-red);">
-                    [ ЗАФИКСИРОВАТЬ ОСЬ X ]
-                </div>
-                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                    ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ОШИБКА НА ФАЗАХ 3–4 ОТКАТЫВАЕТ НАЗАД!
-                </div>
+                <div id="ep4-btn-title" class="glow-red" style="font-size: 16px; font-weight: 800; color: var(--neon-red);">[ ЗАФИКСИРОВАТЬ ОСЬ X ]</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ОШИБКА НА ФАЗАХ 3–4 ОТКАТЫВАЕТ НАЗАД!</div>
             </button>
         </section>
 
@@ -1016,7 +1108,10 @@
             setStageIndicator('КАНАЛ АУДИО-ЛОГОВ');
         }
 
-        let secretUnlocked = false;
+        /* =========================================================================
+           СЕКРЕТНЫЙ УЗЕЛ [ ? ] + 3 НОВЫЕ ОРИГИНАЛЬНЫЕ МИНИ-ИГРЫ
+           ========================================================================= */
+        let secretStage = 0; // 0 = код, 1 = волна, 2 = память, 3 = дешифратор, 4 = финал (ТГ)
         const SECRET_PASSCODE = '0451';
         const TG_INVITE_URL = 'https://t.me/+84Sq5_qWDlVlZTMy';
 
@@ -1024,14 +1119,64 @@
             initAudio();
             playBeep(580, 0.09, 'triangle', 0.15);
             showScreen('secret');
-            if (secretUnlocked) {
-                setStageIndicator('УЗЕЛ [ ? ] // ОТКРЫТ');
-            } else {
-                setStageIndicator('УЗЕЛ [ ? ] // ЗАБЛОКИРОВАН');
+            updateSecretView();
+        }
+
+        function updateSecretView() {
+            document.getElementById('secret-lock-box').classList.add('hidden');
+            document.getElementById('secret-games-wrapper').classList.add('hidden');
+            document.getElementById('secret-unlocked-box').classList.add('hidden');
+
+            const badge = document.getElementById('secret-status-badge');
+
+            if (secretStage === 0) {
+                document.getElementById('secret-lock-box').classList.remove('hidden');
                 document.getElementById('secret-error-msg').classList.add('hidden');
+                badge.textContent = 'LOCKED';
+                badge.style.background = 'rgba(255,42,85,0.2)';
+                badge.style.color = '#ff2a55';
+                setStageIndicator('УЗЕЛ [ ? ] // ВВОД КОДА');
                 const input = document.getElementById('secret-code-input');
                 input.value = '';
                 setTimeout(() => input.focus(), 120);
+            } else if (secretStage >= 1 && secretStage <= 3) {
+                document.getElementById('secret-games-wrapper').classList.remove('hidden');
+                badge.textContent = `ВЗЛОМ ${secretStage}/3`;
+                badge.style.background = 'rgba(255,174,0,0.2)';
+                badge.style.color = '#ffae00';
+                setStageIndicator(`ЧЁРНЫЙ ЯЩИК ${secretStage} / 3`);
+
+                for (let i = 1; i <= 3; i++) {
+                    const pill = document.getElementById(`sec-pill-${i}`);
+                    const box = document.getElementById(`sec-game-${i}`);
+                    if (i < secretStage) {
+                        pill.style.background = 'rgba(0,255,102,0.2)';
+                        pill.style.borderColor = '#00ff66';
+                        pill.style.color = '#00ff66';
+                        box.classList.add('hidden');
+                    } else if (i === secretStage) {
+                        pill.style.background = 'rgba(0,243,255,0.22)';
+                        pill.style.borderColor = '#00f3ff';
+                        pill.style.color = '#ffffff';
+                        box.classList.remove('hidden');
+                    } else {
+                        pill.style.background = '#0f172a';
+                        pill.style.borderColor = '#1e293b';
+                        pill.style.color = '#64748b';
+                        box.classList.add('hidden');
+                    }
+                }
+
+                if (secretStage === 1) initSecretWave();
+                if (secretStage === 2) initSecretMemory();
+                if (secretStage === 3) initSecretCipher();
+            } else if (secretStage === 4) {
+                document.getElementById('secret-unlocked-box').classList.remove('hidden');
+                badge.textContent = 'UNLOCKED';
+                badge.style.background = 'rgba(0,255,102,0.2)';
+                badge.style.color = '#00ff66';
+                badge.style.borderColor = 'rgba(0,255,102,0.45)';
+                setStageIndicator('УЗЕЛ [ ? ] // ОТКРЫТ');
             }
         }
 
@@ -1043,17 +1188,9 @@
             const lockBox = document.getElementById('secret-lock-box');
 
             if (val === SECRET_PASSCODE) {
-                secretUnlocked = true;
-                errorMsg.classList.add('hidden');
-                lockBox.classList.add('hidden');
-                document.getElementById('secret-unlocked-box').classList.remove('hidden');
-                const badge = document.getElementById('secret-status-badge');
-                badge.textContent = 'UNLOCKED';
-                badge.style.background = 'rgba(0,255,102,0.2)';
-                badge.style.color = '#00ff66';
-                badge.style.borderColor = 'rgba(0,255,102,0.45)';
-                setStageIndicator('УЗЕЛ [ ? ] // ОТКРЫТ');
-                playSuccessSound();
+                playLockSound(1);
+                secretStage = 1;
+                updateSecretView();
             } else {
                 addFailure();
                 playAlarmSound();
@@ -1062,6 +1199,232 @@
                 setTimeout(() => lockBox.classList.remove('alarm-flash'), 450);
                 input.value = '';
                 input.focus();
+            }
+        }
+
+        /* --- МИНИ-ИГРА 1: КВАНТОВАЯ ОСЦИЛЛОГРАММА --- */
+        let waveTargetFreq = 32;
+        let waveTargetPhase = 24;
+        let waveSyncPercent = 0;
+
+        function initSecretWave() {
+            waveTargetFreq = Math.floor(16 + Math.random() * 28);
+            waveTargetPhase = Math.floor(8 + Math.random() * 48);
+            const fSlider = document.getElementById('wave-freq-slider');
+            const pSlider = document.getElementById('wave-phase-slider');
+            fSlider.value = waveTargetFreq > 30 ? 15 : 42;
+            pSlider.value = waveTargetPhase > 30 ? 5 : 52;
+            renderSecretWave();
+        }
+
+        function buildWavePath(freqVal, phaseVal) {
+            const freq = freqVal / 10;
+            const phase = phaseVal / 10;
+            let d = '';
+            for (let x = 0; x <= 300; x += 6) {
+                const rad = (x / 300) * Math.PI * 2 * freq + phase;
+                const y = 60 + Math.sin(rad) * 42;
+                d += (x === 0 ? `M ${x} ${y.toFixed(1)}` : ` L ${x} ${y.toFixed(1)}`);
+            }
+            return d;
+        }
+
+        function renderSecretWave() {
+            const uFreq = parseInt(document.getElementById('wave-freq-slider').value, 10);
+            const uPhase = parseInt(document.getElementById('wave-phase-slider').value, 10);
+
+            document.getElementById('wave-freq-label').textContent = (uFreq / 10).toFixed(1) + ' Hz';
+            document.getElementById('wave-phase-label').textContent = Math.round((uPhase / 62) * 360) + '°';
+
+            document.getElementById('wave-target-path').setAttribute('d', buildWavePath(waveTargetFreq, waveTargetPhase));
+            document.getElementById('wave-user-path').setAttribute('d', buildWavePath(uFreq, uPhase));
+
+            const freqDiff = Math.abs(uFreq - waveTargetFreq) / 40;
+            const phaseDiff = Math.abs(uPhase - waveTargetPhase) / 62;
+            const err = Math.min(1, freqDiff * 0.6 + phaseDiff * 0.4);
+            waveSyncPercent = Math.max(0, Math.round((1 - err) * 100));
+
+            const syncEl = document.getElementById('wave-sync-val');
+            syncEl.textContent = `РЕЗОНАНС: ${waveSyncPercent}%`;
+            syncEl.style.color = waveSyncPercent >= 90 ? '#00ff66' : '#ffae00';
+            document.getElementById('wave-user-path').setAttribute('stroke', waveSyncPercent >= 90 ? '#00ff66' : '#00f3ff');
+        }
+
+        function lockSecretWave() {
+            initAudio();
+            if (waveSyncPercent >= 90) {
+                playLockSound(2);
+                secretStage = 2;
+                updateSecretView();
+            } else {
+                addFailure();
+                playAlarmSound();
+                const g1 = document.getElementById('sec-game-1');
+                g1.classList.add('alarm-flash');
+                setTimeout(() => g1.classList.remove('alarm-flash'), 400);
+            }
+        }
+
+        /* --- МИНИ-ИГРА 2: НЕЙРО-МАТРИЦА ПАМЯТИ (3 РАУНДА) --- */
+        let memRound = 1;
+        let memSequence = [];
+        let memUserStep = 0;
+        let memCanTap = false;
+
+        function initSecretMemory() {
+            memRound = 1;
+            startMemRound();
+        }
+
+        function startMemRound() {
+            memCanTap = false;
+            memUserStep = 0;
+            const len = 3 + memRound; // 4, 5, 6 импульсов
+            document.getElementById('mem-round-label').textContent = `КОНТУР 2/3: РАУНД ${memRound}/3 (${len} ИМПУЛЬСОВ)`;
+            const st = document.getElementById('mem-status-label');
+            st.textContent = 'ЗАПОМИНАЙТЕ...';
+            st.style.color = '#ffae00';
+
+            memSequence = [];
+            for (let i = 0; i < len; i++) {
+                memSequence.push(Math.floor(Math.random() * 9));
+            }
+
+            const cells = document.querySelectorAll('#mem-grid .mem-cell');
+            cells.forEach(c => c.classList.remove('lit', 'ok', 'err'));
+
+            let step = 0;
+            const interval = setInterval(() => {
+                if (currentScreen !== 'secret' || secretStage !== 2) {
+                    clearInterval(interval);
+                    return;
+                }
+                if (step > 0) {
+                    cells[memSequence[step - 1]].classList.remove('lit');
+                }
+                if (step < memSequence.length) {
+                    const idx = memSequence[step];
+                    cells[idx].classList.add('lit');
+                    playBeep(440 + idx * 55, 0.14, 'triangle', 0.14);
+                    step++;
+                } else {
+                    clearInterval(interval);
+                    memCanTap = true;
+                    st.textContent = 'ПОВТОРИТЕ КОД!';
+                    st.style.color = '#00ff66';
+                }
+            }, 560);
+        }
+
+        function handleMemTap(idx) {
+            if (!memCanTap || secretStage !== 2) return;
+            initAudio();
+            const cells = document.querySelectorAll('#mem-grid .mem-cell');
+            const cell = cells[idx];
+
+            if (idx === memSequence[memUserStep]) {
+                cell.classList.add('ok');
+                playBeep(520 + memUserStep * 70, 0.1, 'triangle', 0.15);
+                setTimeout(() => cell.classList.remove('ok'), 220);
+                memUserStep++;
+
+                if (memUserStep >= memSequence.length) {
+                    memCanTap = false;
+                    if (memRound < 3) {
+                        memRound++;
+                        playLockSound(memRound);
+                        setTimeout(startMemRound, 650);
+                    } else {
+                        playLockSound(3);
+                        secretStage = 3;
+                        setTimeout(updateSecretView, 500);
+                    }
+                }
+            } else {
+                memCanTap = false;
+                addFailure();
+                playAlarmSound();
+                cell.classList.add('err');
+                document.getElementById('mem-status-label').textContent = 'ОШИБКА! ПОВТОР РАУНДА...';
+                document.getElementById('mem-status-label').style.color = '#ff2a55';
+                setTimeout(() => {
+                    cell.classList.remove('err');
+                    startMemRound();
+                }, 800);
+            }
+        }
+
+        /* --- МИНИ-ИГРА 3: КРИПТО-ДЕШИФРАТОР (ПОДБОР 4-ЗНАЧНОГО КОДА) --- */
+        let cipherSecret = '';
+        let cipherTriesLeft = 6;
+
+        function initSecretCipher() {
+            const digits = ['0','1','2','3','4','5','6','7','8','9'];
+            for (let i = digits.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [digits[i], digits[j]] = [digits[j], digits[i]];
+            }
+            cipherSecret = digits.slice(0, 4).join('');
+            cipherTriesLeft = 6;
+            document.getElementById('cipher-tries-label').textContent = `ПОПЫТОК: ${cipherTriesLeft}`;
+            document.getElementById('cipher-history').innerHTML = '';
+            const inp = document.getElementById('cipher-guess-input');
+            inp.value = '';
+            setTimeout(() => inp.focus(), 100);
+        }
+
+        function submitCipherGuess() {
+            if (secretStage !== 3) return;
+            initAudio();
+            const inp = document.getElementById('cipher-guess-input');
+            const guess = (inp.value || '').replace(/\D/g, '').slice(0, 4);
+            if (guess.length < 4) {
+                playAlarmSound();
+                return;
+            }
+
+            const history = document.getElementById('cipher-history');
+            const row = document.createElement('div');
+            row.className = 'cipher-row';
+
+            let exactCount = 0;
+            for (let i = 0; i < 4; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cipher-digit';
+                cell.textContent = guess[i];
+
+                if (guess[i] === cipherSecret[i]) {
+                    cell.classList.add('exact');
+                    exactCount++;
+                } else if (cipherSecret.includes(guess[i])) {
+                    cell.classList.add('near');
+                } else {
+                    cell.classList.add('miss');
+                }
+                row.appendChild(cell);
+            }
+
+            history.prepend(row);
+            inp.value = '';
+
+            if (exactCount === 4) {
+                playSuccessSound();
+                secretStage = 4;
+                setTimeout(updateSecretView, 450);
+                return;
+            }
+
+            cipherTriesLeft--;
+            playBeep(360 + exactCount * 110, 0.1, 'triangle', 0.15);
+
+            if (cipherTriesLeft <= 0) {
+                addFailure();
+                playAlarmSound();
+                document.getElementById('cipher-tries-label').textContent = 'СБРОС КЛЮЧА!';
+                setTimeout(initSecretCipher, 900);
+            } else {
+                document.getElementById('cipher-tries-label').textContent = `ПОПЫТОК: ${cipherTriesLeft}`;
+                inp.focus();
             }
         }
 
@@ -1098,6 +1461,9 @@
             document.body.removeChild(ta);
         }
 
+        /* =========================================================================
+           АУДИО-ПЕРЕХВАТ (5 ЛОГОВ)
+           ========================================================================= */
         const audioTracks = [
             { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
             { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
@@ -1144,17 +1510,11 @@
                 const tCur = card.querySelector('.t-cur');
                 const tDur = card.querySelector('.t-dur');
 
-                audio.addEventListener('loadedmetadata', () => {
-                    tDur.textContent = fmtTime(audio.duration);
-                });
-
+                audio.addEventListener('loadedmetadata', () => { tDur.textContent = fmtTime(audio.duration); });
                 audio.addEventListener('timeupdate', () => {
                     tCur.textContent = fmtTime(audio.currentTime);
-                    if (audio.duration) {
-                        fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
-                    }
+                    if (audio.duration) fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
                 });
-
                 audio.addEventListener('ended', () => {
                     card.classList.remove('playing');
                     playBtn.textContent = '▶ ПУСК';
@@ -1165,9 +1525,7 @@
                 playBtn.addEventListener('click', () => {
                     initAudio();
                     audioTracks.forEach(other => {
-                        if (other.audio && other.audio !== audio) {
-                            other.audio.pause();
-                        }
+                        if (other.audio && other.audio !== audio) other.audio.pause();
                     });
                     document.querySelectorAll('.audio-card').forEach(c => {
                         if (c !== card) {
@@ -1180,9 +1538,7 @@
                         audio.play().then(() => {
                             card.classList.add('playing');
                             playBtn.textContent = '❚❚ ПАУЗА';
-                        }).catch(() => {
-                            tDur.textContent = 'НЕТ ФАЙЛА';
-                        });
+                        }).catch(() => { tDur.textContent = 'НЕТ ФАЙЛА'; });
                     } else {
                         audio.pause();
                         card.classList.remove('playing');
@@ -1201,20 +1557,14 @@
             });
         }
 
-        let ep1State = {
-            active: false, stage: 0, armor: 2, cursorPos: 5, dir: 1, speed: 75,
-            targetStart: 40, targetWidth: 20, trap1Start: 15, trap1Width: 14, trap1Dir: 1,
-            trap2Active: false, trap2Start: 70, trap2Width: 14, trap2Dir: -1, lastTime: 0
-        };
+        /* =========================================================================
+           СЕРИИ 1–4 (БЕЗ ИЗМЕНЕНИЙ)
+           ========================================================================= */
+        let ep1State = { active: false, stage: 0, armor: 2, cursorPos: 5, dir: 1, speed: 75, targetStart: 40, targetWidth: 20, trap1Start: 15, trap1Width: 14, trap1Dir: 1, trap2Active: false, trap2Start: 70, trap2Width: 14, trap2Dir: -1, lastTime: 0 };
 
         function initEp1() {
             stopAllLoops();
-            ep1State = {
-                active: true, stage: 0, armor: 2, cursorPos: 4, dir: 1, speed: 75,
-                targetStart: 40, targetWidth: 20, trap1Start: 14, trap1Width: 13, trap1Dir: 1,
-                trap2Active: false, trap2Start: 72, trap2Width: 13, trap2Dir: -1,
-                lastTime: performance.now()
-            };
+            ep1State = { active: true, stage: 0, armor: 2, cursorPos: 4, dir: 1, speed: 75, targetStart: 40, targetWidth: 20, trap1Start: 14, trap1Width: 13, trap1Dir: 1, trap2Active: false, trap2Start: 72, trap2Width: 13, trap2Dir: -1, lastTime: performance.now() };
             document.getElementById('ep1-result-box').classList.add('hidden');
             document.getElementById('ep1-action-btn').classList.remove('hidden');
             setupEp1Stage();
@@ -1224,31 +1574,20 @@
         function setupEp1Stage() {
             const widths = [20, 17, 14.5, 12.5, 11, 9.5];
             const speeds = [74, 92, 110, 128, 144, 160];
-
             ep1State.targetWidth = widths[ep1State.stage];
             ep1State.speed = speeds[ep1State.stage];
-
             if (ep1State.stage > 0 && Math.random() > 0.4) ep1State.dir *= -1;
-
             const maxStart = 82 - ep1State.targetWidth;
             ep1State.targetStart = Math.floor(18 + Math.random() * (maxStart - 18));
 
             if (ep1State.stage < 2) {
-                ep1State.trap2Active = false;
-                ep1State.trap1Width = 13;
-                ep1State.trap1Start = ep1State.targetStart > 45 ? 12 : 74;
+                ep1State.trap2Active = false; ep1State.trap1Width = 13; ep1State.trap1Start = ep1State.targetStart > 45 ? 12 : 74;
             } else if (ep1State.stage < 4) {
-                ep1State.trap2Active = true;
-                ep1State.trap1Width = 11;
-                ep1State.trap2Width = 11;
+                ep1State.trap2Active = true; ep1State.trap1Width = 11; ep1State.trap2Width = 11;
                 ep1State.trap1Start = Math.max(4, ep1State.targetStart - 15);
                 ep1State.trap2Start = Math.min(85, ep1State.targetStart + ep1State.targetWidth + 4);
             } else {
-                ep1State.trap2Active = true;
-                ep1State.trap1Width = 10;
-                ep1State.trap2Width = 10;
-                ep1State.trap1Start = 8;
-                ep1State.trap2Start = 78;
+                ep1State.trap2Active = true; ep1State.trap1Width = 10; ep1State.trap2Width = 10; ep1State.trap1Start = 8; ep1State.trap2Start = 78;
             }
             updateEp1UI();
         }
@@ -1257,41 +1596,21 @@
             setStageIndicator(`STAGE ${ep1State.stage + 1} / 6`);
             for (let i = 0; i < 6; i++) {
                 const dot = document.getElementById(`ep1-dot-${i}`);
-                if (i < ep1State.stage) {
-                    dot.style.background = '#00ff66';
-                    dot.style.boxShadow = '0 0 8px #00ff66';
-                } else if (i === ep1State.stage && ep1State.active) {
-                    dot.style.background = '#00f3ff';
-                    dot.style.boxShadow = '0 0 8px #00f3ff';
-                } else {
-                    dot.style.background = '#1e293b';
-                    dot.style.boxShadow = 'none';
-                }
+                if (i < ep1State.stage) { dot.style.background = '#00ff66'; dot.style.boxShadow = '0 0 8px #00ff66'; }
+                else if (i === ep1State.stage && ep1State.active) { dot.style.background = '#00f3ff'; dot.style.boxShadow = '0 0 8px #00f3ff'; }
+                else { dot.style.background = '#1e293b'; dot.style.boxShadow = 'none'; }
             }
-            document.getElementById('ep1-armor').textContent =
-                ep1State.armor === 2 ? '🛡️ 🛡️' : (ep1State.armor === 1 ? '🛡️ ✖' : '✖ ✖');
-
+            document.getElementById('ep1-armor').textContent = ep1State.armor === 2 ? '🛡️ 🛡️' : (ep1State.armor === 1 ? '🛡️ ✖' : '✖ ✖');
             const targetEl = document.getElementById('ep1-target');
-            targetEl.style.left = `${ep1State.targetStart}%`;
-            targetEl.style.width = `${ep1State.targetWidth}%`;
-
+            targetEl.style.left = `${ep1State.targetStart}%`; targetEl.style.width = `${ep1State.targetWidth}%`;
             const t1 = document.getElementById('ep1-trap1');
-            t1.style.left = `${ep1State.trap1Start}%`;
-            t1.style.width = `${ep1State.trap1Width}%`;
-
+            t1.style.left = `${ep1State.trap1Start}%`; t1.style.width = `${ep1State.trap1Width}%`;
             const t2 = document.getElementById('ep1-trap2');
-            if (ep1State.trap2Active) {
-                t2.classList.remove('hidden');
-                t2.style.left = `${ep1State.trap2Start}%`;
-                t2.style.width = `${ep1State.trap2Width}%`;
-            } else {
-                t2.classList.add('hidden');
-            }
-
+            if (ep1State.trap2Active) { t2.classList.remove('hidden'); t2.style.left = `${ep1State.trap2Start}%`; t2.style.width = `${ep1State.trap2Width}%`; }
+            else { t2.classList.add('hidden'); }
             if (ep1State.active) {
                 const modeNote = ep1State.stage >= 4 ? ' [ICE В ДВИЖЕНИИ!]' : '';
-                document.getElementById('ep1-status-text').textContent =
-                    `УРОВЕНЬ ${ep1State.stage + 1}/6: ЗАХВАТИТЕ ЗЕЛЕНЫЙ СЕКТОР${modeNote}`;
+                document.getElementById('ep1-status-text').textContent = `УРОВЕНЬ ${ep1State.stage + 1}/6: ЗАХВАТИТЕ ЗЕЛЕНЫЙ СЕКТОР${modeNote}`;
             }
         }
 
@@ -1299,7 +1618,6 @@
             if (!ep1State.active) return;
             const dt = Math.min(0.05, (now - ep1State.lastTime) / 1000);
             ep1State.lastTime = now;
-
             ep1State.cursorPos += ep1State.dir * ep1State.speed * dt;
             if (ep1State.cursorPos >= 98.5) { ep1State.cursorPos = 98.5; ep1State.dir = -1; }
             else if (ep1State.cursorPos <= 0) { ep1State.cursorPos = 0; ep1State.dir = 1; }
@@ -1312,7 +1630,6 @@
                     if (ep1State.trap1Start <= 2) { ep1State.trap1Start = 2; ep1State.trap1Dir = 1; }
                     document.getElementById('ep1-trap1').style.left = `${ep1State.trap1Start}%`;
                 }
-
                 const rightMin = ep1State.targetStart + ep1State.targetWidth + 1;
                 const rightMax = 98 - ep1State.trap2Width;
                 if (rightMax > rightMin + 2) {
@@ -1322,7 +1639,6 @@
                     document.getElementById('ep1-trap2').style.left = `${ep1State.trap2Start}%`;
                 }
             }
-
             document.getElementById('ep1-cursor').style.left = `${ep1State.cursorPos}%`;
             animFrameId = requestAnimationFrame(loopEp1);
         }
@@ -1338,53 +1654,35 @@
                 ep1State.stage++;
                 playLockSound(ep1State.stage);
                 if (ep1State.stage >= 6) {
-                    ep1State.active = false;
-                    stopAllLoops();
-                    updateEp1UI();
-                    setStageIndicator('6 / 6 ВСКРЫТО');
-                    playSuccessSound();
+                    ep1State.active = false; stopAllLoops(); updateEp1UI(); setStageIndicator('6 / 6 ВСКРЫТО'); playSuccessSound();
                     document.getElementById('ep1-action-btn').classList.add('hidden');
                     document.getElementById('ep1-result-box').classList.remove('hidden');
-                } else {
-                    setupEp1Stage();
-                }
+                } else { setupEp1Stage(); }
             } else {
-                playAlarmSound();
-                addFailure();
+                playAlarmSound(); addFailure();
                 const barBox = document.getElementById('ep1-bar-container');
-                barBox.classList.add('alarm-flash');
-                setTimeout(() => barBox.classList.remove('alarm-flash'), 450);
-
+                barBox.classList.add('alarm-flash'); setTimeout(() => barBox.classList.remove('alarm-flash'), 450);
                 if (inTrap1 || inTrap2) {
-                    ep1State.armor--;
-                    if (ep1State.stage > 0) ep1State.stage--;
+                    ep1State.armor--; if (ep1State.stage > 0) ep1State.stage--;
                     document.getElementById('ep1-status-text').textContent = '⚠ УДАР ICE-БАРЬЕРА! ОТКАТ УРОВНЯ!';
                 } else {
                     ep1State.armor--;
                     document.getElementById('ep1-status-text').textContent = '✖ РАССИНХРОН! ПОТЕРЯН ЗАРЯД БРОНИ!';
                 }
-
                 if (ep1State.armor < 0) {
-                    ep1State.stage = Math.max(0, ep1State.stage - 2);
-                    ep1State.armor = 2;
+                    ep1State.stage = Math.max(0, ep1State.stage - 2); ep1State.armor = 2;
                     document.getElementById('ep1-status-text').textContent = '⚠ ЗАЩИТА СБРОШЕНА! ОТКАТ СИСТЕМЫ!';
                 }
                 setupEp1Stage();
             }
         }
 
-        let ep2State = {
-            active: false, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0,
-            spikeActive: false, nextSpikeTime: 0, spikeEndTime: 0, lastTime: 0
-        };
+        let ep2State = { active: false, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0, spikeActive: false, nextSpikeTime: 0, spikeEndTime: 0, lastTime: 0 };
 
         function initEp2() {
             stopAllLoops();
             const now = performance.now();
-            ep2State = {
-                active: true, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0,
-                spikeActive: false, nextSpikeTime: now + 5500, spikeEndTime: 0, lastTime: now
-            };
+            ep2State = { active: true, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0, spikeActive: false, nextSpikeTime: now + 5500, spikeEndTime: 0, lastTime: now };
             document.getElementById('ep2-result-box').classList.add('hidden');
             document.getElementById('ep2-action-btn').classList.remove('hidden');
             document.getElementById('ep2-action-btn').classList.remove('disabled-pad');
@@ -1412,15 +1710,12 @@
             }
 
             if (!ep2State.spikeActive && now >= ep2State.nextSpikeTime) {
-                ep2State.spikeActive = true;
-                ep2State.spikeEndTime = now + 3400;
-                ep2State.heat = Math.min(95, ep2State.heat + 15);
+                ep2State.spikeActive = true; ep2State.spikeEndTime = now + 3400; ep2State.heat = Math.min(95, ep2State.heat + 15);
                 playBeep(240, 0.14, 'sawtooth', 0.16);
                 document.getElementById('ep2-event-banner').textContent = '⚠ ICE FIREWALL SPIKE! (+15% HEAT / ОХЛАЖДЕНИЕ СНИЖЕНО)';
                 document.getElementById('ep2-event-banner').style.color = '#ff2a55';
             } else if (ep2State.spikeActive && now >= ep2State.spikeEndTime) {
-                ep2State.spikeActive = false;
-                ep2State.nextSpikeTime = now + (5200 + Math.random() * 3200);
+                ep2State.spikeActive = false; ep2State.nextSpikeTime = now + (5200 + Math.random() * 3200);
                 document.getElementById('ep2-event-banner').textContent = 'При 100% нагрева: блокировка 4 сек и потеря 50% текущего блока!';
                 document.getElementById('ep2-event-banner').style.color = '#94a3b8';
             }
@@ -1430,7 +1725,6 @@
                 if (ep2State.spikeActive) coolRate *= 0.48;
                 ep2State.heat = Math.max(0, ep2State.heat - coolRate * dt);
             }
-
             updateEp2UI();
             animFrameId = requestAnimationFrame(loopEp2);
         }
@@ -1438,38 +1732,28 @@
         function handleEp2Tap() {
             const now = performance.now();
             if (!ep2State.active || ep2State.lockedUntil > now) return;
-
             const gainPerTap = 3.8 - ep2State.blockIndex * 0.25;
             const heatPerTap = (8.8 + ep2State.blockIndex * 0.65) * (ep2State.spikeActive ? 1.22 : 1.0);
-
             ep2State.progress = Math.min(100, ep2State.progress + gainPerTap);
             ep2State.heat = Math.min(100, ep2State.heat + heatPerTap);
             playBeep(310 + ep2State.progress * 4.5 + ep2State.blockIndex * 60, 0.045, 'square', 0.1);
 
             if (ep2State.heat >= 100) {
-                ep2State.lockedUntil = now + 4000;
-                ep2State.progress = Math.floor(ep2State.progress * 0.5);
-                addFailure();
-                playAlarmSound();
+                ep2State.lockedUntil = now + 4000; ep2State.progress = Math.floor(ep2State.progress * 0.5);
+                addFailure(); playAlarmSound();
                 document.getElementById('ep2-action-btn').classList.add('disabled-pad');
                 document.getElementById('ep2-event-banner').textContent = '🔥 КРИТИЧЕСКИЙ ПЕРЕГРЕВ! -50% ПРОГРЕССА БЛОКА!';
                 document.getElementById('ep2-event-banner').style.color = '#ff2a55';
             } else if (ep2State.progress >= 100) {
                 playLockSound(ep2State.blockIndex + 1);
                 ep2State.blockIndex++;
-
                 if (ep2State.blockIndex >= 4) {
-                    ep2State.active = false;
-                    stopAllLoops();
-                    updateEp2UI();
-                    setStageIndicator('4 / 4 БЛОКОВ');
-                    playSuccessSound();
+                    ep2State.active = false; stopAllLoops(); updateEp2UI(); setStageIndicator('4 / 4 БЛОКОВ'); playSuccessSound();
                     document.getElementById('ep2-action-btn').classList.add('hidden');
                     document.getElementById('ep2-result-box').classList.remove('hidden');
                     return;
                 } else {
-                    ep2State.progress = 0;
-                    ep2State.heat = Math.max(0, ep2State.heat - 22);
+                    ep2State.progress = 0; ep2State.heat = Math.max(0, ep2State.heat - 22);
                 }
             }
             updateEp2UI();
@@ -1478,57 +1762,31 @@
         function updateEp2UI() {
             const p = Math.round(ep2State.progress);
             const h = Math.round(ep2State.heat);
-
             if (ep2State.active) {
                 setStageIndicator(`БЛОК ${ep2State.blockIndex + 1} / 4`);
                 document.getElementById('ep2-state-badge').textContent = `БЛОК ${ep2State.blockIndex + 1} / 4`;
                 document.getElementById('ep2-current-label').textContent = `ДЕШИФРОВКА БЛОКА ${ep2State.blockIndex + 1} / 4`;
             }
-
             for (let i = 0; i < 4; i++) {
                 const card = document.getElementById(`ep2-block-card-${i}`);
                 const stat = document.getElementById(`ep2-block-stat-${i}`);
-                if (i < ep2State.blockIndex) {
-                    card.style.background = 'rgba(0,255,102,0.15)';
-                    card.style.borderColor = '#00ff66';
-                    stat.style.color = '#00ff66';
-                    stat.textContent = '100% OK';
-                } else if (i === ep2State.blockIndex && ep2State.active) {
-                    card.style.background = 'rgba(0,243,255,0.15)';
-                    card.style.borderColor = '#00f3ff';
-                    stat.style.color = '#00f3ff';
-                    stat.textContent = `${p}%`;
-                } else {
-                    card.style.background = 'rgba(0,0,0,0.65)';
-                    card.style.borderColor = '#1e293b';
-                    stat.style.color = '#64748b';
-                    stat.textContent = 'LOCKED';
-                }
+                if (i < ep2State.blockIndex) { card.style.background = 'rgba(0,255,102,0.15)'; card.style.borderColor = '#00ff66'; stat.style.color = '#00ff66'; stat.textContent = '100% OK'; }
+                else if (i === ep2State.blockIndex && ep2State.active) { card.style.background = 'rgba(0,243,255,0.15)'; card.style.borderColor = '#00f3ff'; stat.style.color = '#00f3ff'; stat.textContent = `${p}%`; }
+                else { card.style.background = 'rgba(0,0,0,0.65)'; card.style.borderColor = '#1e293b'; stat.style.color = '#64748b'; stat.textContent = 'LOCKED'; }
             }
-
             document.getElementById('ep2-progress-val').textContent = `${p}%`;
             document.getElementById('ep2-progress-bar').style.width = `${p}%`;
             document.getElementById('ep2-heat-val').textContent = `${h}%`;
             document.getElementById('ep2-heat-bar').style.width = `${h}%`;
-            document.getElementById('ep2-heat-label').textContent = ep2State.spikeActive
-                ? 'ТЕМПЕРАТУРА CPU (⚠ ICE FIREWALL SPIKE!)'
-                : 'ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)';
+            document.getElementById('ep2-heat-label').textContent = ep2State.spikeActive ? 'ТЕМПЕРАТУРА CPU (⚠ ICE FIREWALL SPIKE!)' : 'ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)';
         }
 
-        let ep3State = {
-            active: false, holding: false, dotY: 50, velocity: 0, corridorTop: 32,
-            corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0,
-            gustForce: 0, nextGustTime: 0, gustEndTime: 0, lastZone: 1, lastTime: 0
-        };
+        let ep3State = { active: false, holding: false, dotY: 50, velocity: 0, corridorTop: 32, corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0, gustForce: 0, nextGustTime: 0, gustEndTime: 0, lastZone: 1, lastTime: 0 };
 
         function initEp3() {
             stopAllLoops();
             const now = performance.now();
-            ep3State = {
-                active: true, holding: false, dotY: 50, velocity: 0, corridorTop: 32,
-                corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0,
-                gustForce: 0, nextGustTime: now + 9000, gustEndTime: 0, lastZone: 1, lastTime: now
-            };
+            ep3State = { active: true, holding: false, dotY: 50, velocity: 0, corridorTop: 32, corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0, gustForce: 0, nextGustTime: now + 9000, gustEndTime: 0, lastZone: 1, lastTime: now };
             document.getElementById('ep3-result-box').classList.add('hidden');
             document.getElementById('ep3-action-btn').classList.remove('hidden');
             document.getElementById('ep3-gust-alert').classList.add('hidden');
@@ -1540,29 +1798,20 @@
             if (!ep3State.active) return;
             ep3State.holding = isHolding;
             const btn = document.getElementById('ep3-action-btn');
-            if (isHolding) {
-                btn.classList.add('pressed');
-                playBeep(500, 0.04, 'sine', 0.07);
-            } else {
-                btn.classList.remove('pressed');
-            }
+            if (isHolding) { btn.classList.add('pressed'); playBeep(500, 0.04, 'sine', 0.07); }
+            else { btn.classList.remove('pressed'); }
         }
 
         function loopEp3(now) {
             if (!ep3State.active) return;
             const dt = Math.min(0.05, (now - ep3State.lastTime) / 1000);
             ep3State.lastTime = now;
-
             ep3State.timeLeft = Math.max(0, ep3State.timeLeft - dt);
 
             let zone = 1;
             if (ep3State.timeLeft <= 11) zone = 3;
             else if (ep3State.timeLeft <= 23) zone = 2;
-
-            if (zone !== ep3State.lastZone) {
-                ep3State.lastZone = zone;
-                playLockSound(zone);
-            }
+            if (zone !== ep3State.lastZone) { ep3State.lastZone = zone; playLockSound(zone); }
 
             const zoneConfigs = {
                 1: { height: 36, waveSpeed: 0.9, waveAmp: 15, gravity: 50, thrust: -104, name: 'ЗОНА 1/3: ВНЕШНИЙ ПЕРИМЕТР' },
@@ -1577,8 +1826,7 @@
                 ep3State.gustEndTime = now + 1700;
                 document.getElementById('ep3-gust-alert').classList.remove('hidden');
             } else if (ep3State.gustForce !== 0 && now >= ep3State.gustEndTime) {
-                ep3State.gustForce = 0;
-                ep3State.nextGustTime = now + (6500 + Math.random() * 3500);
+                ep3State.gustForce = 0; ep3State.nextGustTime = now + (6500 + Math.random() * 3500);
                 document.getElementById('ep3-gust-alert').classList.add('hidden');
             }
 
@@ -1591,28 +1839,21 @@
             ep3State.velocity *= 0.87;
             ep3State.velocity = Math.max(-34, Math.min(34, ep3State.velocity));
             ep3State.dotY += ep3State.velocity * dt;
-
             if (ep3State.dotY < 4) { ep3State.dotY = 4; ep3State.velocity = 0; }
             if (ep3State.dotY > 96) { ep3State.dotY = 96; ep3State.velocity = 0; }
 
-            const inZone = (ep3State.dotY >= ep3State.corridorTop - 2.0) &&
-                           (ep3State.dotY <= ep3State.corridorTop + cfg.height + 2.0);
-
+            const inZone = (ep3State.dotY >= ep3State.corridorTop - 2.0) && (ep3State.dotY <= ep3State.corridorTop + cfg.height + 2.0);
             const statusEl = document.getElementById('ep3-signal-status');
             const corridorEl = document.getElementById('ep3-corridor');
 
             if (inZone) {
                 ep3State.integrity = Math.min(100, ep3State.integrity + 9.0 * dt);
-                statusEl.textContent = '● СТЕЛС-КОНТУР СТАБИЛЕН';
-                statusEl.style.color = '#00ff66';
-                corridorEl.style.background = 'rgba(0,255,102,0.18)';
-                corridorEl.style.borderColor = '#00ff66';
+                statusEl.textContent = '● СТЕЛС-КОНТУР СТАБИЛЕН'; statusEl.style.color = '#00ff66';
+                corridorEl.style.background = 'rgba(0,255,102,0.18)'; corridorEl.style.borderColor = '#00ff66';
             } else {
                 ep3State.integrity = Math.max(0, ep3State.integrity - 12.0 * dt);
-                statusEl.textContent = '▲ ЗАХВАТ РАДАРОМ ПВО! ВЕРНИТЕСЬ В КАНАЛ!';
-                statusEl.style.color = '#ff2a55';
-                corridorEl.style.background = 'rgba(255,42,85,0.24)';
-                corridorEl.style.borderColor = '#ff2a55';
+                statusEl.textContent = '▲ ЗАХВАТ РАДАРОМ ПВО! ВЕРНИТЕСЬ В КАНАЛ!'; statusEl.style.color = '#ff2a55';
+                corridorEl.style.background = 'rgba(255,42,85,0.24)'; corridorEl.style.borderColor = '#ff2a55';
                 if (Math.random() < 0.18) playBeep(210, 0.05, 'sawtooth', 0.09);
             }
 
@@ -1621,15 +1862,10 @@
             updateEp3UI();
 
             if (ep3State.integrity <= 0) {
-                ep3State.active = false;
-                stopAllLoops();
-                addFailure();
-                playAlarmSound();
+                ep3State.active = false; stopAllLoops(); addFailure(); playAlarmSound();
                 document.getElementById('ep3-action-btn').classList.add('hidden');
                 const box = document.getElementById('ep3-result-box');
-                box.classList.remove('hidden');
-                box.classList.add('alarm-flash');
-                box.style.border = '2px solid #ff2a55';
+                box.classList.remove('hidden'); box.classList.add('alarm-flash'); box.style.border = '2px solid #ff2a55';
                 document.getElementById('ep3-result-title').style.color = '#ff2a55';
                 document.getElementById('ep3-result-title').textContent = 'СИГНАЛ ПОТЕРЯН // ПВО «ЭГИДА» ЗАСЕКЛО ВЕРТОЛЕТ!';
                 document.getElementById('ep3-result-desc').textContent = 'Маскировка сорвана! Уходите на вираж и повторите заход на Maze Bank!';
@@ -1637,56 +1873,36 @@
             }
 
             if (ep3State.timeLeft <= 0) {
-                ep3State.active = false;
-                stopAllLoops();
-                setStageIndicator('3 / 3 ПВО ПОДАВЛЕНО');
-                playSuccessSound();
+                ep3State.active = false; stopAllLoops(); setStageIndicator('3 / 3 ПВО ПОДАВЛЕНО'); playSuccessSound();
                 document.getElementById('ep3-action-btn').classList.add('hidden');
                 const box = document.getElementById('ep3-result-box');
-                box.classList.remove('hidden');
-                box.classList.remove('alarm-flash');
-                box.style.border = '2px solid #00ff66';
-                box.style.background = 'rgba(0,255,102,0.1)';
-                document.getElementById('ep3-result-title').className = 'glow-green';
-                document.getElementById('ep3-result-title').style.color = '#00ff66';
+                box.classList.remove('hidden'); box.classList.remove('alarm-flash'); box.style.border = '2px solid #00ff66'; box.style.background = 'rgba(0,255,102,0.1)';
+                document.getElementById('ep3-result-title').className = 'glow-green'; document.getElementById('ep3-result-title').style.color = '#00ff66';
                 document.getElementById('ep3-result-title').textContent = 'DROP ZONE REACHED // JUMP NOW';
                 document.getElementById('ep3-result-desc').textContent = 'Все 3 периметра безопасности Maze Bank пройдены. Высаживайтесь на крышу!';
                 return;
             }
-
             animFrameId = requestAnimationFrame(loopEp3);
         }
 
         function updateEp3UI() {
             document.getElementById('ep3-dot').style.top = `${ep3State.dotY}%`;
             const cEl = document.getElementById('ep3-corridor');
-            cEl.style.top = `${ep3State.corridorTop}%`;
-            cEl.style.height = `${ep3State.corridorHeight}%`;
-
+            cEl.style.top = `${ep3State.corridorTop}%`; cEl.style.height = `${ep3State.corridorHeight}%`;
             document.getElementById('ep3-timer').textContent = `${ep3State.timeLeft.toFixed(1)}s`;
             const integ = Math.round(ep3State.integrity);
             document.getElementById('ep3-integrity-val').textContent = `СИГНАЛ: ${integ}%`;
             const bar = document.getElementById('ep3-integrity-bar');
             bar.style.width = `${integ}%`;
-            if (integ > 50) bar.style.background = '#00ff66';
-            else if (integ > 25) bar.style.background = '#ffae00';
-            else bar.style.background = '#ff2a55';
+            bar.style.background = integ > 50 ? '#00ff66' : (integ > 25 ? '#ffae00' : '#ff2a55');
         }
 
-        let ep4State = {
-            active: false, phase: 0, xPos: 15, yPos: 15, xDir: 1, yDir: 1,
-            jetX: 50, jetY: 50, jetTime: 0, ringSize: 105, ringDir: -1,
-            flareActive: false, nextFlareTime: 0, flareEndTime: 0, lastTime: 0
-        };
+        let ep4State = { active: false, phase: 0, xPos: 15, yPos: 15, xDir: 1, yDir: 1, jetX: 50, jetY: 50, jetTime: 0, ringSize: 105, ringDir: -1, flareActive: false, nextFlareTime: 0, flareEndTime: 0, lastTime: 0 };
 
         function initEp4() {
             stopAllLoops();
             const now = performance.now();
-            ep4State = {
-                active: true, phase: 0, xPos: 12, yPos: 12, xDir: 1, yDir: 1,
-                jetX: 50, jetY: 50, jetTime: Math.random() * 10, ringSize: 105, ringDir: -1,
-                flareActive: false, nextFlareTime: now + 4500, flareEndTime: 0, lastTime: now
-            };
+            ep4State = { active: true, phase: 0, xPos: 12, yPos: 12, xDir: 1, yDir: 1, jetX: 50, jetY: 50, jetTime: Math.random() * 10, ringSize: 105, ringDir: -1, flareActive: false, nextFlareTime: now + 4500, flareEndTime: 0, lastTime: now };
             document.getElementById('ep4-result-box').classList.add('hidden');
             document.getElementById('ep4-action-btn').classList.remove('hidden');
             document.getElementById('ep4-flare-warn').classList.add('hidden');
@@ -1698,7 +1914,6 @@
         function updateEp4PhaseUI() {
             const p = ep4State.phase;
             setStageIndicator(`ФАЗА ${p + 1} / 4`);
-
             const titles = ['ФАЗА 1/4: ОСЬ X', 'ФАЗА 2/4: ОСЬ Y', 'ФАЗА 3/4: БАЛЛИСТИКА', 'ФАЗА 4/4: БОЕГОЛОВКА'];
             const btnLabels = ['[ ЗАФИКСИРОВАТЬ ОСЬ X ]', '[ ЗАФИКСИРОВАТЬ ОСЬ Y ]', '[ СВЕСТИ КОЛЬЦО БАЛЛИСТИКИ ]', '[ СИНХРОНИЗИРОВАТЬ БОЕГОЛОВКУ ]'];
             const hints = [
@@ -1707,39 +1922,21 @@
                 'НАЖМИТЕ, КОГДА ЗЕЛЕНОЕ КОЛЬЦО СОВПАДЕТ С ПУНКТИРНЫМ КРУГОМ!',
                 'ФИНАЛЬНАЯ СИНХРОНИЗАЦИЯ НА ВЫСОКОЙ СКОРОСТИ — НЕ ПРОМАХНИТЕСЬ!'
             ];
-
             document.getElementById('ep4-step-badge').textContent = titles[p];
             document.getElementById('ep4-btn-title').textContent = btnLabels[p];
             document.getElementById('ep4-hint-text').textContent = hints[p];
 
             for (let i = 0; i < 4; i++) {
                 const pill = document.getElementById(`ep4-phase-${i}`);
-                if (i < p) {
-                    pill.style.background = 'rgba(0,255,102,0.2)';
-                    pill.style.borderColor = '#00ff66';
-                    pill.style.color = '#00ff66';
-                } else if (i === p) {
-                    pill.style.background = 'rgba(0,243,255,0.25)';
-                    pill.style.borderColor = '#00f3ff';
-                    pill.style.color = '#ffffff';
-                } else {
-                    pill.style.background = '#0f172a';
-                    pill.style.borderColor = '#1e293b';
-                    pill.style.color = '#64748b';
-                }
+                if (i < p) { pill.style.background = 'rgba(0,255,102,0.2)'; pill.style.borderColor = '#00ff66'; pill.style.color = '#00ff66'; }
+                else if (i === p) { pill.style.background = 'rgba(0,243,255,0.25)'; pill.style.borderColor = '#00f3ff'; pill.style.color = '#ffffff'; }
+                else { pill.style.background = '#0f172a'; pill.style.borderColor = '#1e293b'; pill.style.color = '#64748b'; }
             }
 
             const bRing = document.getElementById('ep4-ballistic-ring');
             const zRing = document.getElementById('ep4-target-zone-ring');
-            if (p >= 2) {
-                bRing.classList.remove('hidden');
-                zRing.classList.remove('hidden');
-                ep4State.ringSize = 105;
-                ep4State.ringDir = -1;
-            } else {
-                bRing.classList.add('hidden');
-                zRing.classList.add('hidden');
-            }
+            if (p >= 2) { bRing.classList.remove('hidden'); zRing.classList.remove('hidden'); ep4State.ringSize = 105; ep4State.ringDir = -1; }
+            else { bRing.classList.add('hidden'); zRing.classList.add('hidden'); }
         }
 
         function loopEp4(now) {
@@ -1748,14 +1945,12 @@
             ep4State.lastTime = now;
 
             if (!ep4State.flareActive && now >= ep4State.nextFlareTime) {
-                ep4State.flareActive = true;
-                ep4State.flareEndTime = now + 2200;
+                ep4State.flareActive = true; ep4State.flareEndTime = now + 2200;
                 document.getElementById('ep4-flare-warn').classList.remove('hidden');
                 document.getElementById('ep4-radar').classList.add('shake-glitch');
                 playBeep(260, 0.12, 'sawtooth', 0.14);
             } else if (ep4State.flareActive && now >= ep4State.flareEndTime) {
-                ep4State.flareActive = false;
-                ep4State.nextFlareTime = now + (4200 + Math.random() * 3000);
+                ep4State.flareActive = false; ep4State.nextFlareTime = now + (4200 + Math.random() * 3000);
                 document.getElementById('ep4-flare-warn').classList.add('hidden');
                 document.getElementById('ep4-radar').classList.remove('shake-glitch');
             }
@@ -1766,9 +1961,7 @@
             ep4State.jetY = 50 + Math.sin(ep4State.jetTime * 2) * 18;
 
             const jetEl = document.getElementById('ep4-target-jet');
-            jetEl.style.left = `${ep4State.jetX}%`;
-            jetEl.style.top = `${ep4State.jetY}%`;
-
+            jetEl.style.left = `${ep4State.jetX}%`; jetEl.style.top = `${ep4State.jetY}%`;
             const jitter = ep4State.flareActive ? (Math.random() - 0.5) * 4.5 : 0;
 
             if (ep4State.phase === 0) {
@@ -1781,24 +1974,19 @@
                 if (ep4State.yPos >= 92) { ep4State.yPos = 92; ep4State.yDir = -1; }
                 if (ep4State.yPos <= 8) { ep4State.yPos = 8; ep4State.yDir = 1; }
             } else {
-                ep4State.xPos = ep4State.jetX;
-                ep4State.yPos = ep4State.jetY;
+                ep4State.xPos = ep4State.jetX; ep4State.yPos = ep4State.jetY;
                 const ringSpeed = ep4State.phase === 2 ? 76 : 108;
                 ep4State.ringSize += ep4State.ringDir * ringSpeed * dt;
                 if (ep4State.ringSize <= 24) { ep4State.ringSize = 24; ep4State.ringDir = 1; }
                 if (ep4State.ringSize >= 112) { ep4State.ringSize = 112; ep4State.ringDir = -1; }
-
                 const bRing = document.getElementById('ep4-ballistic-ring');
-                bRing.style.width = `${ep4State.ringSize}px`;
-                bRing.style.height = `${ep4State.ringSize}px`;
+                bRing.style.width = `${ep4State.ringSize}px`; bRing.style.height = `${ep4State.ringSize}px`;
             }
 
             document.getElementById('ep4-line-x').style.left = `${ep4State.xPos + jitter}%`;
             document.getElementById('ep4-line-y').style.top = `${ep4State.yPos + jitter}%`;
             const ch = document.getElementById('ep4-crosshair');
-            ch.style.left = `${ep4State.xPos + jitter}%`;
-            ch.style.top = `${ep4State.yPos + jitter}%`;
-
+            ch.style.left = `${ep4State.xPos + jitter}%`; ch.style.top = `${ep4State.yPos + jitter}%`;
             animFrameId = requestAnimationFrame(loopEp4);
         }
 
@@ -1813,30 +2001,21 @@
             if (hit) {
                 playLockSound(ep4State.phase + 1);
                 ep4State.phase++;
-
                 if (ep4State.phase >= 4) {
-                    ep4State.active = false;
-                    stopAllLoops();
-                    setStageIndicator('4 / 4 TARGET LOCKED');
+                    ep4State.active = false; stopAllLoops(); setStageIndicator('4 / 4 TARGET LOCKED');
                     document.getElementById('ep4-radar').classList.remove('shake-glitch');
                     document.getElementById('ep4-flare-warn').classList.add('hidden');
                     playSuccessSound();
                     document.getElementById('ep4-action-btn').classList.add('hidden');
                     document.getElementById('ep4-result-box').classList.remove('hidden');
                     return;
-                } else {
-                    updateEp4PhaseUI();
-                }
+                } else { updateEp4PhaseUI(); }
             } else {
-                playAlarmSound();
-                addFailure();
+                playAlarmSound(); addFailure();
                 const radar = document.getElementById('ep4-radar');
-                radar.classList.add('alarm-flash');
-                setTimeout(() => radar.classList.remove('alarm-flash'), 400);
-
+                radar.classList.add('alarm-flash'); setTimeout(() => radar.classList.remove('alarm-flash'), 400);
                 if (ep4State.phase >= 2) {
-                    ep4State.phase--;
-                    updateEp4PhaseUI();
+                    ep4State.phase--; updateEp4PhaseUI();
                     document.getElementById('ep4-hint-text').textContent = '⚠ СРЫВ ЗАХВАТА! ОТКАТ НА ПРЕДЫДУЩУЮ ФАЗУ!';
                 } else {
                     document.getElementById('ep4-hint-text').textContent = '✖ МИМО ЦЕЛИ! ПОВТОРИТЕ ЗАХВАТ ОСИ!';
@@ -1844,6 +2023,9 @@
             }
         }
 
+        /* =========================================================================
+           ПРИВЯЗКА ВСЕХ СОБЫТИЙ
+           ========================================================================= */
         function bindClick(id, fn) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -1857,7 +2039,6 @@
             const el = document.getElementById(elementId);
             if (!el) return;
             let lastTrigger = 0;
-
             const trigger = (e) => {
                 if (e && e.cancelable) e.preventDefault();
                 const now = Date.now();
@@ -1866,7 +2047,6 @@
                 initAudio();
                 callback();
             };
-
             el.addEventListener('pointerdown', trigger);
             el.addEventListener('touchstart', trigger, { passive: false });
             el.addEventListener('click', trigger);
@@ -1908,32 +2088,39 @@
 
             const secretInput = document.getElementById('secret-code-input');
             if (secretInput) {
-                secretInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') checkSecretCode();
-                });
-                secretInput.addEventListener('input', () => {
-                    if (secretInput.value.length === 4) {
-                        checkSecretCode();
-                    }
-                });
+                secretInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkSecretCode(); });
+                secretInput.addEventListener('input', () => { if (secretInput.value.length === 4) checkSecretCode(); });
             }
 
+            // Привязка 3 новых мини-игр в узле [ ? ]
+            const freqSlider = document.getElementById('wave-freq-slider');
+            const phaseSlider = document.getElementById('wave-phase-slider');
+            if (freqSlider) freqSlider.addEventListener('input', renderSecretWave);
+            if (phaseSlider) phaseSlider.addEventListener('input', renderSecretWave);
+            bindClick('wave-lock-btn', lockSecretWave);
+
+            document.querySelectorAll('#mem-grid .mem-cell').forEach(cell => {
+                cell.addEventListener('click', () => {
+                    const idx = parseInt(cell.getAttribute('data-idx'), 10);
+                    handleMemTap(idx);
+                });
+            });
+
+            bindClick('cipher-submit-btn', submitCipherGuess);
+            const cipherInput = document.getElementById('cipher-guess-input');
+            if (cipherInput) {
+                cipherInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitCipherGuess(); });
+            }
+
+            // Игровые панели серий 1–4
             bindTapButton('ep1-action-btn', handleEp1Press);
             bindTapButton('ep2-action-btn', handleEp2Tap);
             bindTapButton('ep4-action-btn', handleEp4Press);
 
             const ep3Btn = document.getElementById('ep3-action-btn');
             if (ep3Btn) {
-                const startHold = (e) => {
-                    if (e && e.cancelable) e.preventDefault();
-                    initAudio();
-                    setEp3Hold(true);
-                };
-                const endHold = (e) => {
-                    if (e && e.cancelable) e.preventDefault();
-                    setEp3Hold(false);
-                };
-
+                const startHold = (e) => { if (e && e.cancelable) e.preventDefault(); initAudio(); setEp3Hold(true); };
+                const endHold = (e) => { if (e && e.cancelable) e.preventDefault(); setEp3Hold(false); };
                 ep3Btn.addEventListener('pointerdown', startHold);
                 ep3Btn.addEventListener('pointerup', endHold);
                 ep3Btn.addEventListener('pointerleave', endHold);
@@ -1956,9 +2143,7 @@
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.code === 'Space' && currentScreen === 'ep3') {
-                setEp3Hold(false);
-            }
+            if (e.code === 'Space' && currentScreen === 'ep3') setEp3Hold(false);
         });
 
         if (document.readyState === 'loading') {
