@@ -7,17 +7,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GLITCH_OS v5.2 // КАЙ "ГЛИТЧ" МЕРСЕР</title>
     <style>
-        /* =========================================================================
-           1. БАЗОВЫЕ ПЕРЕМЕННЫЕ И СТИЛИ (ПОЛНОСТЬЮ АВТОНОМНЫЙ CSS ДЛЯ SAFARI / iOS)
-           ========================================================================= */
         :root {
             --bg-dark: #04070b;
-            --panel-bg: rgba(9, 16, 26, 0.94);
+            --panel-bg: rgba(9, 16, 26, 0.96);
             --neon-cyan: #00f3ff;
             --neon-green: #00ff66;
             --neon-red: #ff2a55;
             --neon-amber: #ffae00;
-            --neon-purple: #a855f7;
             --text-main: #e2f1f8;
             --text-muted: #94a3b8;
         }
@@ -46,22 +42,12 @@
             justify-content: space-between;
             padding: 12px;
             background-image:
+                repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0px, rgba(0, 0, 0, 0.22) 1px, transparent 1px, transparent 3px),
                 radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.08) 0%, transparent 55%),
                 radial-gradient(circle at 50% 100%, rgba(0, 243, 255, 0.08) 0%, transparent 55%),
                 linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px;
-        }
-
-        /* Декоративные сканлайны без перехвата кликов */
-        .scanlines::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
-            background-size: 100% 3px;
-            z-index: 1;
-            pointer-events: none;
+            background-size: 100% 3px, 100% 100%, 100% 100%, 22px 22px, 22px 22px;
         }
 
         .container {
@@ -69,16 +55,13 @@
             max-width: 640px;
             margin: 0 auto;
             position: relative;
-            z-index: 10;
+            z-index: 20;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* =========================================================================
-           2. ПАНЕЛИ И КНОПКИ НАВИГАЦИИ (БЕЗ БЛОКИРОВКИ КАСАНИЙ НА iOS)
-           ========================================================================= */
         .cyber-panel {
             background: var(--panel-bg);
             border: 1px solid rgba(0, 243, 255, 0.34);
@@ -91,7 +74,7 @@
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
             position: relative;
-            z-index: 10;
+            z-index: 30;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -135,7 +118,18 @@
             box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
         }
 
-        /* Большая игровая кнопка (Action Pad >= 76px) */
+        .nav-tab.secret-tab {
+            border-color: rgba(255, 174, 0, 0.55);
+            color: var(--neon-amber);
+        }
+
+        .nav-tab.secret-tab.active {
+            background: rgba(255, 174, 0, 0.22);
+            border-color: var(--neon-amber);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 174, 0, 0.4);
+        }
+
         .action-pad {
             width: 100%;
             min-height: 78px;
@@ -150,7 +144,7 @@
             user-select: none;
             -webkit-user-select: none;
             position: relative;
-            z-index: 15;
+            z-index: 35;
             transition: transform 0.06s ease, background 0.06s ease;
         }
 
@@ -185,7 +179,6 @@
             pointer-events: none;
         }
 
-        /* Стили карточек аудиологов */
         .audio-card {
             background: var(--panel-bg);
             border: 1px solid rgba(0, 255, 102, 0.3);
@@ -207,13 +200,11 @@
             align-items: center;
         }
         .audio-name {
-            font-family: ui-monospace, monospace;
             font-size: 13px;
             font-weight: 700;
             color: #fff;
         }
         .audio-tag {
-            font-family: ui-monospace, monospace;
             font-size: 10px;
             color: var(--neon-green);
             background: rgba(0, 255, 102, 0.15);
@@ -229,7 +220,6 @@
             background: rgba(0, 255, 102, 0.1);
             border: 1px solid var(--neon-green);
             color: var(--neon-green);
-            font-family: ui-monospace, monospace;
             font-size: 12px;
             font-weight: 700;
             padding: 8px 12px;
@@ -267,55 +257,36 @@
         .time-row {
             display: flex;
             justify-content: space-between;
-            font-family: ui-monospace, monospace;
             font-size: 10px;
             color: var(--text-muted);
         }
 
-        /* Поле ввода PIN-кода для финального секретного узла [ ? ] */
-        .pin-input-box {
+        .code-input {
             width: 100%;
-            max-width: 240px;
-            margin: 0 auto;
-            display: block;
             background: #03060a;
-            border: 2px solid rgba(168, 85, 247, 0.65);
-            border-radius: 12px;
-            padding: 14px 12px;
-            font-size: 28px;
+            border: 2px solid var(--neon-amber);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 24px;
             font-weight: 800;
             letter-spacing: 0.35em;
             text-align: center;
             color: #ffffff;
             outline: none;
-            box-shadow: 0 0 18px rgba(168, 85, 247, 0.2), inset 0 0 12px rgba(168, 85, 247, 0.12);
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 0 16px rgba(255, 174, 0, 0.15);
+            -webkit-user-select: text;
+            user-select: text;
         }
 
-        .pin-input-box:focus {
+        .code-input:focus {
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
+            box-shadow: 0 0 22px rgba(0, 243, 255, 0.3);
         }
 
-        .pin-input-box::placeholder {
-            color: rgba(148, 163, 184, 0.35);
-            letter-spacing: 0.3em;
-        }
-
-        .tg-link-box {
-            background: rgba(3, 6, 10, 0.92);
-            border: 1px solid rgba(0, 243, 255, 0.55);
-            border-radius: 12px;
-            padding: 14px;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 14px rgba(0, 243, 255, 0.08);
-            word-break: break-all;
-        }
-
-        /* Утилиты типографики и свечения */
         .glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.75); }
         .glow-green { text-shadow: 0 0 12px rgba(0, 255, 102, 0.85); }
         .glow-red { text-shadow: 0 0 12px rgba(255, 42, 85, 0.85); }
-        .glow-purple { text-shadow: 0 0 12px rgba(168, 85, 247, 0.85); }
+        .glow-amber { text-shadow: 0 0 12px rgba(255, 174, 0, 0.85); }
 
         .row-between {
             display: flex;
@@ -326,7 +297,6 @@
 
         .stack-sm > * + * { margin-top: 8px; }
         .stack-md > * + * { margin-top: 12px; }
-        .stack-lg > * + * { margin-top: 16px; }
 
         .badge {
             display: inline-block;
@@ -337,7 +307,6 @@
             letter-spacing: 0.04em;
         }
 
-        /* Анимации */
         @keyframes pulseAlarm {
             0%, 100% { background-color: rgba(255, 42, 85, 0.15); border-color: #ff2a55; }
             50% { background-color: rgba(255, 42, 85, 0.38); border-color: #ff859e; }
@@ -359,9 +328,8 @@
         .pulse-anim { animation: pulseDot 1.1s infinite; }
     </style>
 </head>
-<body class="scanlines">
+<body>
 
-    <!-- ================= ВЕРХНЯЯ ПАНЕЛЬ СТАТУСА И НАВИГАЦИИ ================= -->
     <header class="container cyber-panel stack-sm" style="padding: 12px; margin-bottom: 12px;">
         <div class="row-between">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -382,7 +350,7 @@
                     <div id="global-fails" style="font-size: 13px; font-weight: 800; color: var(--neon-red);">0</div>
                 </div>
 
-                <button id="soundToggleBtn" type="button" onclick="toggleSound()" class="interactive-btn cyber-btn" style="padding: 8px 10px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">
+                <button id="soundToggleBtn" type="button" class="interactive-btn cyber-btn" style="padding: 8px 10px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">
                     <span id="soundIcon">🔊</span> <span id="soundLabel">ЗВУК</span>
                 </button>
             </div>
@@ -390,13 +358,13 @@
 
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid #1e293b;">
             <nav class="nav-grid" style="min-width: 260px;">
-                <button id="nav-menu" type="button" onclick="goHome()" class="interactive-btn nav-tab active">МЕНЮ</button>
-                <button id="nav-ep1" type="button" onclick="startEpisode(1)" class="interactive-btn nav-tab">СЕР.1</button>
-                <button id="nav-ep2" type="button" onclick="startEpisode(2)" class="interactive-btn nav-tab">СЕР.2</button>
-                <button id="nav-ep3" type="button" onclick="startEpisode(3)" class="interactive-btn nav-tab">СЕР.3</button>
-                <button id="nav-ep4" type="button" onclick="startEpisode(4)" class="interactive-btn nav-tab">СЕР.4</button>
-                <button id="nav-audio" type="button" onclick="startAudio()" class="interactive-btn nav-tab" style="color: var(--neon-green);">АУДИО</button>
-                <button id="nav-secret" type="button" onclick="startSecret()" class="interactive-btn nav-tab" style="color: var(--neon-purple); border-color: rgba(168, 85, 247, 0.45);">?</button>
+                <button id="nav-menu" type="button" class="interactive-btn nav-tab active">МЕНЮ</button>
+                <button id="nav-ep1" type="button" class="interactive-btn nav-tab">СЕР.1</button>
+                <button id="nav-ep2" type="button" class="interactive-btn nav-tab">СЕР.2</button>
+                <button id="nav-ep3" type="button" class="interactive-btn nav-tab">СЕР.3</button>
+                <button id="nav-ep4" type="button" class="interactive-btn nav-tab">СЕР.4</button>
+                <button id="nav-audio" type="button" class="interactive-btn nav-tab" style="color: var(--neon-green);">АУДИО</button>
+                <button id="nav-secret" type="button" class="interactive-btn nav-tab secret-tab">?</button>
             </nav>
 
             <div style="background: rgba(0, 243, 255, 0.12); border: 1px solid rgba(0, 243, 255, 0.4); border-radius: 6px; padding: 5px 9px; font-size: 11px; font-weight: 800; color: var(--neon-cyan);">
@@ -405,10 +373,9 @@
         </div>
     </header>
 
-    <!-- ================= ОСНОВНОЙ КОНТЕЙНЕР ЭКРАНОВ ================= -->
     <main class="container" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
 
-        <!-- ================= ЭКРАН 0: ГЛАВНОЕ МЕНЮ ================= -->
+        <!-- ЭКРАН 0: ГЛАВНОЕ МЕНЮ -->
         <section id="screen-menu" class="stack-md">
             <div class="cyber-panel" style="padding: 14px; border-left: 4px solid var(--neon-red);">
                 <div class="row-between" style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">
@@ -421,8 +388,7 @@
             </div>
 
             <div class="stack-sm">
-                <!-- Карточка 1 -->
-                <button type="button" onclick="startEpisode(1)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <button id="card-ep1" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
                             <span class="badge" style="background: rgba(0,243,255,0.2); color: var(--neon-cyan);">6 ЭТАПОВ</span>
@@ -438,8 +404,7 @@
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">→</div>
                 </button>
 
-                <!-- Карточка 2 -->
-                <button type="button" onclick="startEpisode(2)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <button id="card-ep2" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
                             <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green);">4 БЛОКА ПАМЯТИ</span>
@@ -455,8 +420,7 @@
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-green);">→</div>
                 </button>
 
-                <!-- Карточка 3 -->
-                <button type="button" onclick="startEpisode(3)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <button id="card-ep3" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
                             <span class="badge" style="background: rgba(255,174,0,0.2); color: var(--neon-amber);">3 ЗОНЫ • 35 СЕК</span>
@@ -472,8 +436,7 @@
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-amber);">→</div>
                 </button>
 
-                <!-- Карточка 4 -->
-                <button type="button" onclick="startEpisode(4)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <button id="card-ep4" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
                             <span class="badge" style="background: rgba(255,42,85,0.2); color: var(--neon-red);">4 ФАЗЫ ЗАХВАТА</span>
@@ -489,8 +452,7 @@
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-red);">→</div>
                 </button>
 
-                <!-- Карточка Аудио -->
-                <button type="button" onclick="startAudio()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(0,255,102,0.4);">
+                <button id="card-audio" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(0,255,102,0.4);">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
                             <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green);">5 ЛОГОВ</span>
@@ -506,132 +468,101 @@
                     <div style="font-size: 20px; font-weight: 800; color: var(--neon-green);">▶</div>
                 </button>
 
-                <!-- Карточка Финального Секретного Узла [ ? ] -->
-                <button type="button" onclick="startSecret()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(168, 85, 247, 0.55); background: rgba(168, 85, 247, 0.09);">
+                <button id="card-secret" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(255, 174, 0, 0.55); background: rgba(255, 174, 0, 0.08);">
                     <div style="padding-right: 10px;">
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
-                            <span id="menu-secret-badge" class="badge" style="background: rgba(168, 85, 247, 0.24); color: var(--neon-purple);">ШИФР // [ ? ]</span>
-                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ВНЕШНИЙ КЛЮЧ АВТОРИЗАЦИИ</span>
+                            <span class="badge" style="background: rgba(255,174,0,0.24); color: var(--neon-amber);">[ ? ] ЗАШИФРОВАНО</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ТРЕБУЕТСЯ КОД ДОСТУПА</span>
                         </div>
-                        <div id="menu-secret-title" style="font-size: 14px; font-weight: 800; color: #e9d5ff;">
+                        <div class="glow-amber" style="font-size: 14px; font-weight: 800; color: var(--neon-amber);">
                             ПРОТОКОЛ «???» // ЗАКРЫТЫЙ УЗЕЛ
                         </div>
                         <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
-                            Требуется 4-значный ключ авторизации из внешнего канала связи
+                            Экстренный канал связи — активация только по ключу в финале операции
                         </div>
                     </div>
-                    <div id="menu-secret-icon" class="pulse-anim glow-purple" style="font-size: 24px; font-weight: 800; color: var(--neon-purple); flex-shrink: 0;">?</div>
+                    <div class="pulse-anim" style="font-size: 22px; font-weight: 800; color: var(--neon-amber);">?</div>
                 </button>
             </div>
         </section>
 
-        <!-- ================= ЭКРАН: СЕКРЕТНЫЙ УЗЕЛ [ ? ] ================= -->
-        <section id="screen-secret" class="hidden cyber-panel stack-md" style="padding: 16px; border-color: rgba(168, 85, 247, 0.5);">
+        <!-- ЭКРАН: СЕКРЕТНЫЙ УЗЕЛ [ ? ] -->
+        <section id="screen-secret" class="hidden cyber-panel stack-md" style="padding: 18px; border-color: rgba(255, 174, 0, 0.55);">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
-                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-purple);">ЗАКРЫТЫЙ УЗЕЛ // УРОВЕНЬ ДОСТУПА: ???</div>
-                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ДЕШИФРОВКА КАНАЛА СВЯЗИ</div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-amber);">NODE_FINAL // ENCRYPTED_GATE</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ЗАКРЫТЫЙ УЗЕЛ СВЯЗИ [ ? ]</div>
                 </div>
-                <span id="secret-status-badge" class="badge" style="background: rgba(255,42,85,0.18); color: var(--neon-red); border: 1px solid rgba(255,42,85,0.45);">
+                <span id="secret-status-badge" class="badge" style="background: rgba(255,42,85,0.2); color: var(--neon-red); border: 1px solid rgba(255,42,85,0.45);">
                     LOCKED
                 </span>
             </div>
 
-            <!-- Состояние 1: Заблокировано (ввод 4-значного кода 0451) -->
-            <div id="secret-locked-view" class="stack-md" style="padding: 8px 0; text-align: center;">
-                <div class="pulse-anim glow-purple" style="font-size: 42px; font-weight: 800; color: var(--neon-purple); line-height: 1;">
-                    [ ? ]
-                </div>
-
-                <div style="font-size: 12px; font-weight: 800; color: #e2e8f0; line-height: 1.45; max-width: 420px; margin: 0 auto;">
-                    ВВЕДИТЕ 4-ЗНАЧНЫЙ КЛЮЧ ДОСТУПА, ПОЛУЧЕННЫЙ ПО ВНЕШНЕМУ КАНАЛУ СВЯЗИ:
+            <div id="secret-lock-box" class="stack-md">
+                <div style="font-size: 12px; line-height: 1.5; color: #cbd5e1; background: rgba(0,0,0,0.55); padding: 12px; border-radius: 10px; border-left: 3px solid var(--neon-amber);">
+                    Доступ к финальному каналу заблокирован. Введите <strong style="color: var(--neon-amber);">4-значный код авторизации</strong>, полученный по внешнему каналу связи.
                 </div>
 
                 <div class="stack-sm">
-                    <input
-                        id="secret-pin-input"
-                        type="text"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        maxlength="4"
-                        autocomplete="off"
-                        placeholder="••••"
-                        class="pin-input-box"
-                        oninput="handleSecretPinInput(this)"
-                        onkeydown="if (event.key === 'Enter') { event.preventDefault(); verifySecretPin(); }"
-                    />
-                    <div id="secret-error" class="hidden" style="font-size: 11px; font-weight: 800; color: var(--neon-red); padding-top: 4px;">
-                        ✖ ОШИБКА ДОСТУПА // НЕВЕРНЫЙ КЛЮЧ АВТОРИЗАЦИИ
+                    <label for="secret-code-input" style="display: block; font-size: 10px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.08em;">
+                        КЛЮЧ ДОСТУПА (4 ЦИФРЫ):
+                    </label>
+                    <input id="secret-code-input" type="tel" inputmode="numeric" maxlength="4" placeholder="••••" class="code-input" autocomplete="off">
+                    <div id="secret-error-msg" class="hidden" style="font-size: 11px; font-weight: 800; color: var(--neon-red); text-align: center;">
+                        ✖ ОШИБКА АВТОРИЗАЦИИ // НЕВЕРНЫЙ КОД ДОСТУПА
                     </div>
                 </div>
 
-                <button type="button" onclick="verifySecretPin()" class="action-pad" style="border-color: var(--neon-purple); background: linear-gradient(180deg, rgba(168, 85, 247, 0.22) 0%, rgba(168, 85, 247, 0.07) 100%); box-shadow: 0 0 24px rgba(168, 85, 247, 0.25);">
-                    <div class="glow-purple" style="font-size: 16px; font-weight: 800; color: #e9d5ff;">
-                        [ ПОДТВЕРДИТЬ КОД ]
+                <button id="secret-unlock-btn" type="button" class="action-pad" style="border-color: var(--neon-amber); background: linear-gradient(180deg, rgba(255, 174, 0, 0.2) 0%, rgba(255, 174, 0, 0.06) 100%);">
+                    <div class="glow-amber" style="font-size: 15px; font-weight: 800; color: var(--neon-amber);">
+                        [ ПОДТВЕРДИТЬ КОД ДОСТУПА ]
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                        ВВЕДИТЕ 4 ЦИФРЫ И НАЖМИТЕ ДЛЯ РАСШИФРОВКИ
+                        ДЕШИФРОВКА СКРЫТОГО КАНАЛА TELEGRAM
                     </div>
                 </button>
             </div>
 
-            <!-- Состояние 2: Расшифровано (Telegram-канал) -->
-            <div id="secret-unlocked-view" class="hidden stack-md">
-                <div style="background: rgba(0, 255, 102, 0.1); border: 1px solid rgba(0, 255, 102, 0.45); border-radius: 10px; padding: 12px;">
-                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
-                        <span class="badge" style="background: rgba(0, 243, 255, 0.22); color: var(--neon-cyan);">TG // TELEGRAM</span>
-                        <span style="font-size: 10px; font-weight: 800; color: var(--neon-green);">КЛЮЧ 0451 ПОДТВЕРЖДЕН ✓</span>
+            <div id="secret-unlocked-box" class="hidden stack-md" style="border-radius: 12px; padding: 16px; border: 2px solid var(--neon-cyan); background: rgba(0, 243, 255, 0.08);">
+                <div style="text-align: center;">
+                    <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.45);">
+                        ✓ КОД ПРИНЯТ // УЗЕЛ РАСШИФРОВАН
+                    </span>
+                    <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); margin-top: 8px;">
+                        TG // ЗАКРЫТЫЙ TELEGRAM-КАНАЛ
                     </div>
-                    <div class="glow-green" style="font-size: 14px; font-weight: 800; color: var(--neon-green);">
-                        TG // ЗАКРЫТЫЙ TELEGRAM-КАНАЛ СВЯЗИ
+                    <div style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
+                        Скопируй идентификатор ниже в поиск Telegram или открой канал напрямую:
                     </div>
                 </div>
 
-                <div class="tg-link-box stack-sm">
-                    <div style="font-size: 10px; font-weight: 800; color: var(--text-muted);">
-                        ИДЕНТИФИКАТОР КАНАЛА В TELEGRAM (@ID / INVITE):
+                <div style="background: #03060a; border: 1px solid rgba(0, 243, 255, 0.5); border-radius: 10px; padding: 14px; text-align: center;">
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.08em; margin-bottom: 6px;">
+                        TELEGRAM // @ID / ИНВАЙТ-ССЫЛКА
                     </div>
-                    <div class="glow-cyan" style="font-size: 15px; font-weight: 800; color: var(--neon-cyan);">
+                    <div id="tg-handle-display" style="font-size: 15px; font-weight: 800; color: #ffffff; word-break: break-all;">
                         @+84Sq5_qWDlVlZTMy
                     </div>
-                    <div style="font-size: 12px; font-weight: 700; color: #ffffff;">
+                    <div style="font-size: 11px; color: var(--neon-cyan); margin-top: 4px; word-break: break-all;">
                         t.me/+84Sq5_qWDlVlZTMy
-                    </div>
-                    <div style="font-size: 11px; color: var(--neon-amber); padding-top: 4px; border-top: 1px solid #1e293b;">
-                        https://t.me/+84Sq5_qWDlVlZTMy
                     </div>
                 </div>
 
-                <button id="secret-copy-btn" type="button" onclick="copyTelegramInvite()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px 12px; font-size: 12px; font-weight: 800; color: var(--neon-cyan); border-color: var(--neon-cyan);">
+                <button id="copy-tg-btn" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 13px; font-size: 12px; font-weight: 800; color: var(--neon-green); border-color: var(--neon-green); background: rgba(0, 255, 102, 0.12);">
                     [ 📋 СКОПИРОВАТЬ ССЫЛКУ / ID ДЛЯ TELEGRAM ]
                 </button>
 
-                <a href="https://t.me/+84Sq5_qWDlVlZTMy" target="_blank" rel="noopener noreferrer" class="interactive-btn action-pad green-pad" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none;">
-                    <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
-                        [ ✈️ ОТКРЫТЬ КАНАЛ В TELEGRAM ]
-                    </div>
-                    <div style="font-size: 11px; color: #e2e8f0; margin-top: 4px;">
-                        ПРЯМОЙ ПЕРЕХОД В ПРИЛОЖЕНИЕ TELEGRAM
-                    </div>
+                <a href="https://t.me/+84Sq5_qWDlVlZTMy" target="_blank" rel="noopener noreferrer" class="interactive-btn cyber-btn" style="display: block; width: 100%; padding: 14px; text-align: center; text-decoration: none; font-size: 13px; font-weight: 800; color: #04070b; background: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);">
+                    [ ✈️ ОТКРЫТЬ КАНАЛ В TELEGRAM ]
                 </a>
-
-                <div style="font-size: 11px; color: var(--text-muted); text-align: center; background: rgba(0,0,0,0.5); padding: 8px 10px; border-radius: 8px; border: 1px solid #1e293b;">
-                    Внутри канала находится файл с финальным протоколом.
-                </div>
-
-                <div style="text-align: center;">
-                    <button type="button" onclick="lockSecretNode()" class="interactive-btn cyber-btn" style="padding: 7px 12px; font-size: 10px; font-weight: 800; color: var(--text-muted); border-color: #334155;">
-                        🔒 ЗАБЛОКИРОВАТЬ УЗЕЛ
-                    </button>
-                </div>
             </div>
 
             <div>
-                <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
+                <button id="back-from-secret" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
             </div>
         </section>
 
-        <!-- ================= ЭКРАН: АУДИО-ПЕРЕХВАТ (5 ЛОГОВ) ================= -->
+        <!-- ЭКРАН: АУДИО-ПЕРЕХВАТ -->
         <section id="screen-audio" class="hidden cyber-panel stack-md" style="padding: 16px;">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
@@ -647,15 +578,14 @@
                 Нажмите воспроизведение нужного перехваченного файла связи.
             </div>
 
-            <!-- Список аудиологов -->
             <div id="audioList" style="max-height: 380px; overflow-y: auto;"></div>
 
             <div>
-                <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
+                <button id="back-from-audio" type="button" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
             </div>
         </section>
 
-        <!-- ================= ЭКРАН 1: СЕРИЯ 1 (МНОГОУРОВНЕВЫЙ ШИФР - 6 ЭТАПОВ) ================= -->
+        <!-- ЭКРАН 1: СЕРИЯ 1 -->
         <section id="screen-ep1" class="hidden cyber-panel stack-md" style="padding: 16px;">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
@@ -668,7 +598,6 @@
                 </div>
             </div>
 
-            <!-- 6 индикаторов этапов -->
             <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
                 <div id="ep1-dot-0" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
                 <div id="ep1-dot-1" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
@@ -683,7 +612,6 @@
                 <span style="color: var(--neon-red); font-weight: 800;">ICE = ЛОВУШКА!</span>
             </div>
 
-            <!-- Шкала шифра -->
             <div id="ep1-bar-container" style="position: relative; width: 100%; height: 92px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
                 <div style="position: absolute; inset: 0; opacity: 0.2; background-image: repeating-linear-gradient(90deg, #00f3ff 0px, #00f3ff 1px, transparent 1px, transparent 18px);"></div>
 
@@ -702,7 +630,6 @@
                 <div id="ep1-cursor" style="position: absolute; top: 0; bottom: 0; left: 0%; width: 5px; background: #ffffff; box-shadow: 0 0 14px #00f3ff;"></div>
             </div>
 
-            <!-- Результат Серии 1 -->
             <div id="ep1-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
                 <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
                     VAULT UNLOCKED // ACCESS GRANTED
@@ -714,12 +641,11 @@
                     Все 6 уровней шифра пройдены. Хватайте содержимое ячейки и прорывайтесь с боем к машинам!
                 </p>
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" onclick="initEp1()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ПРОТОКОЛ</button>
-                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                    <button id="retry-ep1" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ПРОТОКОЛ</button>
+                    <button id="home-ep1" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
                 </div>
             </div>
 
-            <!-- Игровая кнопка -->
             <button id="ep1-action-btn" type="button" class="action-pad">
                 <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); letter-spacing: 0.04em;">
                     [ АКТИВИРОВАТЬ / СИНХРОНИЗИРОВАТЬ ]
@@ -730,7 +656,7 @@
             </button>
         </section>
 
-        <!-- ================= ЭКРАН 2: СЕРИЯ 2 (ВЗЛОМ КРИПТО-АРХИВА - 4 БЛОКА) ================= -->
+        <!-- ЭКРАН 2: СЕРИЯ 2 -->
         <section id="screen-ep2" class="hidden cyber-panel stack-md" style="padding: 16px;">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
@@ -742,7 +668,6 @@
                 </span>
             </div>
 
-            <!-- 4 блока памяти -->
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
                 <div id="ep2-block-card-0" style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 6px; text-align: center;">
                     <div style="font-size: 9px; color: var(--text-muted);">БЛОК 01</div>
@@ -762,7 +687,6 @@
                 </div>
             </div>
 
-            <!-- Прогресс блока -->
             <div class="stack-sm">
                 <div class="row-between" style="font-size: 12px; font-weight: 800;">
                     <span id="ep2-current-label" style="color: var(--neon-green);">ДЕШИФРОВКА БЛОКА 1 / 4</span>
@@ -773,7 +697,6 @@
                 </div>
             </div>
 
-            <!-- Шкала нагрева CPU -->
             <div class="stack-sm">
                 <div class="row-between" style="font-size: 11px; font-weight: 800;">
                     <span id="ep2-heat-label" style="color: var(--neon-amber);">ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)</span>
@@ -788,7 +711,6 @@
                 </div>
             </div>
 
-            <!-- Результат Серии 2 -->
             <div id="ep2-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
                 <div style="font-size: 11px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.06em;">
                     ВСЕ 4 БЛОКА РАСШИФРОВАНЫ // ДОСТУП ПОЛУЧЕН
@@ -797,12 +719,11 @@
                     ЭЛИЗИАН-АЙЛЕНД // СЕКТОР 4 // ГЛУБИНА 65М
                 </div>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" onclick="initEp2()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ЗАНОВО</button>
-                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                    <button id="retry-ep2" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ЗАНОВО</button>
+                    <button id="home-ep2" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
                 </div>
             </div>
 
-            <!-- Игровая кнопка -->
             <button id="ep2-action-btn" type="button" class="action-pad green-pad">
                 <div id="ep2-btn-title" class="glow-green" style="font-size: 16px; font-weight: 800; color: var(--neon-green);">
                     [ АКТИВИРОВАТЬ / ИМПУЛЬС ВЗЛОМА ]
@@ -813,7 +734,7 @@
             </button>
         </section>
 
-        <!-- ================= ЭКРАН 3: СЕРИЯ 3 (ОБХОД ПВО 'ЭГИДА' - 35 СЕК) ================= -->
+        <!-- ЭКРАН 3: СЕРИЯ 3 -->
         <section id="screen-ep3" class="hidden cyber-panel stack-md" style="padding: 16px;">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
@@ -826,7 +747,6 @@
                 </div>
             </div>
 
-            <!-- Целостность сигнала -->
             <div class="stack-sm">
                 <div class="row-between" style="font-size: 11px; font-weight: 800;">
                     <span id="ep3-signal-status" style="color: var(--neon-green);">● СТЕЛС-КОНТУР СТАБИЛЕН</span>
@@ -837,7 +757,6 @@
                 </div>
             </div>
 
-            <!-- Поле радара -->
             <div style="position: relative; width: 100%; height: 220px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
                 <div style="position: absolute; inset: 0; opacity: 0.2; background-image: linear-gradient(#00f3ff 1px, transparent 1px), linear-gradient(90deg, #00f3ff 1px, transparent 1px); background-size: 28px 28px;"></div>
 
@@ -854,17 +773,15 @@
                 <div id="ep3-dot" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: var(--neon-cyan); border: 2px solid #ffffff; box-shadow: 0 0 18px var(--neon-cyan);"></div>
             </div>
 
-            <!-- Результат Серии 3 -->
             <div id="ep3-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center;">
                 <div id="ep3-result-title" style="font-size: 15px; font-weight: 800;"></div>
                 <p id="ep3-result-desc" style="font-size: 12px; color: #e2e8f0; margin: 4px 0;"></p>
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" onclick="initEp3()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ЗАХОД</button>
-                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                    <button id="retry-ep3" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ЗАХОД</button>
+                    <button id="home-ep3" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
                 </div>
             </div>
 
-            <!-- Игровая кнопка удержания -->
             <button id="ep3-action-btn" type="button" class="action-pad">
                 <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan);">
                     [ УДЕРЖИВАТЬ ЧАСТОТУ СТЕЛСА ]
@@ -875,7 +792,7 @@
             </button>
         </section>
 
-        <!-- ================= ЭКРАН 4: СЕРИЯ 4 (ЗАХВАТ ЦЕЛИ 'ВЕЙЛ-1' - 4 ФАЗЫ) ================= -->
+        <!-- ЭКРАН 4: СЕРИЯ 4 -->
         <section id="screen-ep4" class="hidden cyber-panel stack-md" style="padding: 16px;">
             <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
                 <div>
@@ -887,7 +804,6 @@
                 </div>
             </div>
 
-            <!-- 4 фазы -->
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; text-align: center; font-size: 9px; font-weight: 800;">
                 <div id="ep4-phase-0" style="padding: 5px 2px; border-radius: 5px; background: rgba(0,243,255,0.2); border: 1px solid #00f3ff; color: #00f3ff;">1. ОСЬ X</div>
                 <div id="ep4-phase-1" style="padding: 5px 2px; border-radius: 5px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">2. ОСЬ Y</div>
@@ -895,7 +811,6 @@
                 <div id="ep4-phase-3" style="padding: 5px 2px; border-radius: 5px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">4. БОЕГОЛОВКА</div>
             </div>
 
-            <!-- Радар наведения -->
             <div id="ep4-radar" style="position: relative; width: 100%; height: 245px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
                 <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
                     <div style="width: 190px; height: 190px; border-radius: 50%; border: 1px solid rgba(0,243,255,0.16);"></div>
@@ -927,7 +842,6 @@
                 СОВМЕСТИТЕ ВЕРТИКАЛЬНУЮ ЛИНИЮ С ДЖЕТОМ «ВЕЙЛ-1»
             </div>
 
-            <!-- Результат Серии 4 -->
             <div id="ep4-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
                 <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
                     TARGET LOCKED // FIRE MISSILES
@@ -936,12 +850,11 @@
                     Все 4 контура наведения замкнуты! Жмите гашетку в прыжке над пропастью Чилиад!
                 </p>
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" onclick="initEp4()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПЕРЕЗАРЯДИТЬ РАКЕТЫ</button>
-                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                    <button id="retry-ep4" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПЕРЕЗАРЯДИТЬ РАКЕТЫ</button>
+                    <button id="home-ep4" type="button" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
                 </div>
             </div>
 
-            <!-- Игровая кнопка -->
             <button id="ep4-action-btn" type="button" class="action-pad red-pad">
                 <div id="ep4-btn-title" class="glow-red" style="font-size: 16px; font-weight: 800; color: var(--neon-red);">
                     [ ЗАФИКСИРОВАТЬ ОСЬ X ]
@@ -954,16 +867,12 @@
 
     </main>
 
-    <!-- ================= ПОДВАЛ ТЕРМИНАЛА ================= -->
     <footer class="container row-between" style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #1e293b; font-size: 10px; color: #64748b;">
         <span>KERNEL: GLITCH_OS_5.2_iOS</span>
         <span>LOS SANTOS // 2026 <span class="pulse-anim" style="color: var(--neon-cyan);">█</span></span>
     </footer>
 
     <script>
-        /* =========================================================================
-           1. ПРОЦЕДУРНЫЙ ЗВУКОВОЙ СИНТЕЗАТОР (WEB AUDIO API + РАЗБЛОКИРОВКА В SAFARI)
-           ========================================================================= */
         let audioCtx = null;
         let soundEnabled = true;
 
@@ -1025,16 +934,14 @@
             setTimeout(() => playBeep(130, 0.26, 'sawtooth', 0.24), 180);
         }
 
-        /* =========================================================================
-           2. НАВИГАЦИЯ И ОБЩИЙ СТАТУС
-           ========================================================================= */
         let currentScreen = 'menu';
         let animFrameId = null;
         let globalFails = 0;
 
         setInterval(() => {
             const now = new Date();
-            document.getElementById('liveClock').textContent = now.toTimeString().split(' ')[0];
+            const clock = document.getElementById('liveClock');
+            if (clock) clock.textContent = now.toTimeString().split(' ')[0];
         }, 1000);
 
         function addFailure() {
@@ -1109,165 +1016,88 @@
             setStageIndicator('КАНАЛ АУДИО-ЛОГОВ');
         }
 
-        /* =========================================================================
-           2.5 СЕКРЕТНЫЙ ФИНАЛЬНЫЙ УЗЕЛ [ ? ] -> КОД 0451 -> TELEGRAM КАНАЛ
-           ========================================================================= */
-        const SECRET_CODE = '0451';
-        const TG_INVITE_LINK = 'https://t.me/+84Sq5_qWDlVlZTMy';
         let secretUnlocked = false;
+        const SECRET_PASSCODE = '0451';
+        const TG_INVITE_URL = 'https://t.me/+84Sq5_qWDlVlZTMy';
 
         function startSecret() {
             initAudio();
-            playBeep(560, 0.09, 'triangle', 0.16);
+            playBeep(580, 0.09, 'triangle', 0.15);
             showScreen('secret');
             if (secretUnlocked) {
-                setStageIndicator('КАНАЛ TG РАСШИФРОВАН');
+                setStageIndicator('УЗЕЛ [ ? ] // ОТКРЫТ');
             } else {
-                setStageIndicator('УЗЕЛ [ ? ] // АВТОРИЗАЦИЯ');
-                const pinInput = document.getElementById('secret-pin-input');
-                if (pinInput) {
-                    pinInput.value = '';
-                    document.getElementById('secret-error').classList.add('hidden');
-                    setTimeout(() => pinInput.focus(), 120);
-                }
+                setStageIndicator('УЗЕЛ [ ? ] // ЗАБЛОКИРОВАН');
+                document.getElementById('secret-error-msg').classList.add('hidden');
+                const input = document.getElementById('secret-code-input');
+                input.value = '';
+                setTimeout(() => input.focus(), 120);
             }
         }
 
-        function handleSecretPinInput(inputEl) {
-            inputEl.value = inputEl.value.replace(/\D/g, '').slice(0, 4);
-            document.getElementById('secret-error').classList.add('hidden');
-            if (inputEl.value.length > 0) {
-                playBeep(520 + inputEl.value.length * 65, 0.04, 'sine', 0.1);
-            }
-            if (inputEl.value.length === 4) {
-                verifySecretPin();
-            }
-        }
-
-        function verifySecretPin() {
+        function checkSecretCode() {
             initAudio();
-            const pinInput = document.getElementById('secret-pin-input');
-            const errEl = document.getElementById('secret-error');
-            const entered = pinInput ? pinInput.value.trim() : '';
+            const input = document.getElementById('secret-code-input');
+            const val = (input.value || '').trim();
+            const errorMsg = document.getElementById('secret-error-msg');
+            const lockBox = document.getElementById('secret-lock-box');
 
-            if (entered === SECRET_CODE) {
+            if (val === SECRET_PASSCODE) {
                 secretUnlocked = true;
-                playSuccessSound();
-                setStageIndicator('КАНАЛ TG РАСШИФРОВАН');
-
-                document.getElementById('secret-locked-view').classList.add('hidden');
-                document.getElementById('secret-unlocked-view').classList.remove('hidden');
-
+                errorMsg.classList.add('hidden');
+                lockBox.classList.add('hidden');
+                document.getElementById('secret-unlocked-box').classList.remove('hidden');
                 const badge = document.getElementById('secret-status-badge');
                 badge.textContent = 'UNLOCKED';
-                badge.style.background = 'rgba(0,255,102,0.18)';
-                badge.style.color = 'var(--neon-green)';
-                badge.style.borderColor = 'rgba(0,255,102,0.5)';
-
-                const menuBadge = document.getElementById('menu-secret-badge');
-                const menuTitle = document.getElementById('menu-secret-title');
-                const menuIcon = document.getElementById('menu-secret-icon');
-                if (menuBadge) {
-                    menuBadge.textContent = 'TG // РАСШИФРОВАНО';
-                    menuBadge.style.background = 'rgba(0,255,102,0.2)';
-                    menuBadge.style.color = 'var(--neon-green)';
-                }
-                if (menuTitle) {
-                    menuTitle.textContent = 'ПРОТОКОЛ «ФИНАЛ» // КАНАЛ TELEGRAM';
-                    menuTitle.style.color = 'var(--neon-green)';
-                }
-                if (menuIcon) {
-                    menuIcon.textContent = '✓';
-                    menuIcon.style.color = 'var(--neon-green)';
-                }
+                badge.style.background = 'rgba(0,255,102,0.2)';
+                badge.style.color = '#00ff66';
+                badge.style.borderColor = 'rgba(0,255,102,0.45)';
+                setStageIndicator('УЗЕЛ [ ? ] // ОТКРЫТ');
+                playSuccessSound();
             } else {
-                playAlarmSound();
                 addFailure();
-                errEl.classList.remove('hidden');
-                const screenEl = document.getElementById('screen-secret');
-                screenEl.classList.add('alarm-flash');
-                setTimeout(() => screenEl.classList.remove('alarm-flash'), 450);
-                if (pinInput) {
-                    pinInput.value = '';
-                    pinInput.focus();
-                }
+                playAlarmSound();
+                errorMsg.classList.remove('hidden');
+                lockBox.classList.add('alarm-flash');
+                setTimeout(() => lockBox.classList.remove('alarm-flash'), 450);
+                input.value = '';
+                input.focus();
             }
         }
 
-        function copyTelegramInvite() {
+        function copyTgHandle() {
             initAudio();
-            playLockSound(2);
-            const btn = document.getElementById('secret-copy-btn');
-
-            const tempArea = document.createElement('textarea');
-            tempArea.value = TG_INVITE_LINK;
-            tempArea.setAttribute('readonly', '');
-            tempArea.style.position = 'fixed';
-            tempArea.style.opacity = '0';
-            document.body.appendChild(tempArea);
-            tempArea.focus();
-            tempArea.select();
-            tempArea.setSelectionRange(0, 99999);
-            try {
-                document.execCommand('copy');
-            } catch (e) {}
-            document.body.removeChild(tempArea);
-
-            if (btn) {
-                btn.textContent = '✓ СКОПИРОВАНО! ВСТАВЬТЕ В ПОИСК TELEGRAM';
-                btn.style.color = 'var(--neon-green)';
-                btn.style.borderColor = 'var(--neon-green)';
+            const btn = document.getElementById('copy-tg-btn');
+            const copySuccess = () => {
+                playLockSound(2);
+                btn.textContent = '✓ СКОПИРОВАНО В БУФЕР ОБМЕНА!';
                 setTimeout(() => {
                     btn.textContent = '[ 📋 СКОПИРОВАТЬ ССЫЛКУ / ID ДЛЯ TELEGRAM ]';
-                    btn.style.color = 'var(--neon-cyan)';
-                    btn.style.borderColor = 'var(--neon-cyan)';
-                }, 2600);
+                }, 2200);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(TG_INVITE_URL).then(copySuccess).catch(() => {
+                    fallbackCopy(TG_INVITE_URL);
+                    copySuccess();
+                });
+            } else {
+                fallbackCopy(TG_INVITE_URL);
+                copySuccess();
             }
         }
 
-        function lockSecretNode() {
-            initAudio();
-            playBeep(320, 0.08, 'sawtooth', 0.14);
-            secretUnlocked = false;
-            setStageIndicator('УЗЕЛ [ ? ] // АВТОРИЗАЦИЯ');
-
-            document.getElementById('secret-unlocked-view').classList.add('hidden');
-            document.getElementById('secret-locked-view').classList.remove('hidden');
-            document.getElementById('secret-error').classList.add('hidden');
-
-            const pinInput = document.getElementById('secret-pin-input');
-            if (pinInput) {
-                pinInput.value = '';
-                pinInput.focus();
-            }
-
-            const badge = document.getElementById('secret-status-badge');
-            badge.textContent = 'LOCKED';
-            badge.style.background = 'rgba(255,42,85,0.18)';
-            badge.style.color = 'var(--neon-red)';
-            badge.style.borderColor = 'rgba(255,42,85,0.45)';
-
-            const menuBadge = document.getElementById('menu-secret-badge');
-            const menuTitle = document.getElementById('menu-secret-title');
-            const menuIcon = document.getElementById('menu-secret-icon');
-            if (menuBadge) {
-                menuBadge.textContent = 'ШИФР // [ ? ]';
-                menuBadge.style.background = 'rgba(168, 85, 247, 0.24)';
-                menuBadge.style.color = 'var(--neon-purple)';
-            }
-            if (menuTitle) {
-                menuTitle.textContent = 'ПРОТОКОЛ «???» // ЗАКРЫТЫЙ УЗЕЛ';
-                menuTitle.style.color = '#e9d5ff';
-            }
-            if (menuIcon) {
-                menuIcon.textContent = '?';
-                menuIcon.style.color = 'var(--neon-purple)';
-            }
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
         }
 
-        /* =========================================================================
-           3. АУДИО-ПЕРЕХВАТ (5 ЛОГОВ)
-           ========================================================================= */
         const audioTracks = [
             { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
             { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
@@ -1296,7 +1126,7 @@
                         <div class="audio-tag">${track.tag}</div>
                     </div>
                     <div class="audio-controls">
-                        <button class="play-btn">▶ ПУСК</button>
+                        <button type="button" class="play-btn">▶ ПУСК</button>
                         <div class="progress-wrap">
                             <div class="progress-bar-bg"><div class="progress-fill"></div></div>
                             <div class="time-row"><span class="t-cur">00:00</span><span class="t-dur">--:--</span></div>
@@ -1334,7 +1164,6 @@
 
                 playBtn.addEventListener('click', () => {
                     initAudio();
-                    // Остановить остальные
                     audioTracks.forEach(other => {
                         if (other.audio && other.audio !== audio) {
                             other.audio.pause();
@@ -1372,46 +1201,18 @@
             });
         }
 
-        /* =========================================================================
-           4. СЕРИЯ 1: МНОГОУРОВНЕВЫЙ ШИФР (6 ЭТАПОВ + ICE ЛОВУШКИ + 2 ЗАРЯДА БРОНИ)
-           ========================================================================= */
         let ep1State = {
-            active: false,
-            stage: 0,
-            armor: 2,
-            cursorPos: 5,
-            dir: 1,
-            speed: 75,
-            targetStart: 40,
-            targetWidth: 20,
-            trap1Start: 15,
-            trap1Width: 14,
-            trap1Dir: 1,
-            trap2Active: false,
-            trap2Start: 70,
-            trap2Width: 14,
-            trap2Dir: -1,
-            lastTime: 0
+            active: false, stage: 0, armor: 2, cursorPos: 5, dir: 1, speed: 75,
+            targetStart: 40, targetWidth: 20, trap1Start: 15, trap1Width: 14, trap1Dir: 1,
+            trap2Active: false, trap2Start: 70, trap2Width: 14, trap2Dir: -1, lastTime: 0
         };
 
         function initEp1() {
             stopAllLoops();
             ep1State = {
-                active: true,
-                stage: 0,
-                armor: 2,
-                cursorPos: 4,
-                dir: 1,
-                speed: 75,
-                targetStart: 40,
-                targetWidth: 20,
-                trap1Start: 14,
-                trap1Width: 13,
-                trap1Dir: 1,
-                trap2Active: false,
-                trap2Start: 72,
-                trap2Width: 13,
-                trap2Dir: -1,
+                active: true, stage: 0, armor: 2, cursorPos: 4, dir: 1, speed: 75,
+                targetStart: 40, targetWidth: 20, trap1Start: 14, trap1Width: 13, trap1Dir: 1,
+                trap2Active: false, trap2Start: 72, trap2Width: 13, trap2Dir: -1,
                 lastTime: performance.now()
             };
             document.getElementById('ep1-result-box').classList.add('hidden');
@@ -1427,9 +1228,7 @@
             ep1State.targetWidth = widths[ep1State.stage];
             ep1State.speed = speeds[ep1State.stage];
 
-            if (ep1State.stage > 0 && Math.random() > 0.4) {
-                ep1State.dir *= -1;
-            }
+            if (ep1State.stage > 0 && Math.random() > 0.4) ep1State.dir *= -1;
 
             const maxStart = 82 - ep1State.targetWidth;
             ep1State.targetStart = Math.floor(18 + Math.random() * (maxStart - 18));
@@ -1451,13 +1250,11 @@
                 ep1State.trap1Start = 8;
                 ep1State.trap2Start = 78;
             }
-
             updateEp1UI();
         }
 
         function updateEp1UI() {
             setStageIndicator(`STAGE ${ep1State.stage + 1} / 6`);
-
             for (let i = 0; i < 6; i++) {
                 const dot = document.getElementById(`ep1-dot-${i}`);
                 if (i < ep1State.stage) {
@@ -1471,7 +1268,6 @@
                     dot.style.boxShadow = 'none';
                 }
             }
-
             document.getElementById('ep1-armor').textContent =
                 ep1State.armor === 2 ? '🛡️ 🛡️' : (ep1State.armor === 1 ? '🛡️ ✖' : '✖ ✖');
 
@@ -1505,13 +1301,8 @@
             ep1State.lastTime = now;
 
             ep1State.cursorPos += ep1State.dir * ep1State.speed * dt;
-            if (ep1State.cursorPos >= 98.5) {
-                ep1State.cursorPos = 98.5;
-                ep1State.dir = -1;
-            } else if (ep1State.cursorPos <= 0) {
-                ep1State.cursorPos = 0;
-                ep1State.dir = 1;
-            }
+            if (ep1State.cursorPos >= 98.5) { ep1State.cursorPos = 98.5; ep1State.dir = -1; }
+            else if (ep1State.cursorPos <= 0) { ep1State.cursorPos = 0; ep1State.dir = 1; }
 
             if (ep1State.stage >= 4) {
                 const leftBound = Math.max(2, ep1State.targetStart - ep1State.trap1Width - 1);
@@ -1538,7 +1329,6 @@
 
         function handleEp1Press() {
             if (!ep1State.active) return;
-
             const c = ep1State.cursorPos;
             const inGreen = (c >= ep1State.targetStart - 1.5) && (c <= ep1State.targetStart + ep1State.targetWidth + 1.5);
             const inTrap1 = (c >= ep1State.trap1Start) && (c <= ep1State.trap1Start + ep1State.trap1Width);
@@ -1583,34 +1373,17 @@
             }
         }
 
-        /* =========================================================================
-           5. СЕРИЯ 2: ВЗЛОМ КРИПТО-АРХИВА (4 БЛОКА + ICE FIREWALL SPIKES)
-           ========================================================================= */
         let ep2State = {
-            active: false,
-            blockIndex: 0,
-            progress: 0,
-            heat: 0,
-            lockedUntil: 0,
-            spikeActive: false,
-            nextSpikeTime: 0,
-            spikeEndTime: 0,
-            lastTime: 0
+            active: false, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0,
+            spikeActive: false, nextSpikeTime: 0, spikeEndTime: 0, lastTime: 0
         };
 
         function initEp2() {
             stopAllLoops();
             const now = performance.now();
             ep2State = {
-                active: true,
-                blockIndex: 0,
-                progress: 0,
-                heat: 0,
-                lockedUntil: 0,
-                spikeActive: false,
-                nextSpikeTime: now + 5500,
-                spikeEndTime: 0,
-                lastTime: now
+                active: true, blockIndex: 0, progress: 0, heat: 0, lockedUntil: 0,
+                spikeActive: false, nextSpikeTime: now + 5500, spikeEndTime: 0, lastTime: now
             };
             document.getElementById('ep2-result-box').classList.add('hidden');
             document.getElementById('ep2-action-btn').classList.remove('hidden');
@@ -1699,7 +1472,6 @@
                     ep2State.heat = Math.max(0, ep2State.heat - 22);
                 }
             }
-
             updateEp2UI();
         }
 
@@ -1743,44 +1515,19 @@
                 : 'ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)';
         }
 
-        /* =========================================================================
-           6. СЕРИЯ 3: ОБХОД ПВО 'ЭГИДА' (35 СЕКУНД)
-           ========================================================================= */
         let ep3State = {
-            active: false,
-            holding: false,
-            dotY: 50,
-            velocity: 0,
-            corridorTop: 32,
-            corridorHeight: 36,
-            timeLeft: 35.0,
-            integrity: 100.0,
-            wavePhase: 0,
-            gustForce: 0,
-            nextGustTime: 0,
-            gustEndTime: 0,
-            lastZone: 1,
-            lastTime: 0
+            active: false, holding: false, dotY: 50, velocity: 0, corridorTop: 32,
+            corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0,
+            gustForce: 0, nextGustTime: 0, gustEndTime: 0, lastZone: 1, lastTime: 0
         };
 
         function initEp3() {
             stopAllLoops();
             const now = performance.now();
             ep3State = {
-                active: true,
-                holding: false,
-                dotY: 50,
-                velocity: 0,
-                corridorTop: 32,
-                corridorHeight: 36,
-                timeLeft: 35.0,
-                integrity: 100.0,
-                wavePhase: 0,
-                gustForce: 0,
-                nextGustTime: now + 9000,
-                gustEndTime: 0,
-                lastZone: 1,
-                lastTime: now
+                active: true, holding: false, dotY: 50, velocity: 0, corridorTop: 32,
+                corridorHeight: 36, timeLeft: 35.0, integrity: 100.0, wavePhase: 0,
+                gustForce: 0, nextGustTime: now + 9000, gustEndTime: 0, lastZone: 1, lastTime: now
             };
             document.getElementById('ep3-result-box').classList.add('hidden');
             document.getElementById('ep3-action-btn').classList.remove('hidden');
@@ -1926,48 +1673,20 @@
             else bar.style.background = '#ff2a55';
         }
 
-        /* =========================================================================
-           7. СЕРИЯ 4: ЗАХВАТ ЦЕЛИ 'ВЕЙЛ-1' (4 ФАЗЫ)
-           ========================================================================= */
         let ep4State = {
-            active: false,
-            phase: 0,
-            xPos: 15,
-            yPos: 15,
-            xDir: 1,
-            yDir: 1,
-            jetX: 50,
-            jetY: 50,
-            jetTime: 0,
-            ringSize: 105,
-            ringDir: -1,
-            flareActive: false,
-            nextFlareTime: 0,
-            flareEndTime: 0,
-            lastTime: 0
+            active: false, phase: 0, xPos: 15, yPos: 15, xDir: 1, yDir: 1,
+            jetX: 50, jetY: 50, jetTime: 0, ringSize: 105, ringDir: -1,
+            flareActive: false, nextFlareTime: 0, flareEndTime: 0, lastTime: 0
         };
 
         function initEp4() {
             stopAllLoops();
             const now = performance.now();
             ep4State = {
-                active: true,
-                phase: 0,
-                xPos: 12,
-                yPos: 12,
-                xDir: 1,
-                yDir: 1,
-                jetX: 50,
-                jetY: 50,
-                jetTime: Math.random() * 10,
-                ringSize: 105,
-                ringDir: -1,
-                flareActive: false,
-                nextFlareTime: now + 4500,
-                flareEndTime: 0,
-                lastTime: now
+                active: true, phase: 0, xPos: 12, yPos: 12, xDir: 1, yDir: 1,
+                jetX: 50, jetY: 50, jetTime: Math.random() * 10, ringSize: 105, ringDir: -1,
+                flareActive: false, nextFlareTime: now + 4500, flareEndTime: 0, lastTime: now
             };
-
             document.getElementById('ep4-result-box').classList.add('hidden');
             document.getElementById('ep4-action-btn').classList.remove('hidden');
             document.getElementById('ep4-flare-warn').classList.add('hidden');
@@ -1980,18 +1699,8 @@
             const p = ep4State.phase;
             setStageIndicator(`ФАЗА ${p + 1} / 4`);
 
-            const titles = [
-                'ФАЗА 1/4: ОСЬ X',
-                'ФАЗА 2/4: ОСЬ Y',
-                'ФАЗА 3/4: БАЛЛИСТИКА',
-                'ФАЗА 4/4: БОЕГОЛОВКА'
-            ];
-            const btnLabels = [
-                '[ ЗАФИКСИРОВАТЬ ОСЬ X ]',
-                '[ ЗАФИКСИРОВАТЬ ОСЬ Y ]',
-                '[ СВЕСТИ КОЛЬЦО БАЛЛИСТИКИ ]',
-                '[ СИНХРОНИЗИРОВАТЬ БОЕГОЛОВКУ ]'
-            ];
+            const titles = ['ФАЗА 1/4: ОСЬ X', 'ФАЗА 2/4: ОСЬ Y', 'ФАЗА 3/4: БАЛЛИСТИКА', 'ФАЗА 4/4: БОЕГОЛОВКА'];
+            const btnLabels = ['[ ЗАФИКСИРОВАТЬ ОСЬ X ]', '[ ЗАФИКСИРОВАТЬ ОСЬ Y ]', '[ СВЕСТИ КОЛЬЦО БАЛЛИСТИКИ ]', '[ СИНХРОНИЗИРОВАТЬ БОЕГОЛОВКУ ]'];
             const hints = [
                 'СОВМЕСТИТЕ ВЕРТИКАЛЬНУЮ ЛИНИЮ С ДЖЕТОМ «ВЕЙЛ-1»',
                 'ТЕПЕРЬ ЗАФИКСИРУЙТЕ ГОРИЗОНТАЛЬНУЮ ОСЬ Y НА ЦЕЛИ',
@@ -2095,18 +1804,11 @@
 
         function handleEp4Press() {
             if (!ep4State.active) return;
-
             let hit = false;
-
-            if (ep4State.phase === 0) {
-                hit = Math.abs(ep4State.xPos - ep4State.jetX) <= 11.5;
-            } else if (ep4State.phase === 1) {
-                hit = Math.abs(ep4State.yPos - ep4State.jetY) <= 11.5;
-            } else if (ep4State.phase === 2) {
-                hit = Math.abs(ep4State.ringSize - 44) <= 14;
-            } else if (ep4State.phase === 3) {
-                hit = Math.abs(ep4State.ringSize - 44) <= 11;
-            }
+            if (ep4State.phase === 0) hit = Math.abs(ep4State.xPos - ep4State.jetX) <= 11.5;
+            else if (ep4State.phase === 1) hit = Math.abs(ep4State.yPos - ep4State.jetY) <= 11.5;
+            else if (ep4State.phase === 2) hit = Math.abs(ep4State.ringSize - 44) <= 14;
+            else if (ep4State.phase === 3) hit = Math.abs(ep4State.ringSize - 44) <= 11;
 
             if (hit) {
                 playLockSound(ep4State.phase + 1);
@@ -2142,9 +1844,15 @@
             }
         }
 
-        /* =========================================================================
-           8. ПРИВЯЗКА СОБЫТИЙ
-           ========================================================================= */
+        function bindClick(id, fn) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                fn();
+            });
+        }
+
         function bindTapButton(elementId, callback) {
             const el = document.getElementById(elementId);
             if (!el) return;
@@ -2153,7 +1861,7 @@
             const trigger = (e) => {
                 if (e && e.cancelable) e.preventDefault();
                 const now = Date.now();
-                if (now - lastTrigger < 60) return;
+                if (now - lastTrigger < 70) return;
                 lastTrigger = now;
                 initAudio();
                 callback();
@@ -2161,42 +1869,88 @@
 
             el.addEventListener('pointerdown', trigger);
             el.addEventListener('touchstart', trigger, { passive: false });
+            el.addEventListener('click', trigger);
         }
 
-        bindTapButton('ep1-action-btn', handleEp1Press);
-        bindTapButton('ep2-action-btn', handleEp2Tap);
-        bindTapButton('ep4-action-btn', handleEp4Press);
+        function setupAllBindings() {
+            initAudioList();
 
-        const ep3Btn = document.getElementById('ep3-action-btn');
-        if (ep3Btn) {
-            const startHold = (e) => {
-                if (e && e.cancelable) e.preventDefault();
-                initAudio();
-                setEp3Hold(true);
-            };
-            const endHold = (e) => {
-                if (e && e.cancelable) e.preventDefault();
-                setEp3Hold(false);
-            };
+            bindClick('soundToggleBtn', toggleSound);
+            bindClick('nav-menu', goHome);
+            bindClick('nav-ep1', () => startEpisode(1));
+            bindClick('nav-ep2', () => startEpisode(2));
+            bindClick('nav-ep3', () => startEpisode(3));
+            bindClick('nav-ep4', () => startEpisode(4));
+            bindClick('nav-audio', startAudio);
+            bindClick('nav-secret', startSecret);
 
-            ep3Btn.addEventListener('pointerdown', startHold);
-            ep3Btn.addEventListener('pointerup', endHold);
-            ep3Btn.addEventListener('pointerleave', endHold);
-            ep3Btn.addEventListener('pointercancel', endHold);
+            bindClick('card-ep1', () => startEpisode(1));
+            bindClick('card-ep2', () => startEpisode(2));
+            bindClick('card-ep3', () => startEpisode(3));
+            bindClick('card-ep4', () => startEpisode(4));
+            bindClick('card-audio', startAudio);
+            bindClick('card-secret', startSecret);
 
-            ep3Btn.addEventListener('touchstart', startHold, { passive: false });
-            ep3Btn.addEventListener('touchend', endHold, { passive: false });
-            ep3Btn.addEventListener('touchcancel', endHold, { passive: false });
+            bindClick('back-from-secret', goHome);
+            bindClick('back-from-audio', goHome);
+            bindClick('home-ep1', goHome);
+            bindClick('home-ep2', goHome);
+            bindClick('home-ep3', goHome);
+            bindClick('home-ep4', goHome);
+
+            bindClick('retry-ep1', initEp1);
+            bindClick('retry-ep2', initEp2);
+            bindClick('retry-ep3', initEp3);
+            bindClick('retry-ep4', initEp4);
+
+            bindClick('secret-unlock-btn', checkSecretCode);
+            bindClick('copy-tg-btn', copyTgHandle);
+
+            const secretInput = document.getElementById('secret-code-input');
+            if (secretInput) {
+                secretInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') checkSecretCode();
+                });
+                secretInput.addEventListener('input', () => {
+                    if (secretInput.value.length === 4) {
+                        checkSecretCode();
+                    }
+                });
+            }
+
+            bindTapButton('ep1-action-btn', handleEp1Press);
+            bindTapButton('ep2-action-btn', handleEp2Tap);
+            bindTapButton('ep4-action-btn', handleEp4Press);
+
+            const ep3Btn = document.getElementById('ep3-action-btn');
+            if (ep3Btn) {
+                const startHold = (e) => {
+                    if (e && e.cancelable) e.preventDefault();
+                    initAudio();
+                    setEp3Hold(true);
+                };
+                const endHold = (e) => {
+                    if (e && e.cancelable) e.preventDefault();
+                    setEp3Hold(false);
+                };
+
+                ep3Btn.addEventListener('pointerdown', startHold);
+                ep3Btn.addEventListener('pointerup', endHold);
+                ep3Btn.addEventListener('pointerleave', endHold);
+                ep3Btn.addEventListener('pointercancel', endHold);
+                ep3Btn.addEventListener('touchstart', startHold, { passive: false });
+                ep3Btn.addEventListener('touchend', endHold, { passive: false });
+                ep3Btn.addEventListener('touchcancel', endHold, { passive: false });
+            }
         }
 
         window.addEventListener('keydown', (e) => {
-            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
             if (e.code === 'Space') {
-                if (currentScreen !== 'menu') e.preventDefault();
+                if (currentScreen !== 'menu' && currentScreen !== 'secret') e.preventDefault();
                 if (e.repeat) return;
-
                 if (currentScreen === 'ep1') handleEp1Press();
-                if (currentScreen === 'ep2') handleEp2Ta                if (currentScreen === 'ep3') setEp3Hold(true);
+                if (currentScreen === 'ep2') handleEp2Tap();
+                if (currentScreen === 'ep3') setEp3Hold(true);
                 if (currentScreen === 'ep4') handleEp4Press();
             }
         });
@@ -2207,10 +1961,11 @@
             }
         });
 
-        // Инициализация списка аудиологов при загрузке
-        window.addEventListener('DOMContentLoaded', () => {
-            initAudioList();
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupAllBindings);
+        } else {
+            setupAllBindings();
+        }
     </script>
 </body>
 </html>
