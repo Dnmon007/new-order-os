@@ -1,1272 +1,1895 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>GLITCH_OS // TERMINAL</title>
-<style>
-  :root {
-    --bg: #04070b;
-    --panel: #0a1017;
-    --border: #172a3a;
-    --cyan: #00f3ff;
-    --cyan-dim: rgba(0, 243, 255, 0.14);
-    --green: #00ff88;
-    --green-dim: rgba(0, 255, 136, 0.14);
-    --red: #ff2a55;
-    --red-dim: rgba(255, 42, 85, 0.18);
-    --amber: #ffaa00;
-    --text: #d0e2f0;
-    --muted: #5a768e;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>GLITCH_OS v5.2 // КАЙ "ГЛИТЧ" МЕРСЕР</title>
+    <style>
+        /* =========================================================================
+           1. БАЗОВЫЕ ПЕРЕМЕННЫЕ И СТИЛИ (ПОЛНОСТЬЮ АВТОНОМНЫЙ CSS ДЛЯ SAFARI / iOS)
+           ========================================================================= */
+        :root {
+            --bg-dark: #04070b;
+            --panel-bg: rgba(9, 16, 26, 0.94);
+            --neon-cyan: #00f3ff;
+            --neon-green: #00ff66;
+            --neon-red: #ff2a55;
+            --neon-amber: #ffae00;
+            --text-main: #e2f1f8;
+            --text-muted: #94a3b8;
+        }
 
-  * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    -webkit-user-select: none;
-  }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
 
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg);
-    background-image:
-      radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 60%),
-      linear-gradient(rgba(0, 243, 255, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 243, 255, 0.035) 1px, transparent 1px);
-    background-size: 100% 100%, 22px 22px, 22px 22px;
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, monospace;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
 
-  .app-shell {
-    max-width: 520px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 12px 14px 28px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.08) 0%, transparent 55%),
+                radial-gradient(circle at 50% 100%, rgba(0, 243, 255, 0.08) 0%, transparent 55%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px;
+        }
 
-  .header-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.7), inset 0 0 15px rgba(0, 243, 255, 0.04);
-  }
+        /* Декоративные сканлайны без перехвата кликов */
+        .scanlines::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
+            background-size: 100% 3px;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+        .container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
 
-  .sys-title {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--cyan);
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+        .hidden {
+            display: none !important;
+        }
 
-  .dot-live {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--red);
-    box-shadow: 0 0 10px var(--red);
-    animation: pulse 1.5s infinite;
-  }
+        /* =========================================================================
+           2. ПАНЕЛИ И КНОПКИ НАВИГАЦИИ (БЕЗ БЛОКИРОВКИ КАСАНИЙ НА iOS)
+           ========================================================================= */
+        .cyber-panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 243, 255, 0.34);
+            border-radius: 14px;
+            box-shadow: 0 0 24px rgba(0, 243, 255, 0.08), inset 0 0 18px rgba(0, 243, 255, 0.04);
+        }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
-  }
+        .interactive-btn {
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-  .sub-meta {
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+        .cyber-btn {
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.45);
+            border-radius: 10px;
+            color: var(--text-main);
+            transition: background 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+        }
 
-  .status-pill {
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    padding: 4px 8px;
-    border-radius: 5px;
-    background: rgba(255, 42, 85, 0.12);
-    border: 1px solid rgba(255, 42, 85, 0.45);
-    color: var(--red);
-    text-shadow: 0 0 6px rgba(255, 42, 85, 0.4);
-    font-weight: 700;
-  }
+        .cyber-btn:active {
+            transform: scale(0.98);
+            background: rgba(0, 243, 255, 0.24);
+            border-color: var(--neon-cyan);
+        }
 
-  .nav-bar {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 4px;
-  }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            flex: 1;
+        }
 
-  .nav-btn {
-    background: #070c12;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: ui-monospace, monospace;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 9px 2px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.12s;
-  }
+        .nav-tab {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 7px;
+            color: var(--text-muted);
+            padding: 8px 2px;
+            font-size: 10px;
+            font-weight: 800;
+            text-align: center;
+        }
 
-  .nav-btn.active {
-    background: var(--cyan-dim);
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
-  }
+        .nav-tab.active {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+        }
 
-  .nav-btn.audio-tab.active {
-    background: var(--green-dim);
-    border-color: var(--green);
-    color: var(--green);
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
-  }
+        /* Большая игровая кнопка (Action Pad >= 76px) */
+        .action-pad {
+            width: 100%;
+            min-height: 78px;
+            padding: 16px 12px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(0, 243, 255, 0.16) 0%, rgba(0, 243, 255, 0.05) 100%);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 24px rgba(0, 243, 255, 0.2), inset 0 0 18px rgba(0, 243, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            z-index: 15;
+            transition: transform 0.06s ease, background 0.06s ease;
+        }
 
-  .screen {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .screen.active {
-    display: flex;
-  }
+        .action-pad:active, .action-pad.pressed {
+            transform: scale(0.97);
+            background: rgba(0, 243, 255, 0.32);
+            box-shadow: 0 0 36px rgba(0, 243, 255, 0.5);
+        }
 
-  .terminal-note {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--cyan);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-family: ui-monospace, monospace;
-    font-size: 11px;
-    line-height: 1.45;
-    color: #9cb8cf;
-  }
+        .action-pad.green-pad {
+            border-color: var(--neon-green);
+            background: linear-gradient(180deg, rgba(0, 255, 102, 0.16) 0%, rgba(0, 255, 102, 0.05) 100%);
+        }
 
-  .proto-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
-  }
-  .proto-card:active {
-    transform: scale(0.985);
-    border-color: var(--cyan);
-    background: #0e1722;
-    box-shadow: 0 0 16px rgba(0, 243, 255, 0.15);
-  }
+        .action-pad.green-pad:active, .action-pad.green-pad.pressed {
+            background: rgba(0, 255, 102, 0.32);
+        }
 
-  .badge-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 5px;
-    flex-wrap: wrap;
-  }
+        .action-pad.red-pad {
+            border-color: var(--neon-red);
+            background: linear-gradient(180deg, rgba(255, 42, 85, 0.18) 0%, rgba(255, 42, 85, 0.06) 100%);
+        }
 
-  .badge {
-    font-family: ui-monospace, monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: var(--cyan-dim);
-    color: var(--cyan);
-    border: 1px solid rgba(0, 243, 255, 0.35);
-  }
+        .action-pad.red-pad:active, .action-pad.red-pad.pressed {
+            background: rgba(255, 42, 85, 0.34);
+        }
 
-  .badge.green {
-    background: var(--green-dim);
-    color: var(--green);
-    border-color: rgba(0, 255, 136, 0.35);
-  }
+        .action-pad.disabled-pad {
+            opacity: 0.45;
+            border-color: var(--neon-red);
+            background: rgba(255, 42, 85, 0.15);
+            pointer-events: none;
+        }
 
-  .badge-sub {
-    font-family: ui-monospace, monospace;
-    font-size: 9px;
-    color: var(--muted);
-  }
+        /* Стили карточек аудиологов */
+        .audio-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 255, 102, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+        .audio-card.playing {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 16px rgba(0, 255, 102, 0.2);
+        }
+        .audio-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .audio-name {
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .audio-tag {
+            font-family: ui-monospace, monospace;
+            font-size: 10px;
+            color: var(--neon-green);
+            background: rgba(0, 255, 102, 0.15);
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .play-btn {
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: ui-monospace, monospace;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 7px;
+            min-width: 90px;
+            cursor: pointer;
+        }
+        .audio-card.playing .play-btn {
+            background: var(--neon-green);
+            color: #03120a;
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+        }
+        .progress-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 7px;
+            background: #03060a;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--neon-green);
+            box-shadow: 0 0 8px var(--neon-green);
+            transition: width 0.1s linear;
+        }
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: ui-monospace, monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
 
-  .card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.4px;
-    margin-bottom: 3px;
-  }
+        /* Утилиты типографики и свечения */
+        .glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.75); }
+        .glow-green { text-shadow: 0 0 12px rgba(0, 255, 102, 0.85); }
+        .glow-red { text-shadow: 0 0 12px rgba(255, 42, 85, 0.85); }
 
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-  }
+        .row-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
 
-  .arrow-icon {
-    font-family: ui-monospace, monospace;
-    font-size: 18px;
-    color: var(--cyan);
-    padding-left: 10px;
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
-  }
+        .stack-sm > * + * { margin-top: 8px; }
+        .stack-md > * + * { margin-top: 12px; }
+        .stack-lg > * + * { margin-top: 16px; }
 
-  .audio-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .audio-card.playing {
-    border-color: var(--green);
-    box-shadow: 0 0 16px rgba(0, 255, 136, 0.18);
-  }
+        .badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 5px;
+            letter-spacing: 0.04em;
+        }
 
-  .audio-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+        /* Анимации */
+        @keyframes pulseAlarm {
+            0%, 100% { background-color: rgba(255, 42, 85, 0.15); border-color: #ff2a55; }
+            50% { background-color: rgba(255, 42, 85, 0.38); border-color: #ff859e; }
+        }
+        .alarm-flash { animation: pulseAlarm 0.45s infinite; }
 
-  .audio-name {
-    font-family: ui-monospace, monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-  }
+        @keyframes glitchShake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-3px, 2px); }
+            50% { transform: translate(3px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+        }
+        .shake-glitch { animation: glitchShake 0.22s infinite; }
 
-  .audio-tag {
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--green);
-    background: var(--green-dim);
-    padding: 3px 7px;
-    border-radius: 4px;
-  }
-
-  .audio-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .play-btn {
-    background: #0d1a14;
-    border: 1px solid var(--green);
-    color: var(--green);
-    font-family: ui-monospace, monospace;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 10px 14px;
-    border-radius: 7px;
-    min-width: 92px;
-    cursor: pointer;
-  }
-  .audio-card.playing .play-btn {
-    background: var(--green);
-    color: #03120a;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
-  }
-
-  .progress-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .progress-bar-bg {
-    width: 100%;
-    height: 8px;
-    background: #070c11;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    transition: width 0.1s linear;
-  }
-
-  .time-row {
-    display: flex;
-    justify-content: space-between;
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--muted);
-  }
-
-  .game-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
-  }
-
-  .game-hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: ui-monospace, monospace;
-    font-size: 11px;
-    color: var(--cyan);
-    background: #060b10;
-    padding: 9px 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-  }
-
-  canvas {
-    width: 100%;
-    height: 195px;
-    background: #030609;
-    border: 1px solid #1c3549;
-    border-radius: 8px;
-    display: block;
-    box-shadow: inset 0 0 24px rgba(0, 243, 255, 0.06);
-  }
-
-  .action-pad {
-    width: 100%;
-    height: 78px;
-    background: linear-gradient(180deg, rgba(0, 243, 255, 0.18) 0%, rgba(0, 243, 255, 0.08) 100%);
-    border: 2px solid var(--cyan);
-    border-radius: 10px;
-    color: var(--cyan);
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.45);
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
-    font-family: ui-monospace, monospace;
-    font-size: 14px;
-    font-weight: 700;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .action-pad:active {
-    background: rgba(0, 243, 255, 0.34);
-    transform: scale(0.985);
-    box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
-  }
-  .action-pad small {
-    font-size: 10px;
-    color: var(--text);
-    text-shadow: none;
-    font-weight: 400;
-  }
-
-  .result-banner {
-    display: none;
-    background: var(--green-dim);
-    border: 1px solid var(--green);
-    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-    font-family: ui-monospace, monospace;
-  }
-  .result-banner.show {
-    display: block;
-  }
-  .result-banner h4 {
-    margin: 0 0 6px;
-    color: var(--green);
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
-    font-size: 14px;
-  }
-  .result-banner p {
-    margin: 0 0 10px;
-    font-size: 12px;
-    color: #fff;
-  }
-
-  .reset-btn {
-    background: var(--green);
-    color: #04100a;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-family: ui-monospace, monospace;
-    font-weight: 700;
-    font-size: 11px;
-    cursor: pointer;
-  }
-
-  .blocks-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-  .mem-block {
-    background: #060b10;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 9px 4px;
-    text-align: center;
-    font-family: ui-monospace, monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .mem-block.done {
-    background: var(--green-dim);
-    border-color: var(--green);
-    color: var(--green);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-    font-weight: 700;
-  }
-  .mem-block.curr {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.15);
-  }
-
-  .heat-bar-wrap {
-    height: 14px;
-    background: #060b10;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    overflow: hidden;
-  }
-  .heat-fill {
-    height: 100%;
-    width: 20%;
-    background: linear-gradient(90deg, var(--cyan), var(--amber), var(--red));
-    box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
-    transition: width 0.08s;
-  }
-
-  .footer-bar {
-    margin-top: auto;
-    padding-top: 8px;
-    display: flex;
-    justify-content: space-between;
-    font-family: ui-monospace, monospace;
-    font-size: 10px;
-    color: var(--muted);
-  }
-</style>
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+        .pulse-anim { animation: pulseDot 1.1s infinite; }
+    </style>
 </head>
-<body>
+<body class="scanlines">
 
-<div class="app-shell">
-  <div class="header-box">
-    <div class="top-row">
-      <div>
-        <div class="sys-title"><span class="dot-live"></span> GLITCH_OS v6.4 // NEON_CORE</div>
-        <div class="sub-meta">NODE: LOS_SANTOS_NET // ACCESS_GRANTED</div>
-      </div>
-      <div class="status-pill" id="sysStatus">ONLINE</div>
-    </div>
+    <!-- ================= ВЕРХНЯЯ ПАНЕЛЬ СТАТУСА И НАВИГАЦИИ ================= -->
+    <header class="container cyber-panel stack-sm" style="padding: 12px; margin-bottom: 12px;">
+        <div class="row-between">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="pulse-anim" style="width: 10px; height: 10px; border-radius: 50%; background: #ff2a55; box-shadow: 0 0 8px #ff2a55; flex-shrink: 0;"></div>
+                <div>
+                    <div class="glow-cyan" style="font-size: 13px; font-weight: 800; color: var(--neon-cyan);">
+                        GLITCH_OS v5.2 // КАЙ "ГЛИТЧ" МЕРСЕР
+                    </div>
+                    <div style="font-size: 10px; color: var(--text-muted);">
+                        ОПЕРАЦИЯ: «НОВЫЙ ПОРЯДОК» // ПРОТОКОЛ ВЗЛОМА
+                    </div>
+                </div>
+            </div>
 
-    <div class="nav-bar">
-      <button class="nav-btn active" data-target="menu">МЕНЮ</button>
-      <button class="nav-btn" data-target="ep1">СЕР.1</button>
-      <button class="nav-btn" data-target="ep2">СЕР.2</button>
-      <button class="nav-btn" data-target="ep3">СЕР.3</button>
-      <button class="nav-btn" data-target="ep4">СЕР.4</button>
-      <button class="nav-btn audio-tab" data-target="audio">АУДИО</button>
-    </div>
-  </div>
+            <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                <div style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 4px 8px; text-align: right;">
+                    <div style="font-size: 9px; color: var(--text-muted); line-height: 1;">СБОИ</div>
+                    <div id="global-fails" style="font-size: 13px; font-weight: 800; color: var(--neon-red);">0</div>
+                </div>
 
-  <div class="screen active" id="screen-menu">
-    <div class="terminal-note">
-      USER: KAI_MERCER // KERNEL_READY<br>
-      Выберите активный модуль взлома или откройте канал перехвата аудио-логов по команде напарника.
-    </div>
-
-    <div class="proto-card" data-open="ep1">
-      <div>
-        <div class="badge-row">
-          <span class="badge">6 ЭТАПОВ</span>
-          <span class="badge-sub">СИНХРОНИЗАЦИЯ • ICE-БАРЬЕРЫ</span>
+                <button id="soundToggleBtn" type="button" onclick="toggleSound()" class="interactive-btn cyber-btn" style="padding: 8px 10px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">
+                    <span id="soundIcon">🔊</span> <span id="soundLabel">ЗВУК</span>
+                </button>
+            </div>
         </div>
-        <div class="card-title">СЕРИЯ 1 // ПРОТОКОЛ-01</div>
-        <div class="card-desc">Обход многоуровневого крипто-замка</div>
-      </div>
-      <div class="arrow-icon">→</div>
-    </div>
 
-    <div class="proto-card" data-open="ep2">
-      <div>
-        <div class="badge-row">
-          <span class="badge">4 БЛОКА</span>
-          <span class="badge-sub">ДЕШИФРОВКА • ТЕРМОКОНТРОЛЬ</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid #1e293b;">
+            <nav class="nav-grid" style="min-width: 250px;">
+                <button id="nav-menu" type="button" onclick="goHome()" class="interactive-btn nav-tab active">МЕНЮ</button>
+                <button id="nav-ep1" type="button" onclick="startEpisode(1)" class="interactive-btn nav-tab">СЕР.1</button>
+                <button id="nav-ep2" type="button" onclick="startEpisode(2)" class="interactive-btn nav-tab">СЕР.2</button>
+                <button id="nav-ep3" type="button" onclick="startEpisode(3)" class="interactive-btn nav-tab">СЕР.3</button>
+                <button id="nav-ep4" type="button" onclick="startEpisode(4)" class="interactive-btn nav-tab">СЕР.4</button>
+                <button id="nav-audio" type="button" onclick="startAudio()" class="interactive-btn nav-tab" style="color: var(--neon-green);">АУДИО</button>
+            </nav>
+
+            <div style="background: rgba(0, 243, 255, 0.12); border: 1px solid rgba(0, 243, 255, 0.4); border-radius: 6px; padding: 5px 9px; font-size: 11px; font-weight: 800; color: var(--neon-cyan);">
+                <span id="global-stage-indicator">РЕЖИМ ОЖИДАНИЯ</span>
+            </div>
         </div>
-        <div class="card-title">СЕРИЯ 2 // ПРОТОКОЛ-02</div>
-        <div class="card-desc">Извлечение зашифрованных координат</div>
-      </div>
-      <div class="arrow-icon">→</div>
-    </div>
+    </header>
 
-    <div class="proto-card" data-open="ep3">
-      <div>
-        <div class="badge-row">
-          <span class="badge">35 СЕК</span>
-          <span class="badge-sub">СТЕЛС-КОНТУР • ЧАСТОТНЫЙ КАНАЛ</span>
-        </div>
-        <div class="card-title">СЕРИЯ 3 // ПРОТОКОЛ-03</div>
-        <div class="card-desc">Удержание маскирующего сигнала</div>
-      </div>
-      <div class="arrow-icon">→</div>
-    </div>
+    <!-- ================= ОСНОВНОЙ КОНТЕЙНЕР ЭКРАНОВ ================= -->
+    <main class="container" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
 
-    <div class="proto-card" data-open="ep4">
-      <div>
-        <div class="badge-row">
-          <span class="badge">4 ФАЗЫ</span>
-          <span class="badge-sub">НАВЕДЕНИЕ • ЗАХВАТ ВЕКТОРА</span>
-        </div>
-        <div class="card-title">СЕРИЯ 4 // ПРОТОКОЛ-04</div>
-        <div class="card-desc">Баллистическая синхронизация цели</div>
-      </div>
-      <div class="arrow-icon">→</div>
-    </div>
+        <!-- ================= ЭКРАН 0: ГЛАВНОЕ МЕНЮ ================= -->
+        <section id="screen-menu" class="stack-md">
+            <div class="cyber-panel" style="padding: 14px; border-left: 4px solid var(--neon-red);">
+                <div class="row-between" style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">
+                    <span>USER: KAI_MERCER // iOS_TOUCH_READY</span>
+                    <span id="liveClock">03:14:00</span>
+                </div>
+                <div style="font-size: 13px; line-height: 1.45; color: #e2e8f0;">
+                    Выберите активный протокол серии или откройте канал аудио-перехвата. Управление адаптировано под iPhone (<strong style="color: var(--neon-cyan);">ТАП / УДЕРЖАНИЕ</strong>).
+                </div>
+            </div>
 
-    <div class="proto-card" style="border-color: rgba(0,255,136,0.4);" data-open="audio">
-      <div>
-        <div class="badge-row">
-          <span class="badge green">5 ЗАПИСЕЙ</span>
-          <span class="badge-sub">ЗАШИФРОВАННЫЙ КАНАЛ СВЯЗИ</span>
-        </div>
-        <div class="card-title" style="color: var(--green);">АУДИО-ПЕРЕХВАТ // ЛОГИ</div>
-        <div class="card-desc">Воспроизведение перехваченных сообщений</div>
-      </div>
-      <div class="arrow-icon" style="color: var(--green);">▶</div>
-    </div>
-  </div>
+            <div class="stack-sm">
+                <!-- Карточка 1 -->
+                <button type="button" onclick="startEpisode(1)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span class="badge" style="background: rgba(0,243,255,0.2); color: var(--neon-cyan);">6 ЭТАПОВ</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ICE ЛОВУШКИ • 2 ЗАРЯДА БРОНИ</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                            СЕРИЯ 1: PACIFIC STANDARD — «МНОГОУРОВНЕВЫЙ ШИФР»
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            Синхронизация 6 крипто-колец при активных красных барьерах ICE
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">→</div>
+                </button>
 
-  <div class="screen" id="screen-audio">
-    <div class="terminal-note" style="border-left-color: var(--green);">
-      КАНАЛ ПЕРЕХВАТА АКТИВЕН // Нажмите воспроизведение на нужном логе, когда напарник даст сигнал.
-    </div>
-    <div id="audioList"></div>
-  </div>
+                <!-- Карточка 2 -->
+                <button type="button" onclick="startEpisode(2)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green);">4 БЛОКА ПАМЯТИ</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ТЕПЛОВЫЕ СКАЧКИ • ТРОТТЛИНГ</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                            СЕРИЯ 2: СЭНДИ-ШОРС — «ВЗЛОМ КРИПТО-АРХИВА»
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            Поочередная дешифровка 4 секторов при скачках температуры CPU
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--neon-green);">→</div>
+                </button>
 
-  <div class="screen" id="screen-ep1">
-    <div class="game-box">
-      <div class="game-hud">
-        <span>ПРОТОКОЛ-01 // ШИФР</span>
-        <span id="ep1Stats">ЭТАП: 1/6 | ЦЕЛОСТНОСТЬ: 3</span>
-      </div>
-      <canvas id="canvasEp1" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep1Win">
-        <h4>ДОСТУП ПОЛУЧЕН</h4>
-        <p>СИСТЕМА ЗАЩИТЫ ОТКЛЮЧЕНА. ПРОХОД ОТКРЫТ.</p>
-        <button class="reset-btn" id="ep1Reset">ПОВТОРИТЬ ПРОТОКОЛ</button>
-      </div>
-      <button class="action-pad" id="ep1Btn">
-        <span>[ СИНХРОНИЗИРОВАТЬ ]</span>
-        <small>СЛОЖНОСТЬ РАСТЕТ НА КАЖДОМ ЭТАПЕ • ИЗБЕГАЙТЕ ICE</small>
-      </button>
-    </div>
-  </div>
+                <!-- Карточка 3 -->
+                <button type="button" onclick="startEpisode(3)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span class="badge" style="background: rgba(255,174,0,0.2); color: var(--neon-amber);">3 ЗОНЫ • 35 СЕК</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ПЛАВНАЯ ВОЛНА • СТЕЛС-КОНТУР</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                            СЕРИЯ 3: MAZE BANK — «ОБХОД ПВО 'ЭГИДА'»
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            35 секунд удержания стелс-волны через 3 контура радаров
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--neon-amber);">→</div>
+                </button>
 
-  <div class="screen" id="screen-ep2">
-    <div class="game-box">
-      <div class="game-hud">
-        <span>ПРОТОКОЛ-02 // АРХИВ</span>
-        <span id="ep2Stats">ТЕМП: 35°C | БЛОК: 1/4</span>
-      </div>
-      <canvas id="canvasEp2" width="460" height="120" style="height: 120px;"></canvas>
-      <div class="blocks-grid" id="ep2Blocks">
-        <div class="mem-block curr">СЕКТОР 1<br>0%</div>
-        <div class="mem-block">СЕКТОР 2<br>0%</div>
-        <div class="mem-block">СЕКТОР 3<br>0%</div>
-        <div class="mem-block">СЕКТОР 4<br>0%</div>
-      </div>
-      <div style="font-family: ui-monospace, monospace; font-size: 10px; color: var(--muted);">НАГРЕВ ПРОЦЕССОРА (КРИТИЧЕСКИЙ ПОРОГ 100%):</div>
-      <div class="heat-bar-wrap">
-        <div class="heat-fill" id="ep2HeatFill"></div>
-      </div>
-      <div class="result-banner" id="ep2Win">
-        <h4>АРХИВ РАСШИФРОВАН</h4>
-        <p>КООРДИНАТЫ: ЭЛИЗИАН-АЙЛЕНД // СЕКТОР-4 // ГЛУБИНА: 65М</p>
-        <button class="reset-btn" id="ep2Reset">СБРОСИТЬ СЕКТОРЫ</button>
-      </div>
-      <button class="action-pad" id="ep2Btn">
-        <span>[ УДЕРЖИВАТЬ ДЛЯ ВЗЛОМА ]</span>
-        <small>ОТПУСТИТЕ, ЧТОБЫ ОХЛАДИТЬ ПРОЦЕССОР</small>
-      </button>
-    </div>
-  </div>
+                <!-- Карточка 4 -->
+                <button type="button" onclick="startEpisode(4)" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span class="badge" style="background: rgba(255,42,85,0.2); color: var(--neon-red);">4 ФАЗЫ ЗАХВАТА</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">МАНЕВРЫ ДЖЕТА • ТЕПЛОВЫЕ ЛОВУШКИ</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                            СЕРИЯ 4: ГОРА ЧИЛИАД — «ЗАХВАТ ЦЕЛИ 'ВЕЙЛ-1'»
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            Наведение по осям X/Y, баллистика и синхронизация боеголовки в полете
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--neon-red);">→</div>
+                </button>
 
-  <div class="screen" id="screen-ep3">
-    <div class="game-box">
-      <div class="game-hud">
-        <span>ПРОТОКОЛ-03 // СТЕЛС-КОНТУР</span>
-        <span id="ep3Stats">ОСТАЛОСЬ: 35.0с | СИГНАЛ: 100%</span>
-      </div>
-      <canvas id="canvasEp3" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep3Win">
-        <h4>КОНТУР ПРОЙДЕН</h4>
-        <p>СТАТУС: DROP ZONE REACHED — ПРЫГАЕМ!</p>
-        <button class="reset-btn" id="ep3Reset">ПЕРЕЗАПУСТИТЬ КОНТУР</button>
-      </div>
-      <button class="action-pad" id="ep3Btn">
-        <span>[ УДЕРЖИВАТЬ ВЫСОТУ ВОЛНЫ ]</span>
-        <small>ЗАЖМИТЕ ДЛЯ ПОДЪЕМА • ОТПУСТИТЕ ДЛЯ СНИЖЕНИЯ</small>
-      </button>
-    </div>
-  </div>
+                <!-- Карточка Аудио -->
+                <button type="button" onclick="startAudio()" class="interactive-btn cyber-btn" style="width: 100%; padding: 14px; text-align: left; display: flex; align-items: center; justify-content: space-between; border-color: rgba(0,255,102,0.4);">
+                    <div style="padding-right: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <span class="badge" style="background: rgba(0,255,102,0.2); color: var(--neon-green);">5 ЛОГОВ</span>
+                            <span style="font-size: 10px; font-weight: 700; color: var(--text-muted);">ЗАКРЫТЫЙ КАНАЛ СВЯЗИ</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 800; color: var(--neon-green);">
+                            КАНАЛ АУДИО-ПЕРЕХВАТА // ЛОГИ ОПЕРАЦИИ
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                            Прослушивание перехваченных голосовых сообщений
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--neon-green);">▶</div>
+                </button>
+            </div>
+        </section>
 
-  <div class="screen" id="screen-ep4">
-    <div class="game-box">
-      <div class="game-hud">
-        <span>ПРОТОКОЛ-04 // ЗАХВАТ</span>
-        <span id="ep4Stats">ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ</span>
-      </div>
-      <canvas id="canvasEp4" width="460" height="195"></canvas>
-      <div class="result-banner" id="ep4Win">
-        <h4>TARGET LOCKED // ОГОНЬ!</h4>
-        <p>ВЕКТОР ПОДТВЕРЖДЕН — КРИЧИ НАПАРНИКУ «ОГОНЬ!»</p>
-        <button class="reset-btn" id="ep4Reset">НОВЫЙ ЗАХВАТ</button>
-      </div>
-      <button class="action-pad" id="ep4Btn">
-        <span>[ ЗАФИКСИРОВАТЬ ВЕКТОР ]</span>
-        <small>НАЖМИТЕ ПРИ СОВПАДЕНИИ ПЕРЕКРЕСТИЯ С ЦЕЛЬЮ</small>
-      </button>
-    </div>
-  </div>
+        <!-- ================= ЭКРАН: АУДИО-ПЕРЕХВАТ (5 ЛОГОВ) ================= -->
+        <section id="screen-audio" class="hidden cyber-panel stack-md" style="padding: 16px;">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-green);">ЗАКРЫТЫЙ КАНАЛ СВЯЗИ</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">АУДИО-ПЕРЕХВАТ // ЛОГИ ОПЕРАЦИИ</div>
+                </div>
+                <span class="badge" style="background: rgba(0,255,102,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.4);">
+                    5 ЗАПИСЕЙ
+                </span>
+            </div>
 
-  <div class="footer-bar">
-    <span>KERNEL: GLITCH_OS_6.4</span>
-    <span>LOS SANTOS // 2026</span>
-  </div>
-</div>
+            <div style="font-size: 11px; color: var(--text-muted);">
+                Нажмите воспроизведение нужного перехваченного файла связи.
+            </div>
 
-<script>
-  let audioCtx = null;
-  function beep(freq = 520, dur = 0.06, type = 'sine', vol = 0.08) {
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.value = freq;
-      gain.gain.value = vol;
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + dur);
-    } catch (e) {}
-  }
+            <!-- Список аудиологов -->
+            <div id="audioList" style="max-height: 380px; overflow-y: auto;"></div>
 
-  let currentScreen = 'menu';
-  function switchScreen(target) {
-    beep(640, 0.05);
-    currentScreen = target;
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-' + target).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.target === target);
-    });
-  }
+            <div>
+                <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="width: 100%; padding: 10px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В ГЛАВНОЕ МЕНЮ</button>
+            </div>
+        </section>
 
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchScreen(btn.dataset.target));
-  });
-  document.querySelectorAll('.proto-card').forEach(card => {
-    card.addEventListener('click', () => switchScreen(card.dataset.open));
-  });
+        <!-- ================= ЭКРАН 1: СЕРИЯ 1 (МНОГОУРОВНЕВЫЙ ШИФР - 6 ЭТАПОВ) ================= -->
+        <section id="screen-ep1" class="hidden cyber-panel stack-md" style="padding: 16px;">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-cyan);">СЕРИЯ 1 // БАНК PACIFIC STANDARD</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">МНОГОУРОВНЕВЫЙ ШИФР (6 ЭТАПОВ)</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.65); border: 1px solid rgba(0,243,255,0.4); border-radius: 8px; padding: 4px 10px; text-align: right;">
+                    <div style="font-size: 9px; color: var(--text-muted);">ЗАРЯДЫ БРОНИ</div>
+                    <div id="ep1-armor" style="font-size: 13px; font-weight: 800; color: var(--neon-green);">🛡️ 🛡️</div>
+                </div>
+            </div>
 
-  const audioTracks = [
-    { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
-    { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
-    { id: 3, title: 'АУДИО-ЛОГ #03', tag: 'СЕРИЯ 2 • ЗАПИСЬ 2', file: encodeURI('Серия 2, монолог 2.m4a') },
-    { id: 4, title: 'АУДИО-ЛОГ #04', tag: 'СЕРИЯ 3 • ЗАПИСЬ 1', file: encodeURI('Серия 3 .m4a') },
-    { id: 5, title: 'АУДИО-ЛОГ #05', tag: 'СЕРИЯ 4 • ЗАПИСЬ 1', file: encodeURI('Серия 4.mp3') }
-  ];
+            <!-- 6 индикаторов этапов -->
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
+                <div id="ep1-dot-0" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+                <div id="ep1-dot-1" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+                <div id="ep1-dot-2" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+                <div id="ep1-dot-3" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+                <div id="ep1-dot-4" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+                <div id="ep1-dot-5" style="height: 8px; border-radius: 4px; background: #1e293b;"></div>
+            </div>
 
-  const audioListEl = document.getElementById('audioList');
-  let activeAudio = null;
-  let activeCard = null;
+            <div class="row-between" style="font-size: 11px; background: rgba(0,0,0,0.55); padding: 7px 10px; border-radius: 8px; border: 1px solid #1e293b;">
+                <span id="ep1-status-text" style="color: var(--neon-cyan); font-weight: 800;">УРОВЕНЬ 1/6: ЗАХВАТИТЕ ЗЕЛЕНЫЙ СЕКТОР</span>
+                <span style="color: var(--neon-red); font-weight: 800;">ICE = ЛОВУШКА!</span>
+            </div>
 
-  function fmtTime(sec) {
-    if (!isFinite(sec) || sec < 0) return '00:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-  }
+            <!-- Шкала шифра -->
+            <div id="ep1-bar-container" style="position: relative; width: 100%; height: 92px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
+                <div style="position: absolute; inset: 0; opacity: 0.2; background-image: repeating-linear-gradient(90deg, #00f3ff 0px, #00f3ff 1px, transparent 1px, transparent 18px);"></div>
 
-  audioTracks.forEach(track => {
-    const card = document.createElement('div');
-    card.className = 'audio-card';
-    card.innerHTML = `
-      <div class="audio-top">
-        <div class="audio-name">${track.title}</div>
-        <div class="audio-tag">${track.tag}</div>
-      </div>
-      <div class="audio-controls">
-        <button class="play-btn">▶ ПУСК</button>
-        <div class="progress-wrap">
-          <div class="progress-bar-bg"><div class="progress-fill"></div></div>
-          <div class="time-row"><span class="t-cur">00:00</span><span class="t-dur">--:--</span></div>
-        </div>
-      </div>
-    `;
+                <div id="ep1-trap1" style="position: absolute; top: 0; bottom: 0; left: 15%; width: 14%; background: rgba(255,42,85,0.35); border-left: 2px solid #ff2a55; border-right: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 9px; font-weight: 800; color: #ff2a55;">ICE</span>
+                </div>
 
-    const audio = new Audio(track.file);
-    audio.preload = 'metadata';
+                <div id="ep1-trap2" class="hidden" style="position: absolute; top: 0; bottom: 0; left: 70%; width: 14%; background: rgba(255,42,85,0.35); border-left: 2px solid #ff2a55; border-right: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 9px; font-weight: 800; color: #ff2a55;">ICE</span>
+                </div>
 
-    const playBtn = card.querySelector('.play-btn');
-    const fill = card.querySelector('.progress-fill');
-    const barBg = card.querySelector('.progress-bar-bg');
-    const tCur = card.querySelector('.t-cur');
-    const tDur = card.querySelector('.t-dur');
+                <div id="ep1-target" style="position: absolute; top: 0; bottom: 0; left: 42%; width: 18%; background: rgba(0,255,102,0.26); border-left: 2px solid #00ff66; border-right: 2px solid #00ff66; box-shadow: 0 0 16px rgba(0,255,102,0.55); display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 10px; font-weight: 800; color: #00ff66;">SYNC</span>
+                </div>
 
-    audio.addEventListener('loadedmetadata', () => { tDur.textContent = fmtTime(audio.duration); });
-    audio.addEventListener('timeupdate', () => {
-      tCur.textContent = fmtTime(audio.currentTime);
-      if (audio.duration) fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
-    });
-    audio.addEventListener('ended', () => {
-      card.classList.remove('playing');
-      playBtn.textContent = '▶ ПУСК';
-      fill.style.width = '0%';
-      audio.currentTime = 0;
-    });
+                <div id="ep1-cursor" style="position: absolute; top: 0; bottom: 0; left: 0%; width: 5px; background: #ffffff; box-shadow: 0 0 14px #00f3ff;"></div>
+            </div>
 
-    playBtn.addEventListener('click', () => {
-      if (activeAudio && activeAudio !== audio) {
-        activeAudio.pause();
-        if (activeCard) {
-          activeCard.classList.remove('playing');
-          activeCard.querySelector('.play-btn').textContent = '▶ ПУСК';
+            <!-- Результат Серии 1 -->
+            <div id="ep1-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
+                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
+                    VAULT UNLOCKED // ACCESS GRANTED
+                </div>
+                <div style="font-size: 12px; font-weight: 800; color: var(--neon-amber);">
+                    ВНИМАНИЕ: SILENT ALARM TRIGGERED! КОПЫ В ПУТИ!
+                </div>
+                <p style="font-size: 12px; color: #e2e8f0; margin: 6px 0;">
+                    Все 6 уровней шифра пройдены. Хватайте содержимое ячейки и прорывайтесь с боем к машинам!
+                </p>
+                <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" onclick="initEp1()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ПРОТОКОЛ</button>
+                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                </div>
+            </div>
+
+            <!-- Игровая кнопка -->
+            <button id="ep1-action-btn" type="button" class="action-pad">
+                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan); letter-spacing: 0.04em;">
+                    [ АКТИВИРОВАТЬ / СИНХРОНИЗИРОВАТЬ ]
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                    ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ИЗБЕГАЙТЕ КРАСНЫХ ЗОН ICE
+                </div>
+            </button>
+        </section>
+
+        <!-- ================= ЭКРАН 2: СЕРИЯ 2 (ВЗЛОМ КРИПТО-АРХИВА - 4 БЛОКА) ================= -->
+        <section id="screen-ep2" class="hidden cyber-panel stack-md" style="padding: 16px;">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-green);">СЕРИЯ 2 // БАЗА В СЭНДИ-ШОРС</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ВЗЛОМ КРИПТО-АРХИВА (4 БЛОКА)</div>
+                </div>
+                <span id="ep2-state-badge" class="badge" style="background: rgba(0,255,102,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,102,0.4);">
+                    БЛОК 1 / 4
+                </span>
+            </div>
+
+            <!-- 4 блока памяти -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                <div id="ep2-block-card-0" style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 6px; text-align: center;">
+                    <div style="font-size: 9px; color: var(--text-muted);">БЛОК 01</div>
+                    <div id="ep2-block-stat-0" style="font-size: 11px; font-weight: 800; color: var(--neon-cyan);">0%</div>
+                </div>
+                <div id="ep2-block-card-1" style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 6px; text-align: center;">
+                    <div style="font-size: 9px; color: var(--text-muted);">БЛОК 02</div>
+                    <div id="ep2-block-stat-1" style="font-size: 11px; font-weight: 800; color: #64748b;">LOCKED</div>
+                </div>
+                <div id="ep2-block-card-2" style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 6px; text-align: center;">
+                    <div style="font-size: 9px; color: var(--text-muted);">БЛОК 03</div>
+                    <div id="ep2-block-stat-2" style="font-size: 11px; font-weight: 800; color: #64748b;">LOCKED</div>
+                </div>
+                <div id="ep2-block-card-3" style="background: rgba(0,0,0,0.65); border: 1px solid #334155; border-radius: 8px; padding: 6px; text-align: center;">
+                    <div style="font-size: 9px; color: var(--text-muted);">БЛОК 04</div>
+                    <div id="ep2-block-stat-3" style="font-size: 11px; font-weight: 800; color: #64748b;">LOCKED</div>
+                </div>
+            </div>
+
+            <!-- Прогресс блока -->
+            <div class="stack-sm">
+                <div class="row-between" style="font-size: 12px; font-weight: 800;">
+                    <span id="ep2-current-label" style="color: var(--neon-green);">ДЕШИФРОВКА БЛОКА 1 / 4</span>
+                    <span id="ep2-progress-val" style="color: #ffffff;">0%</span>
+                </div>
+                <div style="width: 100%; height: 24px; background: #03060a; border: 1px solid rgba(0,255,102,0.45); border-radius: 8px; padding: 2px;">
+                    <div id="ep2-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #059669, #00ff66); border-radius: 5px;"></div>
+                </div>
+            </div>
+
+            <!-- Шкала нагрева CPU -->
+            <div class="stack-sm">
+                <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                    <span id="ep2-heat-label" style="color: var(--neon-amber);">ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)</span>
+                    <span id="ep2-heat-val" style="color: #fcd34d;">0%</span>
+                </div>
+                <div style="position: relative; width: 100%; height: 24px; background: #03060a; border: 1px solid #334155; border-radius: 8px; padding: 2px; overflow: hidden;">
+                    <div style="position: absolute; top: 0; bottom: 0; right: 0; width: 25%; background: rgba(255,42,85,0.28); border-left: 1px solid #ff2a55;"></div>
+                    <div id="ep2-heat-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00f3ff, #ffae00, #ff2a55); border-radius: 5px;"></div>
+                </div>
+                <div id="ep2-event-banner" style="font-size: 11px; text-align: center; font-weight: 800; color: var(--text-muted); min-height: 16px;">
+                    При 100% нагрева: блокировка 4 сек и потеря 50% текущего блока!
+                </div>
+            </div>
+
+            <!-- Результат Серии 2 -->
+            <div id="ep2-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
+                <div style="font-size: 11px; font-weight: 800; color: var(--neon-green); letter-spacing: 0.06em;">
+                    ВСЕ 4 БЛОКА РАСШИФРОВАНЫ // ДОСТУП ПОЛУЧЕН
+                </div>
+                <div class="glow-green" style="padding: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; border: 1px solid rgba(0,255,102,0.5); font-size: 13px; font-weight: 800; color: var(--neon-green);">
+                    ЭЛИЗИАН-АЙЛЕНД // СЕКТОР 4 // ГЛУБИНА 65М
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" onclick="initEp2()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ЗАНОВО</button>
+                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                </div>
+            </div>
+
+            <!-- Игровая кнопка -->
+            <button id="ep2-action-btn" type="button" class="action-pad green-pad">
+                <div id="ep2-btn-title" class="glow-green" style="font-size: 16px; font-weight: 800; color: var(--neon-green);">
+                    [ АКТИВИРОВАТЬ / ИМПУЛЬС ВЗЛОМА ]
+                </div>
+                <div id="ep2-btn-sub" style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                    ЧАСТО ТАПАЙТЕ И СЛЕДИТЕ ЗА ТЕПЛОВЫМИ СКАЧКАМИ ICE
+                </div>
+            </button>
+        </section>
+
+        <!-- ================= ЭКРАН 3: СЕРИЯ 3 (ОБХОД ПВО 'ЭГИДА' - 35 СЕК) ================= -->
+        <section id="screen-ep3" class="hidden cyber-panel stack-md" style="padding: 16px;">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div id="ep3-zone-label" style="font-size: 10px; font-weight: 800; color: var(--neon-amber);">ЗОНА 1/3: ВНЕШНИЙ ПЕРИМЕТР</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ОБХОД ПВО «ЭГИДА»</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 9px; color: var(--text-muted);">ОСТАЛОСЬ ВРЕМЕНИ</div>
+                    <div id="ep3-timer" class="glow-cyan" style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">35.0s</div>
+                </div>
+            </div>
+
+            <!-- Целостность сигнала -->
+            <div class="stack-sm">
+                <div class="row-between" style="font-size: 11px; font-weight: 800;">
+                    <span id="ep3-signal-status" style="color: var(--neon-green);">● СТЕЛС-КОНТУР СТАБИЛЕН</span>
+                    <span id="ep3-integrity-val" style="color: #ffffff;">СИГНАЛ: 100%</span>
+                </div>
+                <div style="width: 100%; height: 14px; background: #03060a; border: 1px solid #334155; border-radius: 6px; padding: 2px;">
+                    <div id="ep3-integrity-bar" style="height: 100%; width: 100%; background: var(--neon-green); border-radius: 4px;"></div>
+                </div>
+            </div>
+
+            <!-- Поле радара -->
+            <div style="position: relative; width: 100%; height: 220px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
+                <div style="position: absolute; inset: 0; opacity: 0.2; background-image: linear-gradient(#00f3ff 1px, transparent 1px), linear-gradient(90deg, #00f3ff 1px, transparent 1px); background-size: 28px 28px;"></div>
+
+                <div id="ep3-gust-alert" class="hidden pulse-anim" style="position: absolute; top: 8px; right: 8px; background: rgba(245,158,11,0.22); border: 1px solid #fbbf24; color: #fcd34d; font-size: 10px; font-weight: 800; padding: 3px 7px; border-radius: 5px; z-index: 5;">
+                    ⚠ ПОРЫВ ПОМЕХ
+                </div>
+
+                <div id="ep3-corridor" style="position: absolute; left: 0; right: 0; top: 32%; height: 36%; background: rgba(0,255,102,0.18); border-top: 2px solid #00ff66; border-bottom: 2px solid #00ff66;">
+                    <div style="font-size: 9px; color: rgba(0,255,102,0.8); padding: 3px 8px; font-weight: 800; letter-spacing: 0.08em;">
+                        STEALTH FREQUENCY CHANNEL
+                    </div>
+                </div>
+
+                <div id="ep3-dot" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: var(--neon-cyan); border: 2px solid #ffffff; box-shadow: 0 0 18px var(--neon-cyan);"></div>
+            </div>
+
+            <!-- Результат Серии 3 -->
+            <div id="ep3-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center;">
+                <div id="ep3-result-title" style="font-size: 15px; font-weight: 800;"></div>
+                <p id="ep3-result-desc" style="font-size: 12px; color: #e2e8f0; margin: 4px 0;"></p>
+                <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" onclick="initEp3()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПОВТОРИТЬ ЗАХОД</button>
+                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                </div>
+            </div>
+
+            <!-- Игровая кнопка удержания -->
+            <button id="ep3-action-btn" type="button" class="action-pad">
+                <div class="glow-cyan" style="font-size: 16px; font-weight: 800; color: var(--neon-cyan);">
+                    [ УДЕРЖИВАТЬ ЧАСТОТУ СТЕЛСА ]
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                    ЗАЖМИТЕ ПАЛЕЦ / ПРОБЕЛ — ВВЕРХ • ОТПУСТИТЕ — ВНИЗ
+                </div>
+            </button>
+        </section>
+
+        <!-- ================= ЭКРАН 4: СЕРИЯ 4 (ЗАХВАТ ЦЕЛИ 'ВЕЙЛ-1' - 4 ФАЗЫ) ================= -->
+        <section id="screen-ep4" class="hidden cyber-panel stack-md" style="padding: 16px;">
+            <div class="row-between" style="border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--neon-red);">СЕРИЯ 4 // ГОРА ЧИЛИАД</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #ffffff;">ЗАХВАТ ЦЕЛИ «ВЕЙЛ-1» (4 ФАЗЫ)</div>
+                </div>
+                <div id="ep4-step-badge" style="font-size: 12px; font-weight: 800; color: var(--neon-cyan);">
+                    ФАЗА 1/4: ОСЬ X
+                </div>
+            </div>
+
+            <!-- 4 фазы -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; text-align: center; font-size: 9px; font-weight: 800;">
+                <div id="ep4-phase-0" style="padding: 5px 2px; border-radius: 5px; background: rgba(0,243,255,0.2); border: 1px solid #00f3ff; color: #00f3ff;">1. ОСЬ X</div>
+                <div id="ep4-phase-1" style="padding: 5px 2px; border-radius: 5px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">2. ОСЬ Y</div>
+                <div id="ep4-phase-2" style="padding: 5px 2px; border-radius: 5px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">3. БАЛЛИСТИКА</div>
+                <div id="ep4-phase-3" style="padding: 5px 2px; border-radius: 5px; background: #0f172a; border: 1px solid #1e293b; color: #64748b;">4. БОЕГОЛОВКА</div>
+            </div>
+
+            <!-- Радар наведения -->
+            <div id="ep4-radar" style="position: relative; width: 100%; height: 245px; background: #03060a; border: 2px solid #334155; border-radius: 12px; overflow: hidden;">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+                    <div style="width: 190px; height: 190px; border-radius: 50%; border: 1px solid rgba(0,243,255,0.16);"></div>
+                    <div style="position: absolute; width: 115px; height: 115px; border-radius: 50%; border: 1px solid rgba(0,243,255,0.26);"></div>
+                </div>
+
+                <div id="ep4-flare-warn" class="hidden pulse-anim" style="position: absolute; top: 8px; left: 50%; transform: translateX(-50%); background: rgba(255,42,85,0.25); border: 1px solid #ff2a55; color: #ff2a55; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 5px; z-index: 20; white-space: nowrap;">
+                    ⚠ ТЕПЛОВЫЕ ЛОВУШКИ! ПОМЕХИ ПРИЦЕЛА!
+                </div>
+
+                <div id="ep4-target-jet" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 10;">
+                    <div id="ep4-ballistic-ring" class="hidden" style="position: absolute; top: 24px; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; border-radius: 50%; border: 2px solid #00ff66; box-shadow: 0 0 12px rgba(0,255,102,0.6);"></div>
+                    <div id="ep4-target-zone-ring" class="hidden" style="position: absolute; top: 24px; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; border: 1px dashed #fbbf24;"></div>
+
+                    <div style="width: 46px; height: 46px; border-radius: 8px; border: 2px solid #ff2a55; display: flex; align-items: center; justify-content: center; background: rgba(255,42,85,0.18); box-shadow: 0 0 15px rgba(255,42,85,0.45);">
+                        <svg style="width: 26px; height: 26px; color: #ff2a55;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                        </svg>
+                    </div>
+                    <span style="font-size: 9px; font-weight: 800; color: #ff2a55; background: rgba(0,0,0,0.85); padding: 2px 6px; border-radius: 4px; margin-top: 4px;">VALE-1</span>
+                </div>
+
+                <div id="ep4-line-x" style="position: absolute; top: 0; bottom: 0; left: 20%; width: 2px; background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan);"></div>
+                <div id="ep4-line-y" style="position: absolute; left: 0; right: 0; top: 20%; height: 2px; background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber);"></div>
+                <div id="ep4-crosshair" style="position: absolute; left: 20%; top: 20%; transform: translate(-50%, -50%); width: 26px; height: 26px; border: 2px solid #ffffff; border-radius: 50%; pointer-events: none;"></div>
+            </div>
+
+            <div id="ep4-hint-text" style="font-size: 11px; text-align: center; color: #cbd5e1; font-weight: 800;">
+                СОВМЕСТИТЕ ВЕРТИКАЛЬНУЮ ЛИНИЮ С ДЖЕТОМ «ВЕЙЛ-1»
+            </div>
+
+            <!-- Результат Серии 4 -->
+            <div id="ep4-result-box" class="hidden stack-sm" style="border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--neon-green); background: rgba(0,255,102,0.1);">
+                <div class="glow-green" style="font-size: 15px; font-weight: 800; color: var(--neon-green);">
+                    TARGET LOCKED // FIRE MISSILES
+                </div>
+                <p style="font-size: 12px; color: #e2e8f0; margin: 4px 0;">
+                    Все 4 контура наведения замкнуты! Жмите гашетку в прыжке над пропастью Чилиад!
+                </p>
+                <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" onclick="initEp4()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--neon-cyan);">↻ ПЕРЕЗАРЯДИТЬ РАКЕТЫ</button>
+                    <button type="button" onclick="goHome()" class="interactive-btn cyber-btn" style="padding: 9px 14px; font-size: 12px; font-weight: 800; color: var(--text-muted);">← В МЕНЮ</button>
+                </div>
+            </div>
+
+            <!-- Игровая кнопка -->
+            <button id="ep4-action-btn" type="button" class="action-pad red-pad">
+                <div id="ep4-btn-title" class="glow-red" style="font-size: 16px; font-weight: 800; color: var(--neon-red);">
+                    [ ЗАФИКСИРОВАТЬ ОСЬ X ]
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                    ТАП ПО ПАНЕЛИ ИЛИ ПРОБЕЛ • ОШИБКА НА ФАЗАХ 3–4 ОТКАТЫВАЕТ НАЗАД!
+                </div>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- ================= ПОДВАЛ ТЕРМИНАЛА ================= -->
+    <footer class="container row-between" style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #1e293b; font-size: 10px; color: #64748b;">
+        <span>KERNEL: GLITCH_OS_5.2_iOS</span>
+        <span>LOS SANTOS // 2026 <span class="pulse-anim" style="color: var(--neon-cyan);">█</span></span>
+    </footer>
+
+    <script>
+        /* =========================================================================
+           1. ПРОЦЕДУРНЫЙ ЗВУКОВОЙ СИНТЕЗАТОР (WEB AUDIO API + РАЗБЛОКИРОВКА В SAFARI)
+           ========================================================================= */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            try {
+                if (!audioCtx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) audioCtx = new AudioContext();
+                }
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            } catch (e) {}
         }
-      }
-      if (audio.paused) {
-        audio.play().then(() => {
-          card.classList.add('playing');
-          playBtn.textContent = '❚❚ ПАУЗА';
-          activeAudio = audio;
-          activeCard = card;
-        }).catch(() => { tDur.textContent = 'ОШИБКА ФАЙЛА'; });
-      } else {
-        audio.pause();
-        card.classList.remove('playing');
-        playBtn.textContent = '▶ ПУСК';
-      }
-    });
 
-    barBg.addEventListener('click', (e) => {
-      if (!audio.duration) return;
-      const rect = barBg.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      audio.currentTime = ratio * audio.duration;
-    });
+        function playBeep(freq = 600, duration = 0.08, type = 'sine', volume = 0.15) {
+            if (!soundEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
 
-    audioListEl.appendChild(card);
-  });
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+            document.getElementById('soundLabel').textContent = soundEnabled ? 'ЗВУК' : 'ВЫКЛ';
+            if (soundEnabled) playBeep(720, 0.08, 'triangle', 0.15);
+        }
 
-  function drawGrid(ctx, w, h, step = 20) {
-    ctx.save();
-    ctx.strokeStyle = 'rgba(0, 243, 255, 0.07)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x <= w; x += step) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-    }
-    for (let y = 0; y <= h; y += step) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
-    ctx.strokeStyle = 'rgba(0, 243, 255, 0.45)';
-    ctx.lineWidth = 2;
-    const b = 12;
-    ctx.beginPath(); ctx.moveTo(4, 4+b); ctx.lineTo(4, 4); ctx.lineTo(4+b, 4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w-4-b, 4); ctx.lineTo(w-4, 4); ctx.lineTo(w-4, 4+b); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(4, h-4-b); ctx.lineTo(4, h-4); ctx.lineTo(4+b, h-4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w-4-b, h-4); ctx.lineTo(w-4, h-4); ctx.lineTo(w-4, h-4-b); ctx.stroke();
-    ctx.restore();
-  }
+        function playLockSound(stage = 1) {
+            if (!soundEnabled) return;
+            const base = 520 + stage * 85;
+            playBeep(base, 0.09, 'triangle', 0.16);
+            setTimeout(() => playBeep(base * 1.25, 0.12, 'triangle', 0.18), 75);
+        }
 
-  let particles = [];
-  function spawnParticles(x, y, color, count = 18) {
-    for (let i = 0; i < count; i++) {
-      const ang = Math.random() * Math.PI * 2;
-      const spd = 40 + Math.random() * 140;
-      particles.push({
-        x, y,
-        vx: Math.cos(ang) * spd,
-        vy: Math.sin(ang) * spd,
-        life: 0.45 + Math.random() * 0.3,
-        maxLife: 0.75,
-        color
-      });
-    }
-  }
-  function updateAndDrawParticles(ctx, dt) {
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      p.life -= dt;
-      if (p.life <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = p.color;
-      ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-      ctx.restore();
-    }
-  }
+        function playSuccessSound() {
+            if (!soundEnabled) return;
+            playBeep(523.25, 0.1, 'triangle', 0.16);
+            setTimeout(() => playBeep(659.25, 0.1, 'triangle', 0.16), 90);
+            setTimeout(() => playBeep(783.99, 0.1, 'triangle', 0.18), 180);
+            setTimeout(() => playBeep(1046.5, 0.3, 'triangle', 0.22), 270);
+        }
 
-  const c1 = document.getElementById('canvasEp1');
-  const ctx1 = c1.getContext('2d');
-  let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
+        function playAlarmSound() {
+            if (!soundEnabled) return;
+            playBeep(175, 0.18, 'sawtooth', 0.22);
+            setTimeout(() => playBeep(130, 0.26, 'sawtooth', 0.24), 180);
+        }
 
-  function resetEp1() {
-    ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
-    document.getElementById('ep1Win').classList.remove('show');
-    updateEp1Hud();
-  }
-  function updateEp1Hud() {
-    document.getElementById('ep1Stats').textContent = `ЭТАП: ${ep1.stage}/${ep1.max} | ЦЕЛОСТНОСТЬ: ${ep1.hp}`;
-  }
-  document.getElementById('ep1Reset').addEventListener('click', resetEp1);
+        /* =========================================================================
+           2. НАВИГАЦИЯ И ОБЩИЙ СТАТУС
+           ========================================================================= */
+        let currentScreen = 'menu';
+        let animFrameId = null;
+        let globalFails = 0;
 
-  document.getElementById('ep1Btn').addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    if (ep1.won) return;
-    const px = ep1.pos * c1.width;
-    if (ep1.pos >= ep1.greenStart && ep1.pos <= ep1.greenStart + ep1.greenW) {
-      beep(880, 0.08);
-      ep1.flash = 0.25;
-      ep1.flashColor = '#00ff88';
-      spawnParticles(px, c1.height / 2, '#00ff88', 22);
-      if (ep1.stage >= ep1.max) {
-        ep1.won = true;
-        document.getElementById('ep1Win').classList.add('show');
-      } else {
-        ep1.stage++;
-        ep1.greenW = Math.max(0.11, 0.23 - ep1.stage * 0.02);
-        ep1.greenStart = 0.35 + Math.random() * (0.5 - ep1.greenW);
-        ep1.iceStart = 0.08 + Math.random() * 0.25;
-        updateEp1Hud();
-      }
-    } else {
-      beep(180, 0.15, 'sawtooth');
-      ep1.flash = 0.3;
-      ep1.flashColor = '#ff2a55';
-      spawnParticles(px, c1.height / 2, '#ff2a55', 22);
-      ep1.hp--;
-      if (ep1.hp <= 0) {
-        ep1.hp = 3;
-        ep1.stage = 1;
-        ep1.greenW = 0.22;
-      }
-      updateEp1Hud();
-    }
-  });
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toTimeString().split(' ')[0];
+        }, 1000);
 
-  const c2 = document.getElementById('canvasEp2');
-  const ctx2 = c2.getContext('2d');
-  let ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
-  const ep2Btn = document.getElementById('ep2Btn');
-  ep2Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep2.holding = true; });
-  window.addEventListener('pointerup', () => { ep2.holding = false; });
-  window.addEventListener('pointercancel', () => { ep2.holding = false; });
+        function addFailure() {
+            globalFails++;
+            document.getElementById('global-fails').textContent = globalFails;
+        }
 
-  function resetEp2() {
-    ep2 = { block: 0, prog: 0, heat: 20, holding: false, won: false, waveT: 0 };
-    document.getElementById('ep2Win').classList.remove('show');
-    renderEp2Blocks();
-  }
-  document.getElementById('ep2Reset').addEventListener('click', resetEp2);
+        function setStageIndicator(text) {
+            document.getElementById('global-stage-indicator').textContent = text;
+        }
 
-  function renderEp2Blocks() {
-    const els = document.querySelectorAll('#ep2Blocks .mem-block');
-    els.forEach((el, idx) => {
-      el.classList.remove('done', 'curr');
-      if (idx < ep2.block || ep2.won) {
-        el.classList.add('done');
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>100%`;
-      } else if (idx === ep2.block) {
-        el.classList.add('curr');
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>${Math.floor(ep2.prog)}%`;
-      } else {
-        el.innerHTML = `СЕКТОР ${idx + 1}<br>0%`;
-      }
-    });
-  }
+        function stopAllLogs() {
+            audioTracks.forEach(t => {
+                if (t.audio) {
+                    t.audio.pause();
+                    t.audio.currentTime = 0;
+                }
+            });
+            document.querySelectorAll('.audio-card').forEach(c => {
+                c.classList.remove('playing');
+                const btn = c.querySelector('.play-btn');
+                if (btn) btn.textContent = '▶ ПУСК';
+            });
+        }
 
-  // --- EPISODE 3: FIXED WAVELENGTH & PLAYER ALIGNMENT ---
-  const c3 = document.getElementById('canvasEp3');
-  const ctx3 = c3.getContext('2d');
-  let ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
-  const ep3Btn = document.getElementById('ep3Btn');
-  ep3Btn.addEventListener('pointerdown', (e) => { e.preventDefault(); ep3.holding = true; });
-  window.addEventListener('pointerup', () => { ep3.holding = false; });
-  window.addEventListener('pointercancel', () => { ep3.holding = false; });
-
-  function resetEp3() {
-    ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
-    document.getElementById('ep3Win').classList.remove('show');
-  }
-  document.getElementById('ep3Reset').addEventListener('click', resetEp3);
-
-  // --- EPISODE 4: PROPER RADAR SWEEP & CENTER ---
-  const c4 = document.getElementById('canvasEp4');
-  const ctx4 = c4.getContext('2d');
-  let ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
-
-  function resetEp4() {
-    ep4 = { phase: 1, max: 4, tx: 320, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
-    document.getElementById('ep4Win').classList.remove('show');
-    document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: 1/4 // СКАНИРОВАНИЕ`;
-  }
-  document.getElementById('ep4Reset').addEventListener('click', resetEp4);
-
-  document.getElementById('ep4Btn').addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    if (ep4.won) return;
-    const cx = c4.width / 2;
-    const cy = c4.height / 2;
-    const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
-    if (dist < 60) {
-      beep(920, 0.09);
-      ep4.flash = 0.25;
-      spawnParticles(ep4.tx, ep4.ty, '#00ff88', 26);
-      if (ep4.phase >= ep4.max) {
-        ep4.won = true;
-        document.getElementById('ep4Win').classList.add('show');
-      } else {
-        ep4.phase++;
-        document.getElementById('ep4Stats').textContent = `ФАЗА ЗАХВАТА: ${ep4.phase}/${ep4.max} // ВЕКТОР УДЕРЖАН`;
-      }
-    } else {
-      beep(200, 0.14, 'sawtooth');
-      spawnParticles(cx, cy, '#ff2a55', 14);
-    }
-  });
-
-  let lastTs = performance.now();
-  function loop(now) {
-    const dt = Math.min(0.05, (now - lastTs) / 1000);
-    lastTs = now;
-
-    if (currentScreen === 'ep1') {
-      if (!ep1.won) {
-        const speed = 0.7 + ep1.stage * 0.14;
-        ep1.pos += ep1.dir * speed * dt;
-        if (ep1.pos >= 0.96) { ep1.pos = 0.96; ep1.dir = -1; }
-        if (ep1.pos <= 0.04) { ep1.pos = 0.04; ep1.dir = 1; }
-      }
-      ep1.trail.push(ep1.pos * c1.width);
-      if (ep1.trail.length > 14) ep1.trail.shift();
-
-      ctx1.clearRect(0, 0, c1.width, c1.height);
-      drawGrid(ctx1, c1.width, c1.height, 23);
-
-      ctx1.strokeStyle = 'rgba(0, 243, 255, 0.25)';
-      ctx1.beginPath(); ctx1.moveTo(15, c1.height / 2); ctx1.lineTo(c1.width - 15, c1.height / 2); ctx1.stroke();
-
-      const ix = ep1.iceStart * c1.width;
-      const iw = ep1.iceW * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = 'rgba(255, 42, 85, 0.18)';
-      ctx1.fillRect(ix, 26, iw, 143);
-      ctx1.strokeStyle = '#ff2a55';
-      ctx1.shadowBlur = 12;
-      ctx1.shadowColor = '#ff2a55';
-      ctx1.lineWidth = 2;
-      ctx1.strokeRect(ix, 26, iw, 143);
-      ctx1.fillStyle = '#ff2a55';
-      ctx1.font = 'bold 10px monospace';
-      ctx1.fillText('ICE', ix + iw / 2 - 9, 42);
-      ctx1.restore();
-
-      const gx = ep1.greenStart * c1.width;
-      const gw = ep1.greenW * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = 'rgba(0, 255, 136, 0.2)';
-      ctx1.fillRect(gx, 26, gw, 143);
-      ctx1.strokeStyle = '#00ff88';
-      ctx1.shadowBlur = 14;
-      ctx1.shadowColor = '#00ff88';
-      ctx1.lineWidth = 2;
-      ctx1.strokeRect(gx, 26, gw, 143);
-      ctx1.fillStyle = '#00ff88';
-      ctx1.font = 'bold 10px monospace';
-      ctx1.fillText(`SYNC [LVL ${ep1.stage}]`, gx + gw / 2 - 28, 42);
-      ctx1.restore();
-
-      ep1.trail.forEach((tx, idx) => {
-        ctx1.fillStyle = `rgba(0, 243, 255, ${(idx / ep1.trail.length) * 0.25})`;
-        ctx1.fillRect(tx - 2, 22, 4, 151);
-      });
-
-      const px = ep1.pos * c1.width;
-      ctx1.save();
-      ctx1.fillStyle = '#ffffff';
-      ctx1.shadowBlur = 16;
-      ctx1.shadowColor = '#00f3ff';
-      ctx1.fillRect(px - 2.5, 18, 5, 159);
-      ctx1.restore();
-
-      if (ep1.flash > 0) {
-        ctx1.fillStyle = ep1.flashColor;
-        ctx1.globalAlpha = ep1.flash;
-        ctx1.fillRect(0, 0, c1.width, c1.height);
-        ctx1.globalAlpha = 1;
-        ep1.flash -= dt;
-      }
-      updateAndDrawParticles(ctx1, dt);
-    }
-
-    if (currentScreen === 'ep2') {
-      ep2.waveT += dt * (ep2.holding ? 14 : 3);
-      if (!ep2.won) {
-        if (ep2.holding) {
-          ep2.heat += 38 * dt;
-          ep2.prog += 42 * dt;
-          if (ep2.heat >= 100) {
-            beep(150, 0.2, 'sawtooth');
-            ep2.heat = 45;
-            ep2.prog = Math.max(0, ep2.prog - 45);
-          }
-          if (ep2.prog >= 100) {
-            beep(840, 0.08);
-            ep2.prog = 0;
-            ep2.block++;
-            if (ep2.block >= 4) {
-              ep2.won = true;
-              document.getElementById('ep2Win').classList.add('show');
+        function stopAllLoops() {
+            if (animFrameId) {
+                cancelAnimationFrame(animFrameId);
+                animFrameId = null;
             }
-          }
-        } else {
-          ep2.heat = Math.max(15, ep2.heat - 34 * dt);
+            ep3State.holding = false;
         }
-        document.getElementById('ep2HeatFill').style.width = ep2.heat + '%';
-        document.getElementById('ep2Stats').textContent = `ТЕМП: ${Math.floor(25 + ep2.heat * 0.75)}°C | БЛОК: ${Math.min(4, ep2.block + 1)}/4`;
-        renderEp2Blocks();
-      }
 
-      ctx2.clearRect(0, 0, c2.width, c2.height);
-      drawGrid(ctx2, c2.width, c2.height, 20);
-      ctx2.save();
-      const waveColor = ep2.heat > 75 ? '#ff2a55' : (ep2.holding ? '#00ff88' : '#00f3ff');
-      ctx2.strokeStyle = waveColor;
-      ctx2.shadowBlur = 10;
-      ctx2.shadowColor = waveColor;
-      ctx2.lineWidth = 2;
-      ctx2.beginPath();
-      const amp = ep2.holding ? (16 + (ep2.heat / 100) * 24) : 6;
-      for (let x = 10; x < c2.width - 10; x += 4) {
-        const y = 60 + Math.sin(x * 0.05 + ep2.waveT) * amp * Math.sin(x * 0.015);
-        if (x === 10) ctx2.moveTo(x, y);
-        else ctx2.lineTo(x, y);
-      }
-      ctx2.stroke();
-      ctx2.fillStyle = waveColor;
-      ctx2.font = '10px monospace';
-      ctx2.fillText(ep2.holding ? 'STATUS: DECRYPTING_STREAM...' : 'STATUS: COOLING_CORE...', 14, 20);
-      ctx2.restore();
-    }
-
-    if (currentScreen === 'ep3') {
-      if (!ep3.won) {
-        ep3.phase += dt * 2.2;
-        const targetY = c3.height / 2 + Math.sin(ep3.phase) * 50;
-        ep3.y += (ep3.holding ? -220 : 220) * dt;
-        ep3.y = Math.max(20, Math.min(c3.height - 20, ep3.y));
-
-        const diff = Math.abs(ep3.y - targetY);
-        if (diff < 28) {
-          ep3.timeLeft = Math.max(0, ep3.timeLeft - dt);
-          ep3.signal = Math.min(100, ep3.signal + 12 * dt);
-        } else {
-          ep3.signal = Math.max(0, ep3.signal - 18 * dt);
-          if (ep3.signal <= 0) {
-            beep(160, 0.2, 'sawtooth');
-            ep3.signal = 100;
-            ep3.timeLeft = 35;
-          }
+        function showScreen(screenId) {
+            stopAllLoops();
+            if (screenId !== 'audio') stopAllLogs();
+            ['menu', 'audio', 'ep1', 'ep2', 'ep3', 'ep4'].forEach(id => {
+                const el = document.getElementById(`screen-${id}`);
+                if (el) el.classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${id}`);
+                if (navBtn) navBtn.classList.remove('active');
+            });
+            const targetEl = document.getElementById(`screen-${screenId}`);
+            if (targetEl) targetEl.classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${screenId}`);
+            if (activeNav) activeNav.classList.add('active');
+            currentScreen = screenId;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        if (ep3.timeLeft <= 0) {
-          beep(900, 0.12);
-          ep3.won = true;
-          document.getElementById('ep3Win').classList.add('show');
+
+        function goHome() {
+            initAudio();
+            playBeep(420, 0.06, 'sine', 0.12);
+            showScreen('menu');
+            setStageIndicator('РЕЖИМ ОЖИДАНИЯ');
         }
-        document.getElementById('ep3Stats').textContent = `ОСТАЛОСЬ: ${ep3.timeLeft.toFixed(1)}с | СИГНАЛ: ${Math.floor(ep3.signal)}%`;
-      }
 
-      ep3.trail.unshift({ x: 95, y: ep3.y });
-      if (ep3.trail.length > 35) ep3.trail.pop();
+        function startEpisode(num) {
+            initAudio();
+            playBeep(740, 0.08, 'triangle', 0.15);
+            showScreen(`ep${num}`);
+            if (num === 1) initEp1();
+            if (num === 2) initEp2();
+            if (num === 3) initEp3();
+            if (num === 4) initEp4();
+        }
 
-      ctx3.clearRect(0, 0, c3.width, c3.height);
-      drawGrid(ctx3, c3.width, c3.height, 23);
+        function startAudio() {
+            initAudio();
+            playBeep(680, 0.08, 'triangle', 0.15);
+            showScreen('audio');
+            setStageIndicator('КАНАЛ АУДИО-ЛОГОВ');
+        }
 
-      ctx3.save();
-      ctx3.strokeStyle = '#00ff88';
-      ctx3.shadowBlur = 12;
-      ctx3.shadowColor = '#00ff88';
-      ctx3.lineWidth = 3;
-      ctx3.beginPath();
-      for (let x = 0; x <= c3.width; x += 3) {
-        const wy = c3.height / 2 + Math.sin(ep3.phase + (x - 95) * 0.015) * 50;
-        if (x === 0) ctx3.moveTo(x, wy);
-        else ctx3.lineTo(x, wy);
-      }
-      ctx3.stroke();
-      ctx3.restore();
+        /* =========================================================================
+           3. АУДИО-ПЕРЕХВАТ (5 ЛОГОВ)
+           ========================================================================= */
+        const audioTracks = [
+            { id: 1, title: 'АУДИО-ЛОГ #01', tag: 'СЕРИЯ 1 • ЗАПИСЬ 1', file: encodeURI('Серия 1.m4a') },
+            { id: 2, title: 'АУДИО-ЛОГ #02', tag: 'СЕРИЯ 2 • ЗАПИСЬ 1', file: encodeURI('Серия 2, монолог 1 .mp3') },
+            { id: 3, title: 'АУДИО-ЛОГ #03', tag: 'СЕРИЯ 2 • ЗАПИСЬ 2', file: encodeURI('Серия 2, монолог 2.m4a') },
+            { id: 4, title: 'АУДИО-ЛОГ #04', tag: 'СЕРИЯ 3 • ЗАПИСЬ 1', file: encodeURI('Серия 3 .m4a') },
+            { id: 5, title: 'АУДИО-ЛОГ #05', tag: 'СЕРИЯ 4 • ЗАПИСЬ 1', file: encodeURI('Серия 4.mp3') }
+        ];
 
-      ctx3.save();
-      ctx3.strokeStyle = '#00f3ff';
-      ctx3.shadowBlur = 12;
-      ctx3.shadowColor = '#00f3ff';
-      ctx3.lineWidth = 3;
-      ctx3.beginPath();
-      ep3.trail.forEach((pt, idx) => {
-        const tx = pt.x - idx * 2.5;
-        if (idx === 0) ctx3.moveTo(tx, pt.y);
-        else ctx3.lineTo(tx, pt.y);
-      });
-      ctx3.stroke();
+        function fmtTime(sec) {
+            if (!isFinite(sec) || sec < 0) return '00:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+        }
 
-      ctx3.fillStyle = '#ffffff';
-      ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 6, 0, Math.PI * 2);
-      ctx3.fill();
-      ctx3.strokeStyle = '#00f3ff';
-      ctx3.lineWidth = 2;
-      ctx3.beginPath();
-      ctx3.arc(95, ep3.y, 12, 0, Math.PI * 2);
-      ctx3.stroke();
-      ctx3.restore();
-    }
+        function initAudioList() {
+            const listEl = document.getElementById('audioList');
+            if (!listEl || listEl.children.length > 0) return;
 
-    if (currentScreen === 'ep4') {
-      if (!ep4.won) {
-        ep4.t += dt * (1.4 + ep4.phase * 0.35);
-        ep4.tx = c4.width / 2 + Math.cos(ep4.t) * 110;
-        ep4.ty = c4.height / 2 + Math.sin(ep4.t * 1.2) * 50;
-      }
-      ep4.sweep += dt * 2.5;
+            audioTracks.forEach(track => {
+                const card = document.createElement('div');
+                card.className = 'audio-card';
+                card.innerHTML = `
+                    <div class="audio-top">
+                        <div class="audio-name">${track.title}</div>
+                        <div class="audio-tag">${track.tag}</div>
+                    </div>
+                    <div class="audio-controls">
+                        <button class="play-btn">▶ ПУСК</button>
+                        <div class="progress-wrap">
+                            <div class="progress-bar-bg"><div class="progress-fill"></div></div>
+                            <div class="time-row"><span class="t-cur">00:00</span><span class="t-dur">--:--</span></div>
+                        </div>
+                    </div>
+                `;
 
-      ctx4.clearRect(0, 0, c4.width, c4.height);
-      drawGrid(ctx4, c4.width, c4.height, 23);
+                const audio = new Audio(track.file);
+                audio.preload = 'metadata';
+                track.audio = audio;
 
-      const cx = c4.width / 2;
-      const cy = c4.height / 2;
+                const playBtn = card.querySelector('.play-btn');
+                const fill = card.querySelector('.progress-fill');
+                const barBg = card.querySelector('.progress-bar-bg');
+                const tCur = card.querySelector('.t-cur');
+                const tDur = card.querySelector('.t-dur');
 
-      ctx4.save();
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.2)';
-      ctx4.lineWidth = 1;
-      [35, 65, 95].forEach(r => {
-        ctx4.beginPath(); ctx4.arc(cx, cy, r, 0, Math.PI * 2); ctx4.stroke();
-      });
-      ctx4.strokeStyle = 'rgba(0, 243, 255, 0.35)';
-      ctx4.beginPath();
-      ctx4.moveTo(cx, 15); ctx4.lineTo(cx, c4.height - 15);
-      ctx4.moveTo(25, cy); ctx4.lineTo(c4.width - 25, cy);
-      ctx4.stroke();
+                audio.addEventListener('loadedmetadata', () => {
+                    tDur.textContent = fmtTime(audio.duration);
+                });
 
-      ctx4.fillStyle = 'rgba(0, 255, 136, 0.12)';
-      ctx4.beginPath();
-      ctx4.moveTo(cx, cy);
-      ctx4.arc(cx, cy, 110, ep4.sweep - 0.5, ep4.sweep, false);
-      ctx4.closePath();
-      ctx4.fill();
+                audio.addEventListener('timeupdate', () => {
+                    tCur.textContent = fmtTime(audio.currentTime);
+                    if (audio.duration) {
+                        fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+                    }
+                });
 
-      ctx4.strokeStyle = '#00ff88';
-      ctx4.shadowBlur = 10;
-      ctx4.shadowColor = '#00ff88';
-      ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.moveTo(cx, cy);
-      ctx4.lineTo(cx + Math.cos(ep4.sweep) * 110, cy + Math.sin(ep4.sweep) * 110);
-      ctx4.stroke();
-      ctx4.restore();
+                audio.addEventListener('ended', () => {
+                    card.classList.remove('playing');
+                    playBtn.textContent = '▶ ПУСК';
+                    fill.style.width = '0%';
+                    audio.currentTime = 0;
+                });
 
-      const dist = Math.hypot(cx - ep4.tx, cy - ep4.ty);
-      const inLock = dist < 55;
+                playBtn.addEventListener('click', () => {
+                    initAudio();
+                    // Остановить остальные
+                    audioTracks.forEach(other => {
+                        if (other.audio && other.audio !== audio) {
+                            other.audio.pause();
+                        }
+                    });
+                    document.querySelectorAll('.audio-card').forEach(c => {
+                        if (c !== card) {
+                            c.classList.remove('playing');
+                            c.querySelector('.play-btn').textContent = '▶ ПУСК';
+                        }
+                    });
 
-      ctx4.save();
-      ctx4.strokeStyle = '#ff2a55';
-      ctx4.shadowBlur = 16;
-      ctx4.shadowColor = '#ff2a55';
-      ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 18, 0, Math.PI * 2);
-      ctx4.stroke();
-      ctx4.fillStyle = '#ff2a55';
-      ctx4.beginPath();
-      ctx4.arc(ep4.tx, ep4.ty, 4, 0, Math.PI * 2);
-      ctx4.fill();
-      ctx4.restore();
+                    if (audio.paused) {
+                        audio.play().then(() => {
+                            card.classList.add('playing');
+                            playBtn.textContent = '❚❚ ПАУЗА';
+                        }).catch(() => {
+                            tDur.textContent = 'НЕТ ФАЙЛА';
+                        });
+                    } else {
+                        audio.pause();
+                        card.classList.remove('playing');
+                        playBtn.textContent = '▶ ПУСК';
+                    }
+                });
 
-      const lockColor = inLock ? '#00ff88' : '#00f3ff';
-      ctx4.save();
-      ctx4.strokeStyle = lockColor;
-      ctx4.shadowBlur = 16;
-      ctx4.shadowColor = lockColor;
-      ctx4.lineWidth = 2;
-      ctx4.beginPath();
-      ctx4.arc(cx, cy, 22, 0, Math.PI * 2);
-      ctx4.moveTo(cx - 32, cy); ctx4.lineTo(cx + 32, cy);
-      ctx4.moveTo(cx, cy - 32); ctx4.lineTo(cx, cy + 32);
-      ctx4.stroke();
+                barBg.addEventListener('click', (e) => {
+                    if (!audio.duration) return;
+                    const rect = barBg.getBoundingClientRect();
+                    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                    audio.currentTime = ratio * audio.duration;
+                });
 
-      ctx4.fillStyle = lockColor;
-      ctx4.font = 'bold 10px monospace';
-      ctx4.fillText(inLock ? 'LOCK: READY [FIRE]' : `VECTOR DELTA: ${Math.floor(dist)}m`, 14, 22);
-      ctx4.restore();
+                listEl.appendChild(card);
+            });
+        }
 
-      updateAndDrawParticles(ctx4, dt);
-    }
+        /* =========================================================================
+           4. СЕРИЯ 1: МНОГОУРОВНЕВЫЙ ШИФР (6 ЭТАПОВ + ICE ЛОВУШКИ + 2 ЗАРЯДА БРОНИ)
+           ========================================================================= */
+        let ep1State = {
+            active: false,
+            stage: 0,
+            armor: 2,
+            cursorPos: 5,
+            dir: 1,
+            speed: 75,
+            targetStart: 40,
+            targetWidth: 20,
+            trap1Start: 15,
+            trap1Width: 14,
+            trap1Dir: 1,
+            trap2Active: false,
+            trap2Start: 70,
+            trap2Width: 14,
+            trap2Dir: -1,
+            lastTime: 0
+        };
 
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-</script>
+        function initEp1() {
+            stopAllLoops();
+            ep1State = {
+                active: true,
+                stage: 0,
+                armor: 2,
+                cursorPos: 4,
+                dir: 1,
+                speed: 75,
+                targetStart: 40,
+                targetWidth: 20,
+                trap1Start: 14,
+                trap1Width: 13,
+                trap1Dir: 1,
+                trap2Active: false,
+                trap2Start: 72,
+                trap2Width: 13,
+                trap2Dir: -1,
+                lastTime: performance.now()
+            };
+            document.getElementById('ep1-result-box').classList.add('hidden');
+            document.getElementById('ep1-action-btn').classList.remove('hidden');
+            setupEp1Stage();
+            animFrameId = requestAnimationFrame(loopEp1);
+        }
+
+        function setupEp1Stage() {
+            const widths = [20, 17, 14.5, 12.5, 11, 9.5];
+            const speeds = [74, 92, 110, 128, 144, 160];
+
+            ep1State.targetWidth = widths[ep1State.stage];
+            ep1State.speed = speeds[ep1State.stage];
+
+            if (ep1State.stage > 0 && Math.random() > 0.4) {
+                ep1State.dir *= -1;
+            }
+
+            const maxStart = 82 - ep1State.targetWidth;
+            ep1State.targetStart = Math.floor(18 + Math.random() * (maxStart - 18));
+
+            if (ep1State.stage < 2) {
+                ep1State.trap2Active = false;
+                ep1State.trap1Width = 13;
+                ep1State.trap1Start = ep1State.targetStart > 45 ? 12 : 74;
+            } else if (ep1State.stage < 4) {
+                ep1State.trap2Active = true;
+                ep1State.trap1Width = 11;
+                ep1State.trap2Width = 11;
+                ep1State.trap1Start = Math.max(4, ep1State.targetStart - 15);
+                ep1State.trap2Start = Math.min(85, ep1State.targetStart + ep1State.targetWidth + 4);
+            } else {
+                ep1State.trap2Active = true;
+                ep1State.trap1Width = 10;
+                ep1State.trap2Width = 10;
+                ep1State.trap1Start = 8;
+                ep1State.trap2Start = 78;
+            }
+
+            updateEp1UI();
+        }
+
+        function updateEp1UI() {
+            setStageIndicator(`STAGE ${ep1State.stage + 1} / 6`);
+
+            for (let i = 0; i < 6; i++) {
+                const dot = document.getElementById(`ep1-dot-${i}`);
+                if (i < ep1State.stage) {
+                    dot.style.background = '#00ff66';
+                    dot.style.boxShadow = '0 0 8px #00ff66';
+                } else if (i === ep1State.stage && ep1State.active) {
+                    dot.style.background = '#00f3ff';
+                    dot.style.boxShadow = '0 0 8px #00f3ff';
+                } else {
+                    dot.style.background = '#1e293b';
+                    dot.style.boxShadow = 'none';
+                }
+            }
+
+            document.getElementById('ep1-armor').textContent =
+                ep1State.armor === 2 ? '🛡️ 🛡️' : (ep1State.armor === 1 ? '🛡️ ✖' : '✖ ✖');
+
+            const targetEl = document.getElementById('ep1-target');
+            targetEl.style.left = `${ep1State.targetStart}%`;
+            targetEl.style.width = `${ep1State.targetWidth}%`;
+
+            const t1 = document.getElementById('ep1-trap1');
+            t1.style.left = `${ep1State.trap1Start}%`;
+            t1.style.width = `${ep1State.trap1Width}%`;
+
+            const t2 = document.getElementById('ep1-trap2');
+            if (ep1State.trap2Active) {
+                t2.classList.remove('hidden');
+                t2.style.left = `${ep1State.trap2Start}%`;
+                t2.style.width = `${ep1State.trap2Width}%`;
+            } else {
+                t2.classList.add('hidden');
+            }
+
+            if (ep1State.active) {
+                const modeNote = ep1State.stage >= 4 ? ' [ICE В ДВИЖЕНИИ!]' : '';
+                document.getElementById('ep1-status-text').textContent =
+                    `УРОВЕНЬ ${ep1State.stage + 1}/6: ЗАХВАТИТЕ ЗЕЛЕНЫЙ СЕКТОР${modeNote}`;
+            }
+        }
+
+        function loopEp1(now) {
+            if (!ep1State.active) return;
+            const dt = Math.min(0.05, (now - ep1State.lastTime) / 1000);
+            ep1State.lastTime = now;
+
+            ep1State.cursorPos += ep1State.dir * ep1State.speed * dt;
+            if (ep1State.cursorPos >= 98.5) {
+                ep1State.cursorPos = 98.5;
+                ep1State.dir = -1;
+            } else if (ep1State.cursorPos <= 0) {
+                ep1State.cursorPos = 0;
+                ep1State.dir = 1;
+            }
+
+            if (ep1State.stage >= 4) {
+                const leftBound = Math.max(2, ep1State.targetStart - ep1State.trap1Width - 1);
+                if (leftBound > 4) {
+                    ep1State.trap1Start += ep1State.trap1Dir * 22 * dt;
+                    if (ep1State.trap1Start >= leftBound) { ep1State.trap1Start = leftBound; ep1State.trap1Dir = -1; }
+                    if (ep1State.trap1Start <= 2) { ep1State.trap1Start = 2; ep1State.trap1Dir = 1; }
+                    document.getElementById('ep1-trap1').style.left = `${ep1State.trap1Start}%`;
+                }
+
+                const rightMin = ep1State.targetStart + ep1State.targetWidth + 1;
+                const rightMax = 98 - ep1State.trap2Width;
+                if (rightMax > rightMin + 2) {
+                    ep1State.trap2Start += ep1State.trap2Dir * 22 * dt;
+                    if (ep1State.trap2Start >= rightMax) { ep1State.trap2Start = rightMax; ep1State.trap2Dir = -1; }
+                    if (ep1State.trap2Start <= rightMin) { ep1State.trap2Start = rightMin; ep1State.trap2Dir = 1; }
+                    document.getElementById('ep1-trap2').style.left = `${ep1State.trap2Start}%`;
+                }
+            }
+
+            document.getElementById('ep1-cursor').style.left = `${ep1State.cursorPos}%`;
+            animFrameId = requestAnimationFrame(loopEp1);
+        }
+
+        function handleEp1Press() {
+            if (!ep1State.active) return;
+
+            const c = ep1State.cursorPos;
+            const inGreen = (c >= ep1State.targetStart - 1.5) && (c <= ep1State.targetStart + ep1State.targetWidth + 1.5);
+            const inTrap1 = (c >= ep1State.trap1Start) && (c <= ep1State.trap1Start + ep1State.trap1Width);
+            const inTrap2 = ep1State.trap2Active && (c >= ep1State.trap2Start) && (c <= ep1State.trap2Start + ep1State.trap2Width);
+
+            if (inGreen) {
+                ep1State.stage++;
+                playLockSound(ep1State.stage);
+                if (ep1State.stage >= 6) {
+                    ep1State.active = false;
+                    stopAllLoops();
+                    updateEp1UI();
+                    setStageIndicator('6 / 6 ВСКРЫТО');
+                    playSuccessSound();
+                    document.getElementById('ep1-action-btn').classList.add('hidden');
+                    document.getElementById('ep1-result-box').classList.remove('hidden');
+                } else {
+                    setupEp1Stage();
+                }
+            } else {
+                playAlarmSound();
+                addFailure();
+                const barBox = document.getElementById('ep1-bar-container');
+                barBox.classList.add('alarm-flash');
+                setTimeout(() => barBox.classList.remove('alarm-flash'), 450);
+
+                if (inTrap1 || inTrap2) {
+                    ep1State.armor--;
+                    if (ep1State.stage > 0) ep1State.stage--;
+                    document.getElementById('ep1-status-text').textContent = '⚠ УДАР ICE-БАРЬЕРА! ОТКАТ УРОВНЯ!';
+                } else {
+                    ep1State.armor--;
+                    document.getElementById('ep1-status-text').textContent = '✖ РАССИНХРОН! ПОТЕРЯН ЗАРЯД БРОНИ!';
+                }
+
+                if (ep1State.armor < 0) {
+                    ep1State.stage = Math.max(0, ep1State.stage - 2);
+                    ep1State.armor = 2;
+                    document.getElementById('ep1-status-text').textContent = '⚠ ЗАЩИТА СБРОШЕНА! ОТКАТ СИСТЕМЫ!';
+                }
+                setupEp1Stage();
+            }
+        }
+
+        /* =========================================================================
+           5. СЕРИЯ 2: ВЗЛОМ КРИПТО-АРХИВА (4 БЛОКА + ICE FIREWALL SPIKES)
+           ========================================================================= */
+        let ep2State = {
+            active: false,
+            blockIndex: 0,
+            progress: 0,
+            heat: 0,
+            lockedUntil: 0,
+            spikeActive: false,
+            nextSpikeTime: 0,
+            spikeEndTime: 0,
+            lastTime: 0
+        };
+
+        function initEp2() {
+            stopAllLoops();
+            const now = performance.now();
+            ep2State = {
+                active: true,
+                blockIndex: 0,
+                progress: 0,
+                heat: 0,
+                lockedUntil: 0,
+                spikeActive: false,
+                nextSpikeTime: now + 5500,
+                spikeEndTime: 0,
+                lastTime: now
+            };
+            document.getElementById('ep2-result-box').classList.add('hidden');
+            document.getElementById('ep2-action-btn').classList.remove('hidden');
+            document.getElementById('ep2-action-btn').classList.remove('disabled-pad');
+            updateEp2UI();
+            animFrameId = requestAnimationFrame(loopEp2);
+        }
+
+        function loopEp2(now) {
+            if (!ep2State.active) return;
+            const dt = Math.min(0.05, (now - ep2State.lastTime) / 1000);
+            ep2State.lastTime = now;
+
+            if (ep2State.lockedUntil > now) {
+                const rem = ((ep2State.lockedUntil - now) / 1000).toFixed(1);
+                document.getElementById('ep2-btn-title').textContent = `[ ТРОТТЛИНГ CPU: ${rem}s ]`;
+                document.getElementById('ep2-btn-sub').textContent = 'ОЖИДАЙТЕ АВАРИЙНОГО ОХЛАЖДЕНИЯ СИСТЕМЫ...';
+                ep2State.heat = Math.max(0, ep2State.heat - 24 * dt);
+                updateEp2UI();
+                animFrameId = requestAnimationFrame(loopEp2);
+                return;
+            } else if (document.getElementById('ep2-action-btn').classList.contains('disabled-pad')) {
+                document.getElementById('ep2-action-btn').classList.remove('disabled-pad');
+                document.getElementById('ep2-btn-title').textContent = '[ АКТИВИРОВАТЬ / ИМПУЛЬС ВЗЛОМА ]';
+                document.getElementById('ep2-btn-sub').textContent = 'ЧАСТО ТАПАЙТЕ И СЛЕДИТЕ ЗА ТЕПЛОВЫМИ СКАЧКАМИ ICE';
+            }
+
+            if (!ep2State.spikeActive && now >= ep2State.nextSpikeTime) {
+                ep2State.spikeActive = true;
+                ep2State.spikeEndTime = now + 3400;
+                ep2State.heat = Math.min(95, ep2State.heat + 15);
+                playBeep(240, 0.14, 'sawtooth', 0.16);
+                document.getElementById('ep2-event-banner').textContent = '⚠ ICE FIREWALL SPIKE! (+15% HEAT / ОХЛАЖДЕНИЕ СНИЖЕНО)';
+                document.getElementById('ep2-event-banner').style.color = '#ff2a55';
+            } else if (ep2State.spikeActive && now >= ep2State.spikeEndTime) {
+                ep2State.spikeActive = false;
+                ep2State.nextSpikeTime = now + (5200 + Math.random() * 3200);
+                document.getElementById('ep2-event-banner').textContent = 'При 100% нагрева: блокировка 4 сек и потеря 50% текущего блока!';
+                document.getElementById('ep2-event-banner').style.color = '#94a3b8';
+            }
+
+            if (ep2State.heat > 0) {
+                let coolRate = 26 - ep2State.blockIndex * 1.6;
+                if (ep2State.spikeActive) coolRate *= 0.48;
+                ep2State.heat = Math.max(0, ep2State.heat - coolRate * dt);
+            }
+
+            updateEp2UI();
+            animFrameId = requestAnimationFrame(loopEp2);
+        }
+
+        function handleEp2Tap() {
+            const now = performance.now();
+            if (!ep2State.active || ep2State.lockedUntil > now) return;
+
+            const gainPerTap = 3.8 - ep2State.blockIndex * 0.25;
+            const heatPerTap = (8.8 + ep2State.blockIndex * 0.65) * (ep2State.spikeActive ? 1.22 : 1.0);
+
+            ep2State.progress = Math.min(100, ep2State.progress + gainPerTap);
+            ep2State.heat = Math.min(100, ep2State.heat + heatPerTap);
+            playBeep(310 + ep2State.progress * 4.5 + ep2State.blockIndex * 60, 0.045, 'square', 0.1);
+
+            if (ep2State.heat >= 100) {
+                ep2State.lockedUntil = now + 4000;
+                ep2State.progress = Math.floor(ep2State.progress * 0.5);
+                addFailure();
+                playAlarmSound();
+                document.getElementById('ep2-action-btn').classList.add('disabled-pad');
+                document.getElementById('ep2-event-banner').textContent = '🔥 КРИТИЧЕСКИЙ ПЕРЕГРЕВ! -50% ПРОГРЕССА БЛОКА!';
+                document.getElementById('ep2-event-banner').style.color = '#ff2a55';
+            } else if (ep2State.progress >= 100) {
+                playLockSound(ep2State.blockIndex + 1);
+                ep2State.blockIndex++;
+
+                if (ep2State.blockIndex >= 4) {
+                    ep2State.active = false;
+                    stopAllLoops();
+                    updateEp2UI();
+                    setStageIndicator('4 / 4 БЛОКОВ');
+                    playSuccessSound();
+                    document.getElementById('ep2-action-btn').classList.add('hidden');
+                    document.getElementById('ep2-result-box').classList.remove('hidden');
+                    return;
+                } else {
+                    ep2State.progress = 0;
+                    ep2State.heat = Math.max(0, ep2State.heat - 22);
+                }
+            }
+
+            updateEp2UI();
+        }
+
+        function updateEp2UI() {
+            const p = Math.round(ep2State.progress);
+            const h = Math.round(ep2State.heat);
+
+            if (ep2State.active) {
+                setStageIndicator(`БЛОК ${ep2State.blockIndex + 1} / 4`);
+                document.getElementById('ep2-state-badge').textContent = `БЛОК ${ep2State.blockIndex + 1} / 4`;
+                document.getElementById('ep2-current-label').textContent = `ДЕШИФРОВКА БЛОКА ${ep2State.blockIndex + 1} / 4`;
+            }
+
+            for (let i = 0; i < 4; i++) {
+                const card = document.getElementById(`ep2-block-card-${i}`);
+                const stat = document.getElementById(`ep2-block-stat-${i}`);
+                if (i < ep2State.blockIndex) {
+                    card.style.background = 'rgba(0,255,102,0.15)';
+                    card.style.borderColor = '#00ff66';
+                    stat.style.color = '#00ff66';
+                    stat.textContent = '100% OK';
+                } else if (i === ep2State.blockIndex && ep2State.active) {
+                    card.style.background = 'rgba(0,243,255,0.15)';
+                    card.style.borderColor = '#00f3ff';
+                    stat.style.color = '#00f3ff';
+                    stat.textContent = `${p}%`;
+                } else {
+                    card.style.background = 'rgba(0,0,0,0.65)';
+                    card.style.borderColor = '#1e293b';
+                    stat.style.color = '#64748b';
+                    stat.textContent = 'LOCKED';
+                }
+            }
+
+            document.getElementById('ep2-progress-val').textContent = `${p}%`;
+            document.getElementById('ep2-progress-bar').style.width = `${p}%`;
+            document.getElementById('ep2-heat-val').textContent = `${h}%`;
+            document.getElementById('ep2-heat-bar').style.width = `${h}%`;
+            document.getElementById('ep2-heat-label').textContent = ep2State.spikeActive
+                ? 'ТЕМПЕРАТУРА CPU (⚠ ICE FIREWALL SPIKE!)'
+                : 'ТЕМПЕРАТУРА CPU (ОХЛАЖДЕНИЕ: НОРМА)';
+        }
+
+        /* =========================================================================
+           6. СЕРИЯ 3: ОБХОД ПВО 'ЭГИДА' (35 СЕКУНД)
+           ========================================================================= */
+        let ep3State = {
+            active: false,
+            holding: false,
+            dotY: 50,
+            velocity: 0,
+            corridorTop: 32,
+            corridorHeight: 36,
+            timeLeft: 35.0,
+            integrity: 100.0,
+            wavePhase: 0,
+            gustForce: 0,
+            nextGustTime: 0,
+            gustEndTime: 0,
+            lastZone: 1,
+            lastTime: 0
+        };
+
+        function initEp3() {
+            stopAllLoops();
+            const now = performance.now();
+            ep3State = {
+                active: true,
+                holding: false,
+                dotY: 50,
+                velocity: 0,
+                corridorTop: 32,
+                corridorHeight: 36,
+                timeLeft: 35.0,
+                integrity: 100.0,
+                wavePhase: 0,
+                gustForce: 0,
+                nextGustTime: now + 9000,
+                gustEndTime: 0,
+                lastZone: 1,
+                lastTime: now
+            };
+            document.getElementById('ep3-result-box').classList.add('hidden');
+            document.getElementById('ep3-action-btn').classList.remove('hidden');
+            document.getElementById('ep3-gust-alert').classList.add('hidden');
+            updateEp3UI();
+            animFrameId = requestAnimationFrame(loopEp3);
+        }
+
+        function setEp3Hold(isHolding) {
+            if (!ep3State.active) return;
+            ep3State.holding = isHolding;
+            const btn = document.getElementById('ep3-action-btn');
+            if (isHolding) {
+                btn.classList.add('pressed');
+                playBeep(500, 0.04, 'sine', 0.07);
+            } else {
+                btn.classList.remove('pressed');
+            }
+        }
+
+        function loopEp3(now) {
+            if (!ep3State.active) return;
+            const dt = Math.min(0.05, (now - ep3State.lastTime) / 1000);
+            ep3State.lastTime = now;
+
+            ep3State.timeLeft = Math.max(0, ep3State.timeLeft - dt);
+
+            let zone = 1;
+            if (ep3State.timeLeft <= 11) zone = 3;
+            else if (ep3State.timeLeft <= 23) zone = 2;
+
+            if (zone !== ep3State.lastZone) {
+                ep3State.lastZone = zone;
+                playLockSound(zone);
+            }
+
+            const zoneConfigs = {
+                1: { height: 36, waveSpeed: 0.9, waveAmp: 15, gravity: 50, thrust: -104, name: 'ЗОНА 1/3: ВНЕШНИЙ ПЕРИМЕТР' },
+                2: { height: 31, waveSpeed: 1.2, waveAmp: 19, gravity: 55, thrust: -114, name: 'ЗОНА 2/3: АКТИВНОЕ СКАНИРОВАНИЕ' },
+                3: { height: 26, waveSpeed: 1.45, waveAmp: 22, gravity: 60, thrust: -124, name: 'ЗОНА 3/3: ЯДРО ПВО «ЭГИДА»' }
+            };
+            const cfg = zoneConfigs[zone];
+            ep3State.corridorHeight = cfg.height;
+
+            if (ep3State.gustForce === 0 && now >= ep3State.nextGustTime) {
+                ep3State.gustForce = (Math.random() > 0.5 ? 1 : -1) * (12 + zone * 3);
+                ep3State.gustEndTime = now + 1700;
+                document.getElementById('ep3-gust-alert').classList.remove('hidden');
+            } else if (ep3State.gustForce !== 0 && now >= ep3State.gustEndTime) {
+                ep3State.gustForce = 0;
+                ep3State.nextGustTime = now + (6500 + Math.random() * 3500);
+                document.getElementById('ep3-gust-alert').classList.add('hidden');
+            }
+
+            ep3State.wavePhase += cfg.waveSpeed * dt;
+            const centerWave = 50 + Math.sin(ep3State.wavePhase) * cfg.waveAmp;
+            ep3State.corridorTop = Math.max(5, Math.min(95 - cfg.height, centerWave - cfg.height / 2));
+
+            const baseAccel = ep3State.holding ? (cfg.gravity + cfg.thrust) : cfg.gravity;
+            ep3State.velocity += (baseAccel + ep3State.gustForce) * dt;
+            ep3State.velocity *= 0.87;
+            ep3State.velocity = Math.max(-34, Math.min(34, ep3State.velocity));
+            ep3State.dotY += ep3State.velocity * dt;
+
+            if (ep3State.dotY < 4) { ep3State.dotY = 4; ep3State.velocity = 0; }
+            if (ep3State.dotY > 96) { ep3State.dotY = 96; ep3State.velocity = 0; }
+
+            const inZone = (ep3State.dotY >= ep3State.corridorTop - 2.0) &&
+                           (ep3State.dotY <= ep3State.corridorTop + cfg.height + 2.0);
+
+            const statusEl = document.getElementById('ep3-signal-status');
+            const corridorEl = document.getElementById('ep3-corridor');
+
+            if (inZone) {
+                ep3State.integrity = Math.min(100, ep3State.integrity + 9.0 * dt);
+                statusEl.textContent = '● СТЕЛС-КОНТУР СТАБИЛЕН';
+                statusEl.style.color = '#00ff66';
+                corridorEl.style.background = 'rgba(0,255,102,0.18)';
+                corridorEl.style.borderColor = '#00ff66';
+            } else {
+                ep3State.integrity = Math.max(0, ep3State.integrity - 12.0 * dt);
+                statusEl.textContent = '▲ ЗАХВАТ РАДАРОМ ПВО! ВЕРНИТЕСЬ В КАНАЛ!';
+                statusEl.style.color = '#ff2a55';
+                corridorEl.style.background = 'rgba(255,42,85,0.24)';
+                corridorEl.style.borderColor = '#ff2a55';
+                if (Math.random() < 0.18) playBeep(210, 0.05, 'sawtooth', 0.09);
+            }
+
+            document.getElementById('ep3-zone-label').textContent = cfg.name;
+            setStageIndicator(`ЗОНА ${zone} / 3`);
+            updateEp3UI();
+
+            if (ep3State.integrity <= 0) {
+                ep3State.active = false;
+                stopAllLoops();
+                addFailure();
+                playAlarmSound();
+                document.getElementById('ep3-action-btn').classList.add('hidden');
+                const box = document.getElementById('ep3-result-box');
+                box.classList.remove('hidden');
+                box.classList.add('alarm-flash');
+                box.style.border = '2px solid #ff2a55';
+                document.getElementById('ep3-result-title').style.color = '#ff2a55';
+                document.getElementById('ep3-result-title').textContent = 'СИГНАЛ ПОТЕРЯН // ПВО «ЭГИДА» ЗАСЕКЛО ВЕРТОЛЕТ!';
+                document.getElementById('ep3-result-desc').textContent = 'Маскировка сорвана! Уходите на вираж и повторите заход на Maze Bank!';
+                return;
+            }
+
+            if (ep3State.timeLeft <= 0) {
+                ep3State.active = false;
+                stopAllLoops();
+                setStageIndicator('3 / 3 ПВО ПОДАВЛЕНО');
+                playSuccessSound();
+                document.getElementById('ep3-action-btn').classList.add('hidden');
+                const box = document.getElementById('ep3-result-box');
+                box.classList.remove('hidden');
+                box.classList.remove('alarm-flash');
+                box.style.border = '2px solid #00ff66';
+                box.style.background = 'rgba(0,255,102,0.1)';
+                document.getElementById('ep3-result-title').className = 'glow-green';
+                document.getElementById('ep3-result-title').style.color = '#00ff66';
+                document.getElementById('ep3-result-title').textContent = 'DROP ZONE REACHED // JUMP NOW';
+                document.getElementById('ep3-result-desc').textContent = 'Все 3 периметра безопасности Maze Bank пройдены. Высаживайтесь на крышу!';
+                return;
+            }
+
+            animFrameId = requestAnimationFrame(loopEp3);
+        }
+
+        function updateEp3UI() {
+            document.getElementById('ep3-dot').style.top = `${ep3State.dotY}%`;
+            const cEl = document.getElementById('ep3-corridor');
+            cEl.style.top = `${ep3State.corridorTop}%`;
+            cEl.style.height = `${ep3State.corridorHeight}%`;
+
+            document.getElementById('ep3-timer').textContent = `${ep3State.timeLeft.toFixed(1)}s`;
+            const integ = Math.round(ep3State.integrity);
+            document.getElementById('ep3-integrity-val').textContent = `СИГНАЛ: ${integ}%`;
+            const bar = document.getElementById('ep3-integrity-bar');
+            bar.style.width = `${integ}%`;
+            if (integ > 50) bar.style.background = '#00ff66';
+            else if (integ > 25) bar.style.background = '#ffae00';
+            else bar.style.background = '#ff2a55';
+        }
+
+        /* =========================================================================
+           7. СЕРИЯ 4: ЗАХВАТ ЦЕЛИ 'ВЕЙЛ-1' (4 ФАЗЫ)
+           ========================================================================= */
+        let ep4State = {
+            active: false,
+            phase: 0,
+            xPos: 15,
+            yPos: 15,
+            xDir: 1,
+            yDir: 1,
+            jetX: 50,
+            jetY: 50,
+            jetTime: 0,
+            ringSize: 105,
+            ringDir: -1,
+            flareActive: false,
+            nextFlareTime: 0,
+            flareEndTime: 0,
+            lastTime: 0
+        };
+
+        function initEp4() {
+            stopAllLoops();
+            const now = performance.now();
+            ep4State = {
+                active: true,
+                phase: 0,
+                xPos: 12,
+                yPos: 12,
+                xDir: 1,
+                yDir: 1,
+                jetX: 50,
+                jetY: 50,
+                jetTime: Math.random() * 10,
+                ringSize: 105,
+                ringDir: -1,
+                flareActive: false,
+                nextFlareTime: now + 4500,
+                flareEndTime: 0,
+                lastTime: now
+            };
+
+            document.getElementById('ep4-result-box').classList.add('hidden');
+            document.getElementById('ep4-action-btn').classList.remove('hidden');
+            document.getElementById('ep4-flare-warn').classList.add('hidden');
+            document.getElementById('ep4-radar').classList.remove('shake-glitch');
+            updateEp4PhaseUI();
+            animFrameId = requestAnimationFrame(loopEp4);
+        }
+
+        function updateEp4PhaseUI() {
+            const p = ep4State.phase;
+            setStageIndicator(`ФАЗА ${p + 1} / 4`);
+
+            const titles = [
+                'ФАЗА 1/4: ОСЬ X',
+                'ФАЗА 2/4: ОСЬ Y',
+                'ФАЗА 3/4: БАЛЛИСТИКА',
+                'ФАЗА 4/4: БОЕГОЛОВКА'
+            ];
+            const btnLabels = [
+                '[ ЗАФИКСИРОВАТЬ ОСЬ X ]',
+                '[ ЗАФИКСИРОВАТЬ ОСЬ Y ]',
+                '[ СВЕСТИ КОЛЬЦО БАЛЛИСТИКИ ]',
+                '[ СИНХРОНИЗИРОВАТЬ БОЕГОЛОВКУ ]'
+            ];
+            const hints = [
+                'СОВМЕСТИТЕ ВЕРТИКАЛЬНУЮ ЛИНИЮ С ДЖЕТОМ «ВЕЙЛ-1»',
+                'ТЕПЕРЬ ЗАФИКСИРУЙТЕ ГОРИЗОНТАЛЬНУЮ ОСЬ Y НА ЦЕЛИ',
+                'НАЖМИТЕ, КОГДА ЗЕЛЕНОЕ КОЛЬЦО СОВПАДЕТ С ПУНКТИРНЫМ КРУГОМ!',
+                'ФИНАЛЬНАЯ СИНХРОНИЗАЦИЯ НА ВЫСОКОЙ СКОРОСТИ — НЕ ПРОМАХНИТЕСЬ!'
+            ];
+
+            document.getElementById('ep4-step-badge').textContent = titles[p];
+            document.getElementById('ep4-btn-title').textContent = btnLabels[p];
+            document.getElementById('ep4-hint-text').textContent = hints[p];
+
+            for (let i = 0; i < 4; i++) {
+                const pill = document.getElementById(`ep4-phase-${i}`);
+                if (i < p) {
+                    pill.style.background = 'rgba(0,255,102,0.2)';
+                    pill.style.borderColor = '#00ff66';
+                    pill.style.color = '#00ff66';
+                } else if (i === p) {
+                    pill.style.background = 'rgba(0,243,255,0.25)';
+                    pill.style.borderColor = '#00f3ff';
+                    pill.style.color = '#ffffff';
+                } else {
+                    pill.style.background = '#0f172a';
+                    pill.style.borderColor = '#1e293b';
+                    pill.style.color = '#64748b';
+                }
+            }
+
+            const bRing = document.getElementById('ep4-ballistic-ring');
+            const zRing = document.getElementById('ep4-target-zone-ring');
+            if (p >= 2) {
+                bRing.classList.remove('hidden');
+                zRing.classList.remove('hidden');
+                ep4State.ringSize = 105;
+                ep4State.ringDir = -1;
+            } else {
+                bRing.classList.add('hidden');
+                zRing.classList.add('hidden');
+            }
+        }
+
+        function loopEp4(now) {
+            if (!ep4State.active) return;
+            const dt = Math.min(0.05, (now - ep4State.lastTime) / 1000);
+            ep4State.lastTime = now;
+
+            if (!ep4State.flareActive && now >= ep4State.nextFlareTime) {
+                ep4State.flareActive = true;
+                ep4State.flareEndTime = now + 2200;
+                document.getElementById('ep4-flare-warn').classList.remove('hidden');
+                document.getElementById('ep4-radar').classList.add('shake-glitch');
+                playBeep(260, 0.12, 'sawtooth', 0.14);
+            } else if (ep4State.flareActive && now >= ep4State.flareEndTime) {
+                ep4State.flareActive = false;
+                ep4State.nextFlareTime = now + (4200 + Math.random() * 3000);
+                document.getElementById('ep4-flare-warn').classList.add('hidden');
+                document.getElementById('ep4-radar').classList.remove('shake-glitch');
+            }
+
+            const maneuverSpeed = 1.1 + ep4State.phase * 0.35;
+            ep4State.jetTime += maneuverSpeed * dt;
+            ep4State.jetX = 50 + Math.sin(ep4State.jetTime) * 26;
+            ep4State.jetY = 50 + Math.sin(ep4State.jetTime * 2) * 18;
+
+            const jetEl = document.getElementById('ep4-target-jet');
+            jetEl.style.left = `${ep4State.jetX}%`;
+            jetEl.style.top = `${ep4State.jetY}%`;
+
+            const jitter = ep4State.flareActive ? (Math.random() - 0.5) * 4.5 : 0;
+
+            if (ep4State.phase === 0) {
+                ep4State.xPos += ep4State.xDir * 86 * dt;
+                if (ep4State.xPos >= 92) { ep4State.xPos = 92; ep4State.xDir = -1; }
+                if (ep4State.xPos <= 8) { ep4State.xPos = 8; ep4State.xDir = 1; }
+            } else if (ep4State.phase === 1) {
+                ep4State.xPos += (ep4State.jetX - ep4State.xPos) * 7 * dt;
+                ep4State.yPos += ep4State.yDir * 92 * dt;
+                if (ep4State.yPos >= 92) { ep4State.yPos = 92; ep4State.yDir = -1; }
+                if (ep4State.yPos <= 8) { ep4State.yPos = 8; ep4State.yDir = 1; }
+            } else {
+                ep4State.xPos = ep4State.jetX;
+                ep4State.yPos = ep4State.jetY;
+                const ringSpeed = ep4State.phase === 2 ? 76 : 108;
+                ep4State.ringSize += ep4State.ringDir * ringSpeed * dt;
+                if (ep4State.ringSize <= 24) { ep4State.ringSize = 24; ep4State.ringDir = 1; }
+                if (ep4State.ringSize >= 112) { ep4State.ringSize = 112; ep4State.ringDir = -1; }
+
+                const bRing = document.getElementById('ep4-ballistic-ring');
+                bRing.style.width = `${ep4State.ringSize}px`;
+                bRing.style.height = `${ep4State.ringSize}px`;
+            }
+
+            document.getElementById('ep4-line-x').style.left = `${ep4State.xPos + jitter}%`;
+            document.getElementById('ep4-line-y').style.top = `${ep4State.yPos + jitter}%`;
+            const ch = document.getElementById('ep4-crosshair');
+            ch.style.left = `${ep4State.xPos + jitter}%`;
+            ch.style.top = `${ep4State.yPos + jitter}%`;
+
+            animFrameId = requestAnimationFrame(loopEp4);
+        }
+
+        function handleEp4Press() {
+            if (!ep4State.active) return;
+
+            let hit = false;
+
+            if (ep4State.phase === 0) {
+                hit = Math.abs(ep4State.xPos - ep4State.jetX) <= 11.5;
+            } else if (ep4State.phase === 1) {
+                hit = Math.abs(ep4State.yPos - ep4State.jetY) <= 11.5;
+            } else if (ep4State.phase === 2) {
+                hit = Math.abs(ep4State.ringSize - 44) <= 14;
+            } else if (ep4State.phase === 3) {
+                hit = Math.abs(ep4State.ringSize - 44) <= 11;
+            }
+
+            if (hit) {
+                playLockSound(ep4State.phase + 1);
+                ep4State.phase++;
+
+                if (ep4State.phase >= 4) {
+                    ep4State.active = false;
+                    stopAllLoops();
+                    setStageIndicator('4 / 4 TARGET LOCKED');
+                    document.getElementById('ep4-radar').classList.remove('shake-glitch');
+                    document.getElementById('ep4-flare-warn').classList.add('hidden');
+                    playSuccessSound();
+                    document.getElementById('ep4-action-btn').classList.add('hidden');
+                    document.getElementById('ep4-result-box').classList.remove('hidden');
+                    return;
+                } else {
+                    updateEp4PhaseUI();
+                }
+            } else {
+                playAlarmSound();
+                addFailure();
+                const radar = document.getElementById('ep4-radar');
+                radar.classList.add('alarm-flash');
+                setTimeout(() => radar.classList.remove('alarm-flash'), 400);
+
+                if (ep4State.phase >= 2) {
+                    ep4State.phase--;
+                    updateEp4PhaseUI();
+                    document.getElementById('ep4-hint-text').textContent = '⚠ СРЫВ ЗАХВАТА! ОТКАТ НА ПРЕДЫДУЩУЮ ФАЗУ!';
+                } else {
+                    document.getElementById('ep4-hint-text').textContent = '✖ МИМО ЦЕЛИ! ПОВТОРИТЕ ЗАХВАТ ОСИ!';
+                }
+            }
+        }
+
+        /* =========================================================================
+           8. ПРИВЯЗКА СОБЫТИЙ
+           ========================================================================= */
+        function bindTapButton(elementId, callback) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            let lastTrigger = 0;
+
+            const trigger = (e) => {
+                if (e && e.cancelable) e.preventDefault();
+                const now = Date.now();
+                if (now - lastTrigger < 60) return;
+                lastTrigger = now;
+                initAudio();
+                callback();
+            };
+
+            el.addEventListener('pointerdown', trigger);
+            el.addEventListener('touchstart', trigger, { passive: false });
+        }
+
+        bindTapButton('ep1-action-btn', handleEp1Press);
+        bindTapButton('ep2-action-btn', handleEp2Tap);
+        bindTapButton('ep4-action-btn', handleEp4Press);
+
+        const ep3Btn = document.getElementById('ep3-action-btn');
+        if (ep3Btn) {
+            const startHold = (e) => {
+                if (e && e.cancelable) e.preventDefault();
+                initAudio();
+                setEp3Hold(true);
+            };
+            const endHold = (e) => {
+                if (e && e.cancelable) e.preventDefault();
+                setEp3Hold(false);
+            };
+
+            ep3Btn.addEventListener('pointerdown', startHold);
+            ep3Btn.addEventListener('pointerup', endHold);
+            ep3Btn.addEventListener('pointerleave', endHold);
+            ep3Btn.addEventListener('pointercancel', endHold);
+
+            ep3Btn.addEventListener('touchstart', startHold, { passive: false });
+            ep3Btn.addEventListener('touchend', endHold, { passive: false });
+            ep3Btn.addEventListener('touchcancel', endHold, { passive: false });
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (currentScreen !== 'menu') e.preventDefault();
+                if (e.repeat) return;
+
+                if (currentScreen === 'ep1') handleEp1Press();
+                if (currentScreen === 'ep2') handleEp2Tap();
+                if (currentScreen === 'ep3') setEp3Hold(true);
+                if (currentScreen === 'ep4') handleEp4Press();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'Space' && currentScreen === 'ep3') {
+                setEp3Hold(false);
+            }
+        });
+
+        // Инициализация списка аудиологов при загрузке
+        window.addEventListener('DOMContentLoaded', () => {
+            initAudioList();
+        });
+    </script>
 </body>
 </html>
