@@ -859,7 +859,6 @@
     }
   }
 
-  // --- EPISODE 1: SCALING DIFFICULTY ---
   const c1 = document.getElementById('canvasEp1');
   const ctx1 = c1.getContext('2d');
   let ep1 = { stage: 1, max: 6, hp: 3, pos: 0.1, dir: 1, greenStart: 0.55, greenW: 0.22, iceStart: 0.18, iceW: 0.14, won: false, flash: 0, flashColor: '#00ff88', trail: [] };
@@ -939,7 +938,6 @@
     });
   }
 
-  // --- EPISODE 3: RESTORED ORIGINAL CLASSIC SINUSOID WAVE ---
   const c3 = document.getElementById('canvasEp3');
   const ctx3 = c3.getContext('2d');
   let ep3 = { y: 97, vy: 0, holding: false, timeLeft: 35, signal: 100, phase: 0, won: false, trail: [] };
@@ -953,7 +951,6 @@
   }
   document.getElementById('ep3Reset').addEventListener('click', resetEp3);
 
-  // --- EPISODE 4: RESTORED FULL RADAR & TARGET LOCK ---
   const c4 = document.getElementById('canvasEp4');
   const ctx4 = c4.getContext('2d');
   let ep4 = { phase: 1, max: 4, cx: 90, cy: 97, tx: 340, ty: 97, t: 0, won: false, sweep: 0, flash: 0 };
@@ -991,7 +988,6 @@
     const dt = Math.min(0.05, (now - lastTs) / 1000);
     lastTs = now;
 
-    // === EPISODE 1 ===
     if (currentScreen === 'ep1') {
       if (!ep1.won) {
         const speed = 0.7 + ep1.stage * 0.14;
@@ -1061,7 +1057,6 @@
       updateAndDrawParticles(ctx1, dt);
     }
 
-    // === EPISODE 2 ===
     if (currentScreen === 'ep2') {
       ep2.waveT += dt * (ep2.holding ? 14 : 3);
       if (!ep2.won) {
@@ -1112,7 +1107,6 @@
       ctx2.restore();
     }
 
-    // === EPISODE 3: CLASSIC SINUSOID WAVE (RESTORED) ===
     if (currentScreen === 'ep3') {
       if (!ep3.won) {
         ep3.phase += dt * 2.1;
@@ -1147,7 +1141,6 @@
       ctx3.clearRect(0, 0, c3.width, c3.height);
       drawGrid(ctx3, c3.width, c3.height, 23);
 
-      // Classic Neon Wave Line
       ctx3.save();
       ctx3.strokeStyle = '#00ff88';
       ctx3.shadowBlur = 12;
@@ -1162,7 +1155,6 @@
       ctx3.stroke();
       ctx3.restore();
 
-      // Glowing Trail for Player
       ctx3.save();
       ctx3.strokeStyle = '#00f3ff';
       ctx3.shadowBlur = 12;
@@ -1176,7 +1168,6 @@
       });
       ctx3.stroke();
 
-      // Player Beacon Dot
       ctx3.fillStyle = '#ffffff';
       ctx3.beginPath();
       ctx3.arc(95, ep3.y, 7, 0, Math.PI * 2);
@@ -1189,7 +1180,6 @@
       ctx3.restore();
     }
 
-    // === EPISODE 4 ===
     if (currentScreen === 'ep4') {
       if (!ep4.won) {
         ep4.t += dt * (1.6 + ep4.phase * 0.4);
